@@ -3,6 +3,8 @@ package cn.qinxiandiqi.photochecker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,21 +32,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cn.qinxiandiqi.photochecker.ui.theme.PhotoCheckerTheme
 
 class MainActivity : ComponentActivity() {
+
+    private var photoInfo: PhotoInfo? = null
+
+    private val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
+        if (uri != null) {
+            photoInfo = PhotoInfo(uri)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PhotoCheckerTheme {
                 // A surface container using the 'background' color from the theme
                 ImageSelectorScreen {
-
+                    pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
                 }
             }
         }
+    }
+}
+
+@Composable
+fun App(onAddImageClick: () -> Unit) {
+    PhotoCheckerTheme {
+        ImageSelectorScreen(onAddImageClick)
     }
 }
 
@@ -99,7 +118,8 @@ fun ImageSelectorScreen(onAddImageClick: () -> Unit) {
                         Text(
                             modifier = Modifier.padding(5.dp),
                             style = MaterialTheme.typography.bodySmall.copy(color = Color.Black),
-                            text = stringResource(id = R.string.pick_photo)
+                            text = stringResource(id = R.string.pick_photo),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -111,9 +131,5 @@ fun ImageSelectorScreen(onAddImageClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    PhotoCheckerTheme {
-        ImageSelectorScreen {
-
-        }
-    }
+    App {}
 }

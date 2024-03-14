@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">PhotoChecker</string>
-    <string name="pick_photo">Select png photo</string>
+    <string name="pick_photo">select photo</string>
 </resources>
