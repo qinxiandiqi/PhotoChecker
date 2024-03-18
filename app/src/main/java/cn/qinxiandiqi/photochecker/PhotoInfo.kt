@@ -1,6 +1,9 @@
 package cn.qinxiandiqi.photochecker
 
 import android.net.Uri
+import androidx.exifinterface.media.ExifInterface
+import java.io.File
+import java.net.URI
 
 /**
  *
@@ -10,5 +13,7 @@ class PhotoInfo(
     val uri: Uri
 ) {
 
-
+    fun getExif() {
+        ExifInterface(File(URI(uri.toString())))
+    }
 }

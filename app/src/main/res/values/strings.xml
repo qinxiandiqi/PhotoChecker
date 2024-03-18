@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PhotoChecker</string>
     <string name="pick_photo">select photo</string>
+    <string name="photo_exif_info">Exif Detail</string>
 </resources>

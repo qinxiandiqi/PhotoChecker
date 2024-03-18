@@ -2,11 +2,12 @@ package cn.qinxiandiqi.photochecker
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.addCallback
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,13 +41,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cn.qinxiandiqi.photochecker.ui.theme.PhotoCheckerTheme
+import coil.compose.AsyncImage
 
 class MainActivity : ComponentActivity() {
 
@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             App {
@@ -71,6 +72,14 @@ class MainActivity : ComponentActivity() {
                         pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
                     }
                 }
+            }
+        }
+
+        onBackPressedDispatcher.addCallback {
+            if (viewModel.photoInfo != null) {
+                viewModel.photoInfo = null
+            } else {
+                finish()
             }
         }
     }
@@ -159,22 +168,27 @@ fun ImageExifDetailScreen(
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         TopAppBar(
-            title = { Text(text = "") },
+            title = { Text(text = stringResource(id = R.string.photo_exif_info)) },
             navigationIcon = {
                 IconButton(
-                    onClick = { /*TODO*/ }) {
+                    onClick = { viewModel.photoInfo = null }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary
+            )
         )
-        Image(
+        AsyncImage(
+            model = viewModel.photoInfo?.uri,
             modifier = modifier
                 .fillMaxWidth(1f)
                 .aspectRatio(ratio = 1.6f),
-            painter = painterResource(id = R.drawable.ic_launcher_background),
             contentScale = ContentScale.Crop,
             contentDescription = ""
         )

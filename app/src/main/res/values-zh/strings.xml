@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">PhotoChecker</string>
     <string name="pick_photo">选择图片</string>
+    <string name="photo_exif_info">Exif信息</string>
 </resources>
