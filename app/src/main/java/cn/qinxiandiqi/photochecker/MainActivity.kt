@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
     private val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
         if (uri != null) {
-            viewModel.photoInfo = PhotoInfo(uri)
+            viewModel.photoInfo = PhotoInfo(uri).also { it.parseExif(contentResolver) }
         }
     }
 
