@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">PhotoChecker</string>
-    <string name="pick_photo">select photo</string>
+    <string name="empty">Nothing to show!</string>
+    <string name="empty_tips">Please select a png/jpg/webp photo first.</string>
+    <string name="select_photo">Select Photo</string>
     <string name="photo_exif_info">Exif Detail</string>
+    <string name="about">about</string>
 </resources>

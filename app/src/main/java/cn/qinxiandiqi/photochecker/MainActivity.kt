@@ -1,5 +1,6 @@
 package cn.qinxiandiqi.photochecker
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
@@ -8,7 +9,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,15 +16,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,17 +37,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cn.qinxiandiqi.photochecker.ui.theme.PhotoCheckerTheme
 import coil.compose.AsyncImage
 
@@ -67,14 +60,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             App {
-                val photoInfo by rememberSaveable { viewModel.photoInfoState }
-                if (photoInfo != null) {
-                    ImageExifDetailScreen(viewModel = viewModel)
-                } else {
-                    ImageSelectorScreen {
+                HomeScreen(
+                    onAddImageClick = {
                         pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                    },
+                    onAboutClick = {
+
                     }
+                ) {
+                    val photoInfo by rememberSaveable { viewModel.photoInfoState }
+                    photoInfo?.let { PhotoExifDetail(photoInfo = it) } ?: EmptyExifDetail()
                 }
+
             }
         }
 
@@ -105,9 +102,11 @@ fun App(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ImageSelectorScreen(
+fun HomeScreen(
     modifier: Modifier = Modifier,
-    onAddImageClick: () -> Unit
+    onAddImageClick: () -> Unit,
+    onAboutClick: () -> Unit,
+    exifDetail: @Composable () -> Unit,
 ) {
     Column(modifier = modifier) {
         TopAppBar(
@@ -115,80 +114,73 @@ fun ImageSelectorScreen(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 titleContentColor = MaterialTheme.colorScheme.onPrimary
-            )
-        )
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable(onClick = onAddImageClick)
-                    .drawBehind {
-                        val borderStrokeWidth = 1.dp.toPx()
-                        val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-                        val cornerRadius = 8.dp.toPx()
-                        // Draw the dashed border
-                        drawRoundRect(
-                            color = Color.Black,
-                            style = Stroke(width = borderStrokeWidth, pathEffect = pathEffect),
-                            cornerRadius = CornerRadius(cornerRadius)
-                        )
-                    },
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .size(100.dp, 161.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            ),
+            actions = {
+                IconButton(onClick = onAboutClick) {
                     Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add Image",
-                        tint = Color.Black,
-                    )
-                    Text(
-                        modifier = Modifier.padding(5.dp),
-                        style = MaterialTheme.typography.bodySmall.copy(color = Color.Black),
-                        text = stringResource(id = R.string.pick_photo),
-                        textAlign = TextAlign.Center
+                        imageVector = Icons.Default.Info,
+                        contentDescription = stringResource(id = R.string.about),
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
+            }
+        )
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            exifDetail()
+
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(32.dp),
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                onClick = onAddImageClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(id = R.string.select_photo),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             }
         }
 
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ImageExifDetailScreen(
+fun EmptyExifDetail(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier.padding(5.dp),
+            style = MaterialTheme.typography.titleLarge,
+            text = stringResource(id = R.string.empty),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            modifier = Modifier
+                .padding(5.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            text = stringResource(id = R.string.empty_tips),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun PhotoExifDetail(
     modifier: Modifier = Modifier,
-    viewModel: PhotoInfoViewModel = viewModel()
+    photoInfo: PhotoInfo
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        TopAppBar(
-            title = { Text(text = stringResource(id = R.string.photo_exif_info)) },
-            navigationIcon = {
-                IconButton(
-                    onClick = { viewModel.photoInfo = null }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary
-            )
-        )
         AsyncImage(
-            model = viewModel.photoInfo?.uri,
+            model = photoInfo.uri,
             modifier = modifier
                 .fillMaxWidth(1f)
                 .aspectRatio(ratio = 1.6f),
@@ -196,13 +188,11 @@ fun ImageExifDetailScreen(
             contentDescription = ""
         )
         val exifListState = rememberLazyListState()
-        val exifList = remember {
-            viewModel.photoInfo?.readExifInfoList ?: emptyList()
-        }
+        val exifList = remember { photoInfo.readExifInfoList }
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp),
             state = exifListState
         ) {
             items(exifList.size) { index ->
@@ -215,10 +205,12 @@ fun ImageExifDetailScreen(
 @Composable
 fun ExifInfoItem(modifier: Modifier = Modifier, exifInfo: Pair<String, String>) {
     Card(
-        modifier = modifier.padding(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
         shape = MaterialTheme.shapes.small
     ) {
-        Column {
+        Column(modifier = Modifier.padding(8.dp)) {
             Text(text = exifInfo.first, style = MaterialTheme.typography.titleMedium)
             Text(text = exifInfo.second, style = MaterialTheme.typography.bodyMedium)
         }
@@ -228,18 +220,21 @@ fun ExifInfoItem(modifier: Modifier = Modifier, exifInfo: Pair<String, String>) 
 
 @Preview(showBackground = true)
 @Composable
-fun ImageSelectorScreenPreview() {
+fun AppPreview() {
     App {
-        ImageSelectorScreen {
-
+        HomeScreen(
+            onAddImageClick = {},
+            onAboutClick = {}
+        ) {
+            EmptyExifDetail()
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ImageExifDetailScreenPreview() {
+fun PhotoExifDetailPreview() {
     App {
-        ImageExifDetailScreen()
+        PhotoExifDetail(photoInfo = PhotoInfo(Uri.EMPTY))
     }
 }
