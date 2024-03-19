@@ -12,6 +12,8 @@ import cn.qinxiandiqi.lib.exif.ExifInterface
 class PhotoInfo(
     val uri: Uri
 ) {
+    private val exifInfoList = mutableListOf<Pair<String, String>>()
+    val readExifInfoList: List<Pair<String, String>> = exifInfoList
 
     fun parseExif(contentResolver: ContentResolver) {
         try {
@@ -21,6 +23,7 @@ class PhotoInfo(
                     for (tag in tagGroup) {
                         val value = exifInterface.getAttribute(tag.name)
                         if (value != null) {
+                            exifInfoList.add(tag.name to value)
                             Log.d("PhotoInfo", "parseExif: ${tag.name} = $value")
                         }
                     }
