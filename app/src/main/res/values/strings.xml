@@ -5,4 +5,6 @@
     <string name="select_photo">Select Photo</string>
     <string name="photo_exif_info">Exif Detail</string>
     <string name="about">about</string>
+    <string name="error">Sorry! Read the photo failed.</string>
+    <string name="error_tips">Please select another photo.</string>
 </resources>

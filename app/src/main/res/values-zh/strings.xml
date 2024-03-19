@@ -6,4 +6,6 @@
     <string name="photo_exif_info">Exif信息</string>
     <string name="select_photo">选择图片</string>
     <string name="about">关于</string>
+    <string name="error">抱歉！图片读取失败……</string>
+    <string name="error_tips">请选择其它照片再试试吧</string>
 </resources>
