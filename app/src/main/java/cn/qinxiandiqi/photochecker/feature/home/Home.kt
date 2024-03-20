@@ -7,15 +7,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -65,14 +72,14 @@ fun HomeScreen(
             title = { Text(text = stringResource(id = R.string.app_name)) },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary
+                titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary
             ),
             actions = {
                 IconButton(onClick = onAboutClick) {
                     Icon(
                         imageVector = Icons.Default.Info,
                         contentDescription = stringResource(id = R.string.about),
-                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -208,6 +215,42 @@ fun PhotoExifDetailSuccess(
 }
 
 @Composable
+fun ExifInfoItem(modifier: Modifier = Modifier, exifInfo: Pair<String, String>) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        shape = MaterialTheme.shapes.small,
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+            Text(text = exifInfo.first, style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(modifier = Modifier.width(10.dp))
+                Icon(
+                    modifier = Modifier.size(10.dp),
+                    imageVector = Icons.Default.PlayArrow,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    contentDescription = ""
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = exifInfo.second,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun PhotoExifDetailError(
     modifier: Modifier = Modifier,
     photoInfo: PhotoInfo? = null
@@ -238,34 +281,27 @@ fun PhotoExifDetailError(
     }
 }
 
+//@Preview(showBackground = true)
+//@Composable
+//fun PhotoExifDetailPreview() {
+//    App {
+//        PhotoExifDetailSuccess(photoInfo = PhotoInfo(uri = Uri.EMPTY))
+//    }
+//}
+
+@Preview(showBackground = true)
 @Composable
-fun ExifInfoItem(modifier: Modifier = Modifier, exifInfo: Pair<String, String>) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        shape = MaterialTheme.shapes.small
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = exifInfo.first, style = MaterialTheme.typography.titleMedium)
-            Text(text = exifInfo.second, style = MaterialTheme.typography.bodyMedium)
+fun PhotoExifDetailItemPreview() {
+    App {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+        ) {
+            items(5) { index ->
+                ExifInfoItem(exifInfo = "Title${index}" to "content")
+            }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AppPreview() {
-    App {
-        HomeScreen(
-            onAboutClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PhotoExifDetailPreview() {
-    App {
     }
 }
