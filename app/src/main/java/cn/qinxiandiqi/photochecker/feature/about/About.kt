@@ -107,7 +107,7 @@ fun AboutScreen(
             modifier = Modifier
                 .padding(horizontal = 26.dp, vertical = 8.dp)
                 .clickable {
-                    uriLauncher.launch(Uri.parse("https://www.qinxiandiqi.cn"))
+                    uriLauncher.launch(Uri.parse("https://photochecker.qinxiandiqi.cn"))
                 },
             text = stringResource(id = R.string.policy),
             style = MaterialTheme.typography.bodyLarge.copy(fontStyle = FontStyle.Italic),
