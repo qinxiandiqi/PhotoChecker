@@ -96,6 +96,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("com.mikepenz:aboutlibraries-core:11.1.0")
     implementation("com.mikepenz:aboutlibraries-compose-m3:11.1.0")
+    implementation("androidx.compose.material3:material3-window-size-class-android:1.2.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

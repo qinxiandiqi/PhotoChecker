@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,6 +33,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -56,6 +59,7 @@ import coil.compose.AsyncImage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(),
     onAboutClick: () -> Unit,
@@ -97,18 +101,21 @@ fun HomeScreen(
 
                 is HomeUIState.Loading -> {
                     PhotoExifDetailLoading(
+                        windowSizeClass = windowSizeClass,
                         photoInfo = (uiState as HomeUIState.Loading).photoInfo
                     )
                 }
 
                 is HomeUIState.Success -> {
                     PhotoExifDetailSuccess(
+                        windowSizeClass = windowSizeClass,
                         photoInfo = (uiState as HomeUIState.Success).photoInfo
                     )
                 }
 
                 is HomeUIState.Error -> {
                     PhotoExifDetailError(
+                        windowSizeClass = windowSizeClass,
                         photoInfo = (uiState as HomeUIState.Error).photoInfo
                     )
                 }
@@ -160,29 +167,50 @@ fun EmptyExifDetail(modifier: Modifier = Modifier) {
 
 @Composable
 fun PhotoExifDetail(
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     uri: Uri,
     content: @Composable () -> Unit
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        AsyncImage(
-            model = uri,
-            modifier = modifier
-                .fillMaxWidth(1f)
-                .aspectRatio(ratio = 1.6f),
-            contentScale = ContentScale.Crop,
-            contentDescription = ""
-        )
-        content()
+    when (windowSizeClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            Column(modifier = modifier.fillMaxSize()) {
+                AsyncImage(
+                    model = uri,
+                    modifier = modifier
+                        .fillMaxWidth(1f)
+                        .aspectRatio(ratio = 1.6f),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = ""
+                )
+                content()
+            }
+        }
+
+        WindowWidthSizeClass.Medium, WindowWidthSizeClass.Expanded -> {
+            Row(modifier = modifier.fillMaxSize()) {
+                AsyncImage(
+                    model = uri,
+                    modifier = modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.5f),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = ""
+                )
+                content()
+            }
+        }
     }
 }
 
 @Composable
 fun PhotoExifDetailLoading(
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     photoInfo: PhotoInfo,
 ) {
     PhotoExifDetail(
+        windowSizeClass = windowSizeClass,
         modifier = modifier,
         uri = photoInfo.uri
     ) {
@@ -197,10 +225,15 @@ fun PhotoExifDetailLoading(
 
 @Composable
 fun PhotoExifDetailSuccess(
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     photoInfo: PhotoInfo
 ) {
-    PhotoExifDetail(modifier = modifier, uri = photoInfo.uri) {
+    PhotoExifDetail(
+        windowSizeClass = windowSizeClass,
+        modifier = modifier,
+        uri = photoInfo.uri
+    ) {
         val exifList = remember { photoInfo.readExifInfoList }
         LazyColumn(
             modifier = modifier
@@ -252,10 +285,12 @@ fun ExifInfoItem(modifier: Modifier = Modifier, exifInfo: Pair<String, String>) 
 
 @Composable
 fun PhotoExifDetailError(
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     photoInfo: PhotoInfo? = null
 ) {
     PhotoExifDetail(
+        windowSizeClass = windowSizeClass,
         modifier = modifier,
         uri = photoInfo?.uri ?: Uri.EMPTY
     ) {

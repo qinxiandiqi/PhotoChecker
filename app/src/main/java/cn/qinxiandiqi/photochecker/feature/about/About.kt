@@ -23,6 +23,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import cn.qinxiandiqi.photochecker.App
 import cn.qinxiandiqi.photochecker.BuildConfig
@@ -46,6 +50,7 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     onBack: () -> Unit = {}
 ) {
@@ -74,6 +79,43 @@ fun AboutScreen(
                 scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer
             )
         )
+
+        when (windowSizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    AppVersionAndPolicy(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    LibrariesUsed(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            else -> {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppVersionAndPolicy(
+                        modifier = Modifier.fillMaxWidth(0.4f)
+                    )
+                    LibrariesUsed(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+        }
+
+
+    }
+}
+
+@Composable
+fun AppVersionAndPolicy(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -114,22 +156,26 @@ fun AboutScreen(
             color = MaterialTheme.colorScheme.tertiary,
             textDecoration = TextDecoration.Underline
         )
-
-        LibrariesContainer(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-            padding = LibraryDefaults.libraryPadding(
-                namePadding = PaddingValues(vertical = 4.dp),
-                badgeContentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
-            )
-        )
     }
 }
 
+@Composable
+fun LibrariesUsed(modifier: Modifier = Modifier) {
+    LibrariesContainer(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+        padding = LibraryDefaults.libraryPadding(
+            namePadding = PaddingValues(vertical = 4.dp),
+            badgeContentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
+        )
+    )
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(showBackground = true)
 @Composable
 fun AboutPreview() {
     App {
-        AboutScreen()
+        AboutScreen(windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp)))
     }
 }
