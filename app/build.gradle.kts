@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,8 +14,8 @@ android {
         applicationId = "cn.qinxiandiqi.photochecker"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -21,13 +23,39 @@ android {
         }
     }
 
+    signingConfigs {
+        val keyPropertiesFile = file("key/key.properties")
+        val keyProperties = Properties()
+        keyProperties.load(keyPropertiesFile.inputStream())
+
+        fun createOrUpdateSigningConfig(name: String) {
+            maybeCreate(name).apply {
+                storeFile = file(keyProperties.getProperty("${name}.store"))
+                storePassword = keyProperties.getProperty("${name}.storePassword")
+                keyAlias = keyProperties.getProperty("${name}.keyAlias")
+                keyPassword = keyProperties.getProperty("${name}.keyPassword")
+            }
+        }
+
+        createOrUpdateSigningConfig("debug")
+        createOrUpdateSigningConfig("release")
+        createOrUpdateSigningConfig("upload")
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
