@@ -6,9 +6,8 @@ Your handy tool to view EXIF information of your photos! With this lightweight a
 
 ## Screenshots
 
-![](./doc/Screenshot_phone_1.png)
-![](./doc/Screenshot_phone_2.png)
-![](./doc/Screenshot_phone_3.png)
+|![](./doc/Screenshot_phone_1.png)|![](./doc/Screenshot_phone_2.png)|![](./doc/Screenshot_phone_3.png)|
+|:------:|:------:|:------:|
 
 ## Build
 
