@@ -39,8 +39,10 @@ import androidx.compose.ui.unit.dp
 import cn.qinxiandiqi.photochecker.App
 import cn.qinxiandiqi.photochecker.BuildConfig
 import cn.qinxiandiqi.photochecker.R
+import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
-import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
+import androidx.core.net.toUri
+import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 
 /**
  *
@@ -149,7 +151,7 @@ fun AppVersionAndPolicy(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(horizontal = 26.dp, vertical = 8.dp)
                 .clickable {
-                    uriLauncher.launch(Uri.parse("https://photochecker.qinxiandiqi.cn"))
+                    uriLauncher.launch("https://photochecker.qinxiandiqi.cn".toUri())
                 },
             text = stringResource(id = R.string.policy),
             style = MaterialTheme.typography.bodyLarge.copy(fontStyle = FontStyle.Italic),
@@ -166,7 +168,6 @@ fun LibrariesUsed(modifier: Modifier = Modifier) {
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
         padding = LibraryDefaults.libraryPadding(
             namePadding = PaddingValues(vertical = 4.dp),
-            badgeContentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
         )
     )
 }
@@ -176,6 +177,6 @@ fun LibrariesUsed(modifier: Modifier = Modifier) {
 @Composable
 fun AboutPreview() {
     App {
-        AboutScreen(windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(600.dp, 480.dp)))
+        AboutScreen(windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(300.dp, 480.dp)))
     }
 }
