@@ -1,50 +1,78 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import React, { useState, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { theme } from './theme';
+import Home from './pages/Home';
+import About from './pages/About';
+import { HomeUIState, PhotoInfo } from './types/photo';
+import { parseExif } from './utils/exifParser';
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [photoState, setPhotoState] = useState<HomeUIState>({
+    type: 'empty',
+  });
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const [showAbout, setShowAbout] = useState(false);
+
+  const handlePhotoSelect = useCallback(async (file: File) => {
+    setPhotoState({
+      type: 'loading',
+      photoInfo: {
+        uri: URL.createObjectURL(file),
+        readExifInfoList: [],
+      },
+    });
+
+    try {
+      const photoInfo = await parseExif(file);
+      setPhotoState({
+        type: 'success',
+        photoInfo,
+      });
+    } catch (error) {
+      setPhotoState({
+        type: 'error',
+        photoInfo: {
+          uri: URL.createObjectURL(file),
+          readExifInfoList: [],
+        },
+        error: error instanceof Error ? error.message : '解析照片时发生错误',
+      });
+    }
+  }, []);
+
+  const handleAboutClick = useCallback(() => {
+    setShowAbout(true);
+  }, []);
+
+  const handleBackToHome = useCallback(() => {
+    setShowAbout(false);
+  }, []);
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <Home
+                photoState={photoState}
+                onPhotoSelect={handlePhotoSelect}
+                onAboutClick={handleAboutClick}
+              />
+            } 
+          />
+          <Route 
+            path="/about" 
+            element={
+              <About onBack={handleBackToHome} />
+            } 
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

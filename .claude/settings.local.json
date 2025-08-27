@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(pnpm:*)",
+      "Bash(cargo:*)",
+      "Bash(npm create tauri-app@latest:*)",
+      "WebFetch(domain:v2.tauri.app)",
+      "WebSearch",
+      "Bash(npx vite --version)",
+      "Bash(npm install:*)",
+      "Bash(npx @tauri-apps/api:*)",
+      "Bash(pkill:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

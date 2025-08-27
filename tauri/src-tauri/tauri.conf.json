@@ -1,25 +1,28 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri",
-  "version": "0.1.0",
+  "productName": "PhotoChecker",
+  "version": "1.0.0",
   "identifier": "cn.qinxiandiqi.photochecker",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "npx vite",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "npx vite build",
     "frontendDist": "../dist"
   },
   "app": {
     "windows": [
       {
-        "title": "tauri",
-        "width": 800,
-        "height": 600
+        "title": "PhotoChecker - EXIF Viewer",
+        "width": 900,
+        "height": 700,
+        "minWidth": 400,
+        "minHeight": 300,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "transparent": false
       }
-    ],
-    "security": {
-      "csp": null
-    }
+    ]
   },
   "bundle": {
     "active": true,
@@ -30,6 +33,9 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
+    ],
+    "resources": [
+      "icons/*"
     ]
   }
 }
