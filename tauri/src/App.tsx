@@ -4,7 +4,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import Home from './pages/Home';
 import About from './pages/About';
-import { HomeUIState, PhotoInfo } from './types/photo';
+import { HomeUIState } from './types/photo';
 import { parseExif } from './utils/exifParser';
 
 function App() {
@@ -41,6 +41,12 @@ function App() {
     }
   }, []);
 
+  const handleRefresh = useCallback(() => {
+    setPhotoState({
+      type: 'empty',
+    });
+  }, []);
+
   const handleAboutClick = useCallback(() => {
     setShowAbout(true);
   }, []);
@@ -61,6 +67,7 @@ function App() {
                 photoState={photoState}
                 onPhotoSelect={handlePhotoSelect}
                 onAboutClick={handleAboutClick}
+                onRefresh={handleRefresh}
               />
             } 
           />

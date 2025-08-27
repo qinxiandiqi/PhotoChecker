@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
   Button,
@@ -21,7 +21,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../theme';
-import { usePhotoSelector, useImageDimensions } from '../hooks/usePhotoSelector';
+import { usePhotoSelector } from '../hooks/usePhotoSelector';
 import { HomeUIState } from '../types/photo';
 
 interface HomeProps {
@@ -38,14 +38,22 @@ const Home: React.FC<HomeProps> = ({
   onRefresh,
 }) => {
   const navigate = useNavigate();
-  const { triggerFileInput } = usePhotoSelector();
-  const { calculateResponsiveDimensions } = useImageDimensions();
+  const { 
+    fileInputRef, 
+    handleDrop, 
+    handleDragOver, 
+    handleFileInputChange,
+    triggerFileInput 
+  } = usePhotoSelector();
+
+  const dropZoneRef = useRef<HTMLDivElement>(null);
 
   const renderContent = () => {
     switch (photoState.type) {
       case 'empty':
         return (
           <Box
+            ref={dropZoneRef}
             sx={{
               border: '2px dashed',
               borderColor: 'divider',
@@ -60,6 +68,14 @@ const Home: React.FC<HomeProps> = ({
               },
             }}
             onClick={triggerFileInput}
+            onDrop={(e) => {
+              handleDrop(e);
+              const file = e.dataTransfer.files?.[0];
+              if (file && file.type.startsWith('image/')) {
+                onPhotoSelect(file);
+              }
+            }}
+            onDragOver={handleDragOver}
           >
             <PhotoCamera sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" gutterBottom>
@@ -105,7 +121,17 @@ const Home: React.FC<HomeProps> = ({
                 照片信息
               </Typography>
               {photoState.photoInfo?.uri && (
-                <Box sx={{ mb: 3 }}>
+                <Box 
+                  sx={{ mb: 3, textAlign: 'center' }}
+                  onDrop={(e) => {
+                    handleDrop(e);
+                    const file = e.dataTransfer.files?.[0];
+                    if (file && file.type.startsWith('image/')) {
+                      onPhotoSelect(file);
+                    }
+                  }}
+                  onDragOver={handleDragOver}
+                >
                   <img
                     src={photoState.photoInfo.uri}
                     alt="Preview"
@@ -161,6 +187,15 @@ const Home: React.FC<HomeProps> = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {/* 隐藏的文件输入框 */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleFileInputChange}
+      />
+      
       <AppBar position="static" sx={{ boxShadow: 1 }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
