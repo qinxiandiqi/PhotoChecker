@@ -1,0 +1,24 @@
+{
+  "title": "欢迎来到 Tauri + React",
+  "subtitle": "这是一个现代化的桌面应用模板",
+  "demo": {
+    "title": "Tauri 命令示例",
+    "description": "输入您的名字，然后点击按钮来调用 Rust 命令",
+    "placeholder": "输入名字...",
+    "success": "调用成功！"
+  },
+  "features": {
+    "performance": {
+      "title": "🚀 高性能",
+      "description": "Tauri 提供极小的包体积和极快的性能"
+    },
+    "security": {
+      "title": "🛡️ 安全",
+      "description": "Rust 提供内存安全和类型安全"
+    },
+    "modern": {
+      "title": "🎨 现代化",
+      "description": "React 19 + TypeScript + Tailwind CSS"
+    }
+  }
+}

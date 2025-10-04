@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom gradient utilities */
+@layer utilities {
+  .bg-gradient-to-br {
+    background: linear-gradient(135deg, theme('colors.primary'), theme('colors.primary') / 80);
+  }
+}

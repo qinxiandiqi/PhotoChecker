@@ -1,0 +1,29 @@
+{
+  "title": "用户管理",
+  "subtitle": "管理系统用户",
+  "actions": {
+    "addUser": "添加用户",
+    "editUser": "编辑用户",
+    "deleteUser": "删除用户",
+    "viewProfile": "查看资料"
+  },
+  "table": {
+    "name": "姓名",
+    "email": "邮箱",
+    "role": "角色",
+    "status": "状态",
+    "lastLogin": "最后登录",
+    "actions": "操作"
+  },
+  "status": {
+    "active": "活跃",
+    "inactive": "未激活",
+    "banned": "已禁用"
+  },
+  "roles": {
+    "admin": "管理员",
+    "user": "普通用户",
+    "moderator": "版主"
+  },
+  "confirmDelete": "确定要删除此用户吗？"
+}

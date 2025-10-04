@@ -10,7 +10,17 @@
       "Bash(npx vite --version)",
       "Bash(npm install:*)",
       "Bash(npx @tauri-apps/api:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(npx create:*)",
+      "Bash(npm create:*)",
+      "Bash(npm run tauri:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(rm:*)",
+      "Bash(git add:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,36 @@
+{
+  "nav": {
+    "brand": "Tauri App",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "settings": "Settings"
+  },
+  "actions": {
+    "greet": "Greet",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "submit": "Submit",
+    "reset": "Reset"
+  },
+  "theme": {
+    "toggle": "Toggle Theme",
+    "light": "Light Theme",
+    "dark": "Dark Theme"
+  },
+  "language": {
+    "toggle": "Switch Language",
+    "chinese": "中文",
+    "english": "English"
+  },
+  "status": {
+    "loading": "Loading...",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  }
+}

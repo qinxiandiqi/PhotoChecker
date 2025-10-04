@@ -1,85 +1,50 @@
-import React, { useState, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { theme } from './theme';
-import Home from './pages/Home';
-import About from './pages/About';
-import { HomeUIState } from './types/photo';
-import { parseExif } from './utils/exifParser';
+import { useState } from "react";
+import { HomeScreen } from "./components/home";
+import { AboutScreen } from "./components/about";
+import { Button } from "daisyui";
+
+type ViewType = "home" | "about";
 
 function App() {
-  const [photoState, setPhotoState] = useState<HomeUIState>({
-    type: 'empty',
-  });
-
-  const [showAbout, setShowAbout] = useState(false);
-
-  const handlePhotoSelect = useCallback(async (file: File) => {
-    setPhotoState({
-      type: 'loading',
-      photoInfo: {
-        uri: URL.createObjectURL(file),
-        readExifInfoList: [],
-      },
-    });
-
-    try {
-      const photoInfo = await parseExif(file);
-      setPhotoState({
-        type: 'success',
-        photoInfo,
-      });
-    } catch (error) {
-      setPhotoState({
-        type: 'error',
-        photoInfo: {
-          uri: URL.createObjectURL(file),
-          readExifInfoList: [],
-        },
-        error: error instanceof Error ? error.message : '解析照片时发生错误',
-      });
-    }
-  }, []);
-
-  const handleRefresh = useCallback(() => {
-    setPhotoState({
-      type: 'empty',
-    });
-  }, []);
-
-  const handleAboutClick = useCallback(() => {
-    setShowAbout(true);
-  }, []);
-
-  const handleBackToHome = useCallback(() => {
-    setShowAbout(false);
-  }, []);
+  const [currentView, setCurrentView] = useState<ViewType>("home");
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <Home
-                photoState={photoState}
-                onPhotoSelect={handlePhotoSelect}
-                onAboutClick={handleAboutClick}
-                onRefresh={handleRefresh}
-              />
-            } 
-          />
-          <Route 
-            path="/about" 
-            element={
-              <About onBack={handleBackToHome} />
-            } 
-          />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <div className="min-h-screen bg-base-200">
+      {/* 导航栏 */}
+      <header className="navbar bg-base-100 shadow-lg">
+        <div className="navbar-start">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-content font-bold text-sm">PC</span>
+            </div>
+            <h1 className="text-xl font-bold">PhotoChecker</h1>
+          </div>
+        </div>
+
+        <div className="navbar-end">
+          <Button
+            size="sm"
+            variant={currentView === "home" ? "ghost" : "default"}
+            onClick={() => setCurrentView("home")}
+            className="mr-2"
+          >
+            主页
+          </Button>
+          <Button
+            size="sm"
+            variant={currentView === "about" ? "ghost" : "default"}
+            onClick={() => setCurrentView("about")}
+          >
+            关于
+          </Button>
+        </div>
+      </header>
+
+      {/* 主要内容 */}
+      <main className="flex-1">
+        {currentView === "home" ? <HomeScreen /> : <AboutScreen />}
+      </main>
+    </div>
   );
 }
 

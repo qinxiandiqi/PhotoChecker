@@ -1,0 +1,24 @@
+{
+  "title": "仪表板",
+  "subtitle": "数据统计和概览",
+  "cards": {
+    "overview": {
+      "title": "概览",
+      "description": "系统概览信息"
+    },
+    "analytics": {
+      "title": "分析",
+      "description": "数据分析图表"
+    },
+    "reports": {
+      "title": "报告",
+      "description": "生成和查看报告"
+    }
+  },
+  "metrics": {
+    "users": "用户总数",
+    "sessions": "活跃会话",
+    "revenue": "总收入",
+    "growth": "增长率"
+  }
+}

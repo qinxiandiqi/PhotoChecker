@@ -1,0 +1,24 @@
+{
+  "title": "Dashboard",
+  "subtitle": "Data statistics and overview",
+  "cards": {
+    "overview": {
+      "title": "Overview",
+      "description": "System overview information"
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "Data analytics charts"
+    },
+    "reports": {
+      "title": "Reports",
+      "description": "Generate and view reports"
+    }
+  },
+  "metrics": {
+    "users": "Total Users",
+    "sessions": "Active Sessions",
+    "revenue": "Total Revenue",
+    "growth": "Growth Rate"
+  }
+}

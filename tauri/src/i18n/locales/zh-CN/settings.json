@@ -1,0 +1,31 @@
+{
+  "title": "设置",
+  "subtitle": "系统配置和个人偏好",
+  "sections": {
+    "general": "通用设置",
+    "appearance": "外观设置",
+    "notifications": "通知设置",
+    "security": "安全设置",
+    "advanced": "高级设置"
+  },
+  "options": {
+    "language": "界面语言",
+    "theme": "主题模式",
+    "autoSave": "自动保存",
+    "soundEffects": "音效",
+    "animations": "动画效果",
+    "notifications": "桌面通知",
+    "autoUpdate": "自动更新"
+  },
+  "buttons": {
+    "resetToDefault": "恢复默认",
+    "exportSettings": "导出设置",
+    "importSettings": "导入设置"
+  },
+  "messages": {
+    "settingsSaved": "设置已保存",
+    "resetConfirm": "确定要恢复默认设置吗？",
+    "exportSuccess": "设置已导出",
+    "importSuccess": "设置已导入"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "title": "User Management",
+  "subtitle": "Manage system users",
+  "actions": {
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "viewProfile": "View Profile"
+  },
+  "table": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "lastLogin": "Last Login",
+    "actions": "Actions"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "banned": "Banned"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "user": "User",
+    "moderator": "Moderator"
+  },
+  "confirmDelete": "Are you sure you want to delete this user?"
+}

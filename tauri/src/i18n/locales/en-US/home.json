@@ -1,0 +1,24 @@
+{
+  "title": "Welcome to Tauri + React",
+  "subtitle": "A modern desktop application template",
+  "demo": {
+    "title": "Tauri Command Example",
+    "description": "Enter your name and click the button to invoke a Rust command",
+    "placeholder": "Enter your name...",
+    "success": "Command executed successfully!"
+  },
+  "features": {
+    "performance": {
+      "title": "🚀 High Performance",
+      "description": "Tauri provides minimal bundle size and blazing fast performance"
+    },
+    "security": {
+      "title": "🛡️ Security",
+      "description": "Rust provides memory safety and type safety"
+    },
+    "modern": {
+      "title": "🎨 Modern",
+      "description": "React 19 + TypeScript + Tailwind CSS"
+    }
+  }
+}

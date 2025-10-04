@@ -1,0 +1,31 @@
+{
+  "title": "Settings",
+  "subtitle": "System configuration and personal preferences",
+  "sections": {
+    "general": "General Settings",
+    "appearance": "Appearance Settings",
+    "notifications": "Notification Settings",
+    "security": "Security Settings",
+    "advanced": "Advanced Settings"
+  },
+  "options": {
+    "language": "Interface Language",
+    "theme": "Theme Mode",
+    "autoSave": "Auto Save",
+    "soundEffects": "Sound Effects",
+    "animations": "Animations",
+    "notifications": "Desktop Notifications",
+    "autoUpdate": "Auto Update"
+  },
+  "buttons": {
+    "resetToDefault": "Reset to Default",
+    "exportSettings": "Export Settings",
+    "importSettings": "Import Settings"
+  },
+  "messages": {
+    "settingsSaved": "Settings saved",
+    "resetConfirm": "Are you sure you want to reset to default settings?",
+    "exportSuccess": "Settings exported",
+    "importSuccess": "Settings imported"
+  }
+}
