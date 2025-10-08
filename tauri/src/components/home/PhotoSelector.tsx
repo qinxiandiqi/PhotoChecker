@@ -1,31 +1,29 @@
-import { Upload, Image as ImageIcon } from "lucide-react";
-import { Button } from "react-daisyui";
+import { Upload, Image as ImageIcon } from 'lucide-react'
+import { Button } from 'react-daisyui'
 
 interface PhotoSelectorProps {
-  onSelect: () => void;
+  onSelect: () => void
 }
 
 export const PhotoSelector = ({ onSelect }: PhotoSelectorProps) => {
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
-    const files = Array.from(e.dataTransfer.files);
-    const imageFile = files.find(file =>
-      file.type.startsWith('image/')
-    );
+    const files = Array.from(e.dataTransfer.files)
+    const imageFile = files.find(file => file.type.startsWith('image/'))
 
     if (imageFile) {
       // TODO: 处理拖拽的文件
-      console.log("拖拽的文件:", imageFile);
-      onSelect();
+      console.log('拖拽的文件:', imageFile)
+      onSelect()
     }
-  };
+  }
 
   return (
     <div className="flex-1 flex items-center justify-center">
@@ -39,26 +37,17 @@ export const PhotoSelector = ({ onSelect }: PhotoSelectorProps) => {
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
-            选择照片查看EXIF信息
-          </h2>
-          <p className="text-base-content opacity-70">
-            支持JPG、PNG、TIFF、RAW等格式
-          </p>
+          <h2 className="text-xl font-semibold">选择照片查看EXIF信息</h2>
+          <p className="text-base-content opacity-70">支持JPG、PNG、TIFF、RAW等格式</p>
         </div>
 
         <div className="space-y-3">
-          <Button
-            onClick={onSelect}
-            className="btn btn-primary w-full"
-          >
+          <Button onClick={onSelect} className="btn btn-primary w-full">
             <Upload className="w-4 h-4 mr-2" />
             选择照片
           </Button>
 
-          <p className="text-sm text-base-content opacity-50">
-            或将照片拖拽到此处
-          </p>
+          <p className="text-sm text-base-content opacity-50">或将照片拖拽到此处</p>
         </div>
 
         <div className="text-xs text-base-content opacity-40">
@@ -67,5 +56,5 @@ export const PhotoSelector = ({ onSelect }: PhotoSelectorProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

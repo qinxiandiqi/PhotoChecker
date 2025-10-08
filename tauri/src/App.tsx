@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { HomeScreen } from "./components/home";
-import { AboutScreen } from "./components/about";
-import { Button } from "react-daisyui";
+import { useState } from 'react'
+import { HomeScreen } from './components/home'
+import { AboutScreen } from './components/about'
+import { Button } from 'react-daisyui'
 
-type ViewType = "home" | "about";
+type ViewType = 'home' | 'about'
 
 function App() {
-  const [currentView, setCurrentView] = useState<ViewType>("home");
+  const [currentView, setCurrentView] = useState<ViewType>('home')
 
   return (
     <div className="min-h-screen bg-base-200">
@@ -24,16 +24,16 @@ function App() {
         <div className="navbar-end">
           <Button
             size="sm"
-            variant={currentView === "home" ? "outline" : undefined}
-            onClick={() => setCurrentView("home")}
+            variant={currentView === 'home' ? 'outline' : undefined}
+            onClick={() => setCurrentView('home')}
             className="mr-2"
           >
             主页
           </Button>
           <Button
             size="sm"
-            variant={currentView === "about" ? "outline" : undefined}
-            onClick={() => setCurrentView("about")}
+            variant={currentView === 'about' ? 'outline' : undefined}
+            onClick={() => setCurrentView('about')}
           >
             关于
           </Button>
@@ -41,11 +41,9 @@ function App() {
       </header>
 
       {/* 主要内容 */}
-      <main className="flex-1">
-        {currentView === "home" ? <HomeScreen /> : <AboutScreen />}
-      </main>
+      <main className="flex-1">{currentView === 'home' ? <HomeScreen /> : <AboutScreen />}</main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

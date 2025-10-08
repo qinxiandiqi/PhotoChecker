@@ -3,6 +3,7 @@
 ## Project Overview
 
 PhotoChecker is a cross-platform EXIF viewer application that displays metadata from photos. The project supports four platforms:
+
 - **Android**: Native Kotlin/Compose implementation (primary platform)
 - **Tauri**: Desktop application using React + Material UI + Tauri 2.0
 - **HarmonyOS**: ArkTS implementation
@@ -13,6 +14,7 @@ The app allows users to select photos from their device and view detailed EXIF m
 ## Architecture
 
 ### Android Platform (Primary)
+
 - **Framework**: Android with Jetpack Compose UI toolkit
 - **Architecture**: MVVM with ViewModel pattern
 - **Language**: Kotlin
@@ -20,6 +22,7 @@ The app allows users to select photos from their device and view detailed EXIF m
 - **Target SDK**: API 36
 
 #### Key Components:
+
 - `MainActivity`: Main entry point with navigation between Home and About screens
 - `HomeViewModel`: Manages photo selection and EXIF parsing state
 - `PhotoInfo`: Data class for photo metadata extraction
@@ -27,12 +30,14 @@ The app allows users to select photos from their device and view detailed EXIF m
 - Feature modules: `home` and `about` screens
 
 #### Data Flow:
+
 1. User selects photo via launcher
 2. `HomeViewModel` processes Uri and calls `PhotoInfo.parseExif()`
 3. `PhotoInfo` uses custom `ExifInterface` to extract metadata
 4. Results displayed through `HomeUIState` sealed class (Empty, Loading, Success, Error)
 
 ### Tauri Desktop Platform
+
 - **Framework**: Tauri 2.0 with React 19 + TypeScript + Vite
 - **UI**: Material UI 5 (MUI) with Material Design 3
 - **Architecture**: Single Page Application with React Router
@@ -41,6 +46,7 @@ The app allows users to select photos from their device and view detailed EXIF m
 - **Platforms**: Windows, macOS, Linux desktop
 
 #### Key Components:
+
 - `App.tsx`: Main application component with routing
 - `Home.tsx`: Main photo selection and display UI
 - `About.tsx`: About information screen
@@ -48,11 +54,13 @@ The app allows users to select photos from their device and view detailed EXIF m
 - Tauri backend: Rust-based desktop integration
 
 #### Data Flow:
+
 1. User selects photo via file dialog or drag & drop
 2. `parseExif` function uses `exifr` library to extract metadata
 3. Results displayed through `HomeUIState` union type (Empty, Loading, Success, Error)
 
 ### Multi-Platform Structure
+
 ```
 PhotoChecker/
 ├── android/          # Native Android implementation
@@ -65,6 +73,7 @@ PhotoChecker/
 ## Build and Development Commands
 
 ### Android
+
 ```bash
 # Navigate to Android directory
 cd android
@@ -84,6 +93,7 @@ cd android
 ```
 
 ### Tauri Desktop
+
 ```bash
 # Navigate to Tauri directory
 cd tauri
@@ -104,8 +114,9 @@ pnpm tauri build --target x86_64-unknown-linux-gnu # Linux
 ```
 
 ### HarmonyOS
+
 ```bash
-# Navigate to HarmonyOS directory  
+# Navigate to HarmonyOS directory
 cd harmony
 
 # Build HarmonyOS application
@@ -116,6 +127,7 @@ hvigorw build
 ```
 
 ### Web
+
 ```bash
 # Navigate to web directory
 cd web
@@ -129,12 +141,14 @@ docker-compose up --build
 ## Development Setup
 
 ### Android Requirements
+
 - Android Studio installed
 - Android SDK (API 24-36 configured)
 - Gradle wrapper included in project
 - Debug signing key: Extract `debugkey.zip` in `android/app/`
 
 ### Tauri Desktop Requirements
+
 - Node.js >= 18
 - pnpm >= 8
 - Rust >= 1.70
@@ -144,7 +158,8 @@ docker-compose up --build
   - Linux: WebKit2GTK development headers
 
 ### Key Dependencies
-- **Android**: 
+
+- **Android**:
   - Jetpack Compose (Material3)
   - AndroidX Lifecycle (ViewModel, Runtime)
   - Coil (image loading)
@@ -164,6 +179,7 @@ docker-compose up --build
 ## Code Structure
 
 ### Android Source Tree
+
 ```
 android/app/src/main/java/cn/qinxiandiqi/
 ├── photochecker/
@@ -185,6 +201,7 @@ android/app/src/main/java/cn/qinxiandiqi/
 ```
 
 ### Tauri Source Tree
+
 ```
 tauri/
 ├── src/                       # React source code
@@ -212,37 +229,42 @@ tauri/
 ```
 
 ### Custom EXIF Library
+
 The project includes a custom EXIF parser in `android/app/src/main/java/cn/qinxiandiqi/lib/exif/` that extends Android's native EXIFInterface functionality. This is the core component for photo metadata extraction.
 
 ## Testing
 
 ### Android Tests
+
 - Unit tests: `android/app/src/test/`
 - Instrumented tests: `android/app/src/androidTest/`
 - Uses standard JUnit and AndroidX testing frameworks
 
 ### Tauri Tests
+
 - Frontend tests: Standard React testing with Jest/Vitest
 - Tauri backend tests: Rust tests in `src-tauri/tests/`
 
-### HarmonyOS Tests  
+### HarmonyOS Tests
+
 - Located in `harmony/entry/src/test/` and `harmony/entry/src/ohosTest/`
 - Uses Hypium framework
 
 ## Project Configuration
 
 ### Version Information
+
 - Android: Version 1.0.1 (versionCode: 4), targeting API 36
 - Tauri Desktop: Version 1.0.0
 - Supports Android 7.0+ (minSdk 24)
 
 ### Code Style
-- **Android**: 
+
+- **Android**:
   - Kotlin: Uses Compose Material3 design system
   - Follows Android Jetpack best practices
   - Uses ViewModels for state management
   - Coroutines for asynchronous operations
-  
 - **Tauri Desktop**:
   - TypeScript: Uses React Hooks and Functional Components
   - Material UI 5 with Material Design 3
@@ -252,15 +274,19 @@ The project includes a custom EXIF parser in `android/app/src/main/java/cn/qinxi
 ## Additional Information
 
 ### Privacy Policy
+
 The web directory contains a static privacy policy page that explains:
+
 - No data is collected by the app
 - Disclaimer for data loss or bugs
 - Contact information
 
 ### Documentation
+
 The `doc/` directory contains screenshots and other documentation assets.
 
 ### Tauri Desktop Features
+
 - **Cross-platform**: Builds for Windows, macOS, and Linux
 - **Lightweight**: Uses system WebView for UI rendering
 - **Secure**: Sandboxed execution with controlled system access

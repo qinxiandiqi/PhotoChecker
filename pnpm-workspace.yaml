@@ -1,7 +1,7 @@
 packages:
   # 包含所有子项目
-  - 'packages/*'
-  - 'apps/*'
+  - "packages/*"
+  - "apps/*"
   # 包含现有的独立项目
-  - 'tauri'
-  - 'web'
+  - "tauri"
+  - "web"

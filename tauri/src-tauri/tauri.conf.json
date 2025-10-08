@@ -25,7 +25,24 @@
       "csp": null,
       "assetProtocol": {
         "enable": true,
-        "scope": ["$APPCONFIG", "$APPDATA", "$APPLOCALDATA", "$APPCACHE", "$APPLOG", "$DOWNLOAD", "$RESOURCE", "$TEMP", "$HOME", "$DESKTOP", "$DOCUMENT", "$DOWNLOAD", "$MUSIC", "$PICTURE", "$VIDEO", "**"]
+        "scope": [
+          "$APPCONFIG",
+          "$APPDATA",
+          "$APPLOCALDATA",
+          "$APPCACHE",
+          "$APPLOG",
+          "$DOWNLOAD",
+          "$RESOURCE",
+          "$TEMP",
+          "$HOME",
+          "$DESKTOP",
+          "$DOCUMENT",
+          "$DOWNLOAD",
+          "$MUSIC",
+          "$PICTURE",
+          "$VIDEO",
+          "**"
+        ]
       }
     }
   },

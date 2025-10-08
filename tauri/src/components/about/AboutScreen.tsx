@@ -1,11 +1,11 @@
-import { Info, Code, Heart, Github } from "lucide-react";
-import { Button } from "react-daisyui";
+import { Info, Code, Heart, Github } from 'lucide-react'
+import { Button } from 'react-daisyui'
 
 export const AboutScreen = () => {
   const handleOpenGithub = () => {
     // TODO: 添加GitHub链接
-    console.log("打开GitHub页面");
-  };
+    console.log('打开GitHub页面')
+  }
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
@@ -16,9 +16,7 @@ export const AboutScreen = () => {
             <Info className="w-8 h-8 text-primary-content" />
           </div>
           <h1 className="text-3xl font-bold">PhotoChecker</h1>
-          <p className="text-base-content opacity-70">
-            跨平台EXIF信息查看器
-          </p>
+          <p className="text-base-content opacity-70">跨平台EXIF信息查看器</p>
         </div>
 
         {/* 版本信息 */}
@@ -65,9 +63,7 @@ export const AboutScreen = () => {
         <div className="text-left space-y-4">
           <h2 className="text-xl font-semibold">支持的格式</h2>
           <div className="bg-base-200 rounded-lg p-4">
-            <p className="text-sm font-mono">
-              JPEG, PNG, TIFF, RAW, CR2, NEF, ARW, DNG
-            </p>
+            <p className="text-sm font-mono">JPEG, PNG, TIFF, RAW, CR2, NEF, ARW, DNG</p>
           </div>
         </div>
 
@@ -92,10 +88,7 @@ export const AboutScreen = () => {
 
         {/* 操作按钮 */}
         <div className="flex justify-center space-x-4 pt-4">
-          <Button
-            onClick={handleOpenGithub}
-            className="btn-primary"
-          >
+          <Button onClick={handleOpenGithub} className="btn-primary">
             <Github className="w-4 h-4 mr-2" />
             查看源码
           </Button>
@@ -107,5 +100,5 @@ export const AboutScreen = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

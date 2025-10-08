@@ -8,8 +8,8 @@ Your handy tool to view EXIF information of your photos! With this lightweight a
 
 ## Screenshots
 
-|![](./doc/Screenshot_phone_1.png)|![](./doc/Screenshot_phone_2.png)|![](./doc/Screenshot_phone_3.png)|
-|:------:|:------:|:------:|
+| ![](./doc/Screenshot_phone_1.png) | ![](./doc/Screenshot_phone_2.png) | ![](./doc/Screenshot_phone_3.png) |
+| :-------------------------------: | :-------------------------------: | :-------------------------------: |
 
 ## 🚀 Quick Start
 
@@ -87,21 +87,25 @@ PhotoChecker/
 ## 🎯 Platforms
 
 ### Desktop (Tauri)
+
 - **Location**: `./tauri/`
 - **Tech Stack**: React, TypeScript, Vite, Tauri 2
 - **Commands**: `pnpm tauri:dev`, `pnpm tauri:build`
 
 ### Android
+
 - **Location**: `./android/`
 - **Tech Stack**: Kotlin, Jetpack Compose
 - **Commands**: `pnpm android:build`
 
 ### HarmonyOS
+
 - **Location**: `./harmony/`
 - **Tech Stack**: ArkTS
 - **Commands**: `pnpm harmony:build`
 
 ### Web
+
 - **Location**: `./web/`
 - **Tech Stack**: Static files with Docker
 - **Commands**: `pnpm web:build`

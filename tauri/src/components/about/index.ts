@@ -1,1 +1,1 @@
-export { AboutScreen } from "./AboutScreen";
+export { AboutScreen } from './AboutScreen'

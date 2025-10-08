@@ -1,8 +1,8 @@
 // Common components
-export * from "./common";
+export * from './common'
 
 // Home components
-export * from "./home";
+export * from './home'
 
 // About components
-export * from "./about";
+export * from './about'

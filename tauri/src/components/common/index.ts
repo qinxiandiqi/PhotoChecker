@@ -1,2 +1,2 @@
-export { LoadingSpinner } from "./LoadingSpinner";
-export { ErrorDisplay } from "./ErrorDisplay";
+export { LoadingSpinner } from './LoadingSpinner'
+export { ErrorDisplay } from './ErrorDisplay'
