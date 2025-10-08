@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { PhotoInfo, ExifTag } from "../types";
+import { ExifParseResult } from "../types";
 
 export class PhotoService {
   static async selectPhoto(): Promise<string | null> {
@@ -12,23 +12,16 @@ export class PhotoService {
     }
   }
 
-  static async getPhotoInfo(path: string): Promise<PhotoInfo> {
+  static async getPhotoInfo(path: string): Promise<ExifParseResult> {
     try {
-      return await invoke<PhotoInfo>("read_photo_info", { path });
+      return await invoke<ExifParseResult>("read_photo_info", { path });
     } catch (error) {
       console.error("读取照片信息失败:", error);
       throw error;
     }
   }
 
-  static async parseExifData(path: string): Promise<ExifTag[]> {
-    try {
-      return await invoke<ExifTag[]>("parse_exif_data", { path });
-    } catch (error) {
-      console.error("解析EXIF数据失败:", error);
-      throw error;
-    }
-  }
+  // parseExifData已经集成到getPhotoInfo中，这里保留以便兼容
 
   static async getSupportedFormats(): Promise<string[]> {
     try {
@@ -160,7 +153,11 @@ export class PhotoService {
       case '数字化时间':
         // 尝试格式化日期时间
         try {
-          const date = new Date(value.replace(/:/g, '-', 2));
+          const date = new Date(value.replace(/:/g, (match, offset) => {
+            // 只替换前两个冒号
+            if (offset < 10) return '-';
+            return match;
+          }));
           if (!isNaN(date.getTime())) {
             return date.toLocaleString('zh-CN');
           }

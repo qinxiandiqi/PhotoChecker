@@ -526,6 +526,10 @@ The `.mcp.json` file contains project-scoped MCP server configurations:
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
       "env": {}
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"]
     }
   }
 }
@@ -533,11 +537,30 @@ The `.mcp.json` file contains project-scoped MCP server configurations:
 
 ### Available MCP Servers
 
+**Chrome DevTools MCP Server** (`chrome-devtools`):
+
+- Provides Chrome DevTools integration for browser debugging and inspection
+- Enables real-time debugging, performance analysis, and web page inspection
+- Tools: `mcp__chrome_devtools__*` for DevTools operations
+- **优先使用**: 在进行MCP测试时，优先使用chrome-devtools进行页面调试和问题排查
+- **适用场景**:
+  - 页面加载问题诊断
+  - JavaScript调试
+  - 性能分析
+  - DOM检查和样式调试
+  - 网络请求监控
+
 **Playwright MCP Server** (`playwright`):
 
 - Provides browser automation and testing capabilities
 - Enables web scraping, UI testing, and interaction with web pages
 - Tools: `mcp__playwright__browser_*` for browser control
+- **备用选择**: 当chrome-devtools无法满足需求时，再尝试使用playwright mcp
+- **适用场景**:
+  - 端到端测试
+  - 复杂用户交互模拟
+  - 跨浏览器测试
+  - 自动化工作流程
 
 **Context7 MCP Server** (`context7`):
 

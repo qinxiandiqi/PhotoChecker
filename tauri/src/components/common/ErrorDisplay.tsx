@@ -1,5 +1,5 @@
 import { AlertCircle, RefreshCw } from "lucide-react";
-import { Button } from "daisyui";
+import { Button } from "react-daisyui";
 
 interface ErrorDisplayProps {
   error: string;

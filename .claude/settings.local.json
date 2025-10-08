@@ -20,7 +20,14 @@
       "Bash(rm:*)",
       "Bash(git add:*)",
       "Bash(find:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(curl:*)",
+      "Bash(env:*)",
+      "Bash(bash:*)",
+      "Bash(cmd:*)",
+      "Bash(wmic:*)",
+      "Bash(start:*)",
+      "Bash(tasklist:*)"
     ],
     "deny": [],
     "ask": []

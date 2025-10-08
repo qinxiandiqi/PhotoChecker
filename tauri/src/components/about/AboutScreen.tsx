@@ -1,5 +1,5 @@
 import { Info, Code, Heart, Github } from "lucide-react";
-import { Button } from "daisyui";
+import { Button } from "react-daisyui";
 
 export const AboutScreen = () => {
   const handleOpenGithub = () => {

@@ -11,6 +11,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>PhotoChecker - EXIF查看器</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <Meta />
         <Links />
       </head>

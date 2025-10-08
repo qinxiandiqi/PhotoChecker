@@ -8,13 +8,6 @@ pub async fn parse_exif_data(path: String) -> Result<Vec<crate::models::ExifTag>
 }
 
 #[command]
-pub async fn get_supported_formats() -> Result<Vec<String>, String> {
-    let exif_service = ExifService::new();
-    let formats = exif_service.get_supported_formats();
-    Ok(formats.into_iter().map(|s| s.to_string()).collect())
-}
-
-#[command]
 pub async fn export_exif_data(path: String, format: String) -> Result<String, String> {
     let exif_service = ExifService::new();
     let exif_data = exif_service.parse_exif_data(&path).await?;

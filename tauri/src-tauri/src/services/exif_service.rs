@@ -1,5 +1,5 @@
 use crate::models::{ExifTag, ExifGroup};
-use exif::{Tag, Value, Reader};
+use kamadak_exif::{Tag, Value, Reader};
 use std::fs::File;
 use std::io::BufReader;
 
@@ -11,17 +11,52 @@ impl ExifService {
     }
 
     pub async fn parse_exif_data(&self, path: &str) -> Result<Vec<ExifTag>, String> {
-        let file = File::open(path)
-            .map_err(|e| format!("无法打开文件: {}", e))?;
+        // 首先检查文件是否存在
+        let path_obj = std::path::Path::new(path);
+        if !path_obj.exists() {
+            return Err(format!("文件不存在: {}", path));
+        }
 
+        // 检查文件扩展名
+        let extension = path_obj
+            .extension()
+            .and_then(|ext| ext.to_str())
+            .unwrap_or("")
+            .to_lowercase();
+
+        if !self.get_supported_formats().contains(&extension.as_str()) {
+            return Err(format!("不支持的文件格式: {} (支持的格式: {})",
+                extension,
+                self.get_supported_formats().join(", ")
+            ));
+        }
+
+        // 尝试打开文件
+        let file = File::open(path)
+            .map_err(|e| format!("无法打开文件 '{}': {}", path, e))?;
+
+        // 读取文件内容
         let mut bufreader = BufReader::new(file);
         let mut buf = vec![];
-        bufreader.read_to_end(&mut buf)
-            .map_err(|e| format!("读取文件失败: {}", e))?;
+        let file_size = bufreader.read_to_end(&mut buf)
+            .map_err(|e| format!("读取文件失败 '{}': {}", path, e))?;
 
-        let reader = Reader::new()
-            .read_from_container(&mut std::io::Cursor::new(buf))
-            .map_err(|e| format!("解析EXIF数据失败: {}", e))?;
+        if file_size == 0 {
+            return Err(format!("文件为空: {}", path));
+        }
+
+        // 尝试解析EXIF数据
+        let reader = match Reader::new().read_from_container(&mut std::io::Cursor::new(buf)) {
+            Ok(reader) => reader,
+            Err(e) => {
+                // 如果是PNG文件，给出更具体的错误信息
+                if extension == "png" {
+                    return Err(format!("PNG文件通常不包含EXIF数据。解析错误: {}", e));
+                } else {
+                    return Err(format!("解析EXIF数据失败: {}", e));
+                }
+            }
+        };
 
         let mut tags = Vec::new();
 
@@ -71,8 +106,6 @@ impl ExifService {
             Tag::ISOSpeed => "ISO感光度".to_string(),
             Tag::OECF => "光电转换函数".to_string(),
             Tag::ExifVersion => "Exif版本".to_string(),
-            Tag::DateTimeOriginal => "原始拍摄时间".to_string(),
-            Tag::DateTimeDigitized => "数字化时间".to_string(),
             Tag::ComponentsConfiguration => "组件配置".to_string(),
             Tag::CompressedBitsPerPixel => "压缩位数/像素".to_string(),
             Tag::ShutterSpeedValue => "快门速度".to_string(),
@@ -208,8 +241,7 @@ impl ExifService {
     fn get_tag_group(&self, tag: Tag) -> String {
         match tag {
             // 基础信息
-            Tag::Make | Tag::Model | Tag::Software | Tag::DateTime |
-            Tag::DateTimeOriginal | Tag::DateTimeDigitized | Tag::ExifVersion => {
+            Tag::Make | Tag::Model | Tag::Software | Tag::ExifVersion => {
                 ExifGroup::Basic.as_str().to_string()
             }
 

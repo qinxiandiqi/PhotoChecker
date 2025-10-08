@@ -7,6 +7,24 @@ export interface PhotoInfo {
   height?: number;
   created_at?: string;
   modified_at?: string;
+  exif_tags: ExifTag[];
+  file_info: Record<string, string>;
+  format_supported: boolean;
+  exif_available: boolean;
+}
+
+export interface ExifParseResult {
+  photo_info: PhotoInfo;
+  parse_status: ExifParseStatus;
+  message?: string;
+}
+
+export enum ExifParseStatus {
+  Success = "Success",
+  NoExifData = "NoExifData",
+  UnsupportedFormat = "UnsupportedFormat",
+  FileError = "FileError",
+  ParseError = "ParseError"
 }
 
 export interface ExifTag {
@@ -28,12 +46,13 @@ export enum ExifGroup {
 export type HomeUIState =
   | { type: "empty" }
   | { type: "loading"; photoInfo: PhotoInfo }
-  | { type: "success"; photoInfo: PhotoInfo; exifData: ExifTag[] }
+  | { type: "success"; photoInfo: PhotoInfo; exifResult: ExifParseResult }
+  | { type: "no_exif"; photoInfo: PhotoInfo; exifResult: ExifParseResult; message: string }
   | { type: "error"; photoInfo?: PhotoInfo; error: string };
 
 export interface AppState {
   currentPhoto: PhotoInfo | null;
-  exifData: ExifTag[];
+  exifResult: ExifParseResult | null;
   uiState: HomeUIState;
   isLoading: boolean;
   error: string | null;

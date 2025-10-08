@@ -1,0 +1,519 @@
+use std::collections::HashMap;
+use std::fs;
+use std::io::Read;
+use std::path::Path;
+use serde::{Deserialize, Serialize};
+use chrono::DateTime;
+use image::GenericImageView;
+use kamadak_exif::{Reader, Tag, Value};
+
+/// 增强的EXIF标签枚举 - 基于Android ExifInterface标准
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum ExifTag {
+    // 基本图像信息
+    ImageWidth(String),
+    ImageLength(String),
+    Make(String),
+    Model(String),
+    DateTime(String),
+    DateTimeOriginal(String),
+    DateTimeDigitized(String),
+    Software(String),
+    Artist(String),
+    Copyright(String),
+
+    // 相机设置
+    ExposureTime(String),
+    FNumber(String),
+    ISOSpeedRatings(String),
+    FocalLength(String),
+    Flash(String),
+    WhiteBalance(String),
+    ExposureMode(String),
+    MeteringMode(String),
+
+    // GPS信息
+    GPSLatitudeRef(String),
+    GPSLatitude(String),
+    GPSLongitudeRef(String),
+    GPSLongitude(String),
+    GPSAltitudeRef(String),
+    GPSAltitude(String),
+
+    // 其他重要标签
+    Orientation(String),
+    XResolution(String),
+    YResolution(String),
+    ResolutionUnit(String),
+    ColorSpace(String),
+    ExifVersion(String),
+    PixelXDimension(String),
+    PixelYDimension(String),
+
+    // 未知标签
+    Unknown(String, String),
+}
+
+impl ExifTag {
+    /// 获取标签的显示名称
+    pub fn get_display_name(&self) -> String {
+        match self {
+            ExifTag::ImageWidth(_) => "图像宽度".to_string(),
+            ExifTag::ImageLength(_) => "图像高度".to_string(),
+            ExifTag::Make(_) => "制造商".to_string(),
+            ExifTag::Model(_) => "相机型号".to_string(),
+            ExifTag::DateTime(_) => "修改时间".to_string(),
+            ExifTag::DateTimeOriginal(_) => "拍摄时间".to_string(),
+            ExifTag::DateTimeDigitized(_) => "数字化时间".to_string(),
+            ExifTag::Software(_) => "软件".to_string(),
+            ExifTag::Artist(_) => "作者".to_string(),
+            ExifTag::Copyright(_) => "版权".to_string(),
+            ExifTag::ExposureTime(_) => "曝光时间".to_string(),
+            ExifTag::FNumber(_) => "光圈值".to_string(),
+            ExifTag::ISOSpeedRatings(_) => "ISO感光度".to_string(),
+            ExifTag::FocalLength(_) => "焦距".to_string(),
+            ExifTag::Flash(_) => "闪光灯".to_string(),
+            ExifTag::WhiteBalance(_) => "白平衡".to_string(),
+            ExifTag::ExposureMode(_) => "曝光模式".to_string(),
+            ExifTag::MeteringMode(_) => "曝光模式".to_string(),
+            ExifTag::GPSLatitudeRef(_) => "GPS纬度参考".to_string(),
+            ExifTag::GPSLatitude(_) => "GPS纬度".to_string(),
+            ExifTag::GPSLongitudeRef(_) => "GPS经度参考".to_string(),
+            ExifTag::GPSLongitude(_) => "GPS经度".to_string(),
+            ExifTag::GPSAltitudeRef(_) => "GPS海拔参考".to_string(),
+            ExifTag::GPSAltitude(_) => "GPS海拔".to_string(),
+            ExifTag::Orientation(_) => "方向".to_string(),
+            ExifTag::XResolution(_) => "X分辨率".to_string(),
+            ExifTag::YResolution(_) => "Y分辨率".to_string(),
+            ExifTag::ResolutionUnit(_) => "分辨率单位".to_string(),
+            ExifTag::ColorSpace(_) => "色彩空间".to_string(),
+            ExifTag::ExifVersion(_) => "EXIF版本".to_string(),
+            ExifTag::PixelXDimension(_) => "像素X维度".to_string(),
+            ExifTag::PixelYDimension(_) => "像素Y维度".to_string(),
+            ExifTag::Unknown(tag_name, _) => tag_name.clone(),
+        }
+    }
+
+    /// 获取标签的值
+    pub fn get_value(&self) -> &String {
+        match self {
+            ExifTag::ImageWidth(v) => v,
+            ExifTag::ImageLength(v) => v,
+            ExifTag::Make(v) => v,
+            ExifTag::Model(v) => v,
+            ExifTag::DateTime(v) => v,
+            ExifTag::DateTimeOriginal(v) => v,
+            ExifTag::DateTimeDigitized(v) => v,
+            ExifTag::Software(v) => v,
+            ExifTag::Artist(v) => v,
+            ExifTag::Copyright(v) => v,
+            ExifTag::ExposureTime(v) => v,
+            ExifTag::FNumber(v) => v,
+            ExifTag::ISOSpeedRatings(v) => v,
+            ExifTag::FocalLength(v) => v,
+            ExifTag::Flash(v) => v,
+            ExifTag::WhiteBalance(v) => v,
+            ExifTag::ExposureMode(v) => v,
+            ExifTag::MeteringMode(v) => v,
+            ExifTag::GPSLatitudeRef(v) => v,
+            ExifTag::GPSLatitude(v) => v,
+            ExifTag::GPSLongitudeRef(v) => v,
+            ExifTag::GPSLongitude(v) => v,
+            ExifTag::GPSAltitudeRef(v) => v,
+            ExifTag::GPSAltitude(v) => v,
+            ExifTag::Orientation(v) => v,
+            ExifTag::XResolution(v) => v,
+            ExifTag::YResolution(v) => v,
+            ExifTag::ResolutionUnit(v) => v,
+            ExifTag::ColorSpace(v) => v,
+            ExifTag::ExifVersion(v) => v,
+            ExifTag::PixelXDimension(v) => v,
+            ExifTag::PixelYDimension(v) => v,
+            ExifTag::Unknown(_, v) => v,
+        }
+    }
+}
+
+/// 增强的EXIF解析服务 - 基于Android标准
+pub struct EnhancedExifService {
+    supported_formats: Vec<&'static str>,
+}
+
+impl EnhancedExifService {
+    /// 创建新的EXIF服务实例
+    pub fn new() -> Self {
+        Self {
+            // 基于Android ExifInterface支持的格式
+            supported_formats: vec![
+                "jpg", "jpeg", "tif", "tiff", "png", "webp", "heif", "heic",
+                "dng", "cr2", "nef", "nrw", "arw", "rw2", "orf", "pef", "srw", "raf"
+            ],
+        }
+    }
+
+    /// 获取支持的文件格式
+    pub fn get_supported_formats(&self) -> Vec<&'static str> {
+        self.supported_formats.clone()
+    }
+
+    /// 检查文件格式是否受支持
+    pub fn is_format_supported(&self, extension: &str) -> bool {
+        self.supported_formats.contains(&extension.to_lowercase().as_str())
+    }
+
+    /// 解析EXIF数据 - 支持多种格式
+    pub async fn parse_exif_data(&self, path: &str) -> Result<Vec<ExifTag>, String> {
+        let path_obj = Path::new(path);
+
+        // 检查文件是否存在
+        if !path_obj.exists() {
+            return Err(format!("文件不存在: {}", path));
+        }
+
+        // 读取文件内容
+        let mut file = match fs::File::open(path) {
+            Ok(file) => file,
+            Err(e) => return Err(format!("无法打开文件: {}", e)),
+        };
+
+        let mut buffer = Vec::new();
+        if let Err(e) = file.read_to_end(&mut buffer) {
+            return Err(format!("无法读取文件内容: {}", e));
+        }
+
+        // 检查文件扩展名
+        let extension = path_obj
+            .extension()
+            .and_then(|ext| ext.to_str())
+            .unwrap_or("")
+            .to_lowercase();
+
+        if !self.is_format_supported(&extension) {
+            return Err(format!(
+                "不支持的文件格式: {} (支持的格式: {})",
+                extension,
+                self.get_supported_formats().join(", ")
+            ));
+        }
+
+        // 根据格式选择解析策略
+        match extension.as_str() {
+            "jpg" | "jpeg" | "tif" | "tiff" => self.parse_standard_exif(&buffer).await,
+            "png" => self.parse_png_exif(&buffer).await,
+            "webp" => self.parse_webp_exif(&buffer).await,
+            "heif" | "heic" => self.parse_heif_exif(&buffer).await,
+            // RAW格式处理
+            "dng" | "cr2" | "nef" | "nrw" | "arw" | "rw2" | "orf" | "pef" | "srw" | "raf" => {
+                self.parse_raw_exif(&buffer, &extension).await
+            }
+            _ => self.parse_standard_exif(&buffer).await,
+        }
+    }
+
+    /// 解析标准EXIF格式 (JPEG, TIFF)
+    async fn parse_standard_exif(&self, buffer: &[u8]) -> Result<Vec<ExifTag>, String> {
+        let reader = match Reader::new().read_from_container(&mut std::io::Cursor::new(buffer)) {
+            Ok(reader) => reader,
+            Err(e) => {
+                // 对于没有EXIF数据的文件，提供友好提示
+                return Ok(vec![ExifTag::Unknown(
+                    "解析状态".to_string(),
+                    format!("该图片不包含EXIF数据。这可能是因为：1) 图片格式本身不支持EXIF（如某些PNG）；2) 图片在编辑过程中丢失了EXIF数据；3) 图片来自不支持EXIF的设备。解析详情: {}", e)
+                )]);
+            }
+        };
+
+        let mut tags = Vec::new();
+
+        // 遍历所有EXIF字段
+        for field in reader.fields() {
+            let tag = self.convert_exif_field_to_tag(field);
+            if let Some(exif_tag) = tag {
+                tags.push(exif_tag);
+            }
+        }
+
+        // 如果没有找到任何标签，返回提示信息
+        if tags.is_empty() {
+            tags.push(ExifTag::Unknown(
+                "解析状态".to_string(),
+                "该图片文件已成功读取，但未发现任何EXIF标签。这通常发生在：1) 纯色或简单图形；2) 截图文件；3) 被编辑过且移除了元数据的图片；4) 来自不支持EXIF的设备。".to_string()
+            ));
+        }
+
+        Ok(tags)
+    }
+
+    /// 解析PNG格式的EXIF数据
+    async fn parse_png_exif(&self, buffer: &[u8]) -> Result<Vec<ExifTag>, String> {
+        // PNG文件可能有eXIf chunk包含EXIF数据
+        if buffer.len() < 8 {
+            return Err("PNG文件太小，无法解析".to_string());
+        }
+
+        // 检查PNG签名
+        if !buffer.starts_with(&[0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) {
+            return Err("无效的PNG文件格式".to_string());
+        }
+
+        // 寻找eXIf chunk
+        let mut pos = 8; // 跳过PNG签名
+        while pos + 8 < buffer.len() {
+            // 读取chunk长度
+            let chunk_length = u32::from_be_bytes([
+                buffer[pos], buffer[pos + 1], buffer[pos + 2], buffer[pos + 3]
+            ]) as usize;
+
+            // 读取chunk类型
+            let chunk_type = &buffer[pos + 4..pos + 8];
+
+            if chunk_type == b"eXIf" {
+                // 找到EXIF chunk
+                let exif_data = &buffer[pos + 8..pos + 8 + chunk_length];
+                return self.parse_standard_exif(exif_data).await;
+            }
+
+            // 移动到下一个chunk
+            pos += 8 + chunk_length + 4; // +4 for CRC
+        }
+
+        // PNG中没有找到EXIF数据
+        Ok(vec![ExifTag::Unknown(
+            "PNG解析状态".to_string(),
+            "PNG文件已成功读取，但未找到eXIf chunk。PNG格式的EXIF数据存储在专门的chunk中，大多数PNG文件不包含EXIF信息，这是正常现象。".to_string()
+        )])
+    }
+
+    /// 解析WebP格式的EXIF数据
+    async fn parse_webp_exif(&self, buffer: &[u8]) -> Result<Vec<ExifTag>, String> {
+        if buffer.len() < 12 {
+            return Err("WebP文件太小，无法解析".to_string());
+        }
+
+        // 检查WebP签名
+        if !buffer.starts_with(b"RIFF") || &buffer[8..12] != b"WEBP" {
+            return Err("无效的WebP文件格式".to_string());
+        }
+
+        // 寻找EXIF chunk
+        let mut pos = 12;
+        while pos + 4 < buffer.len() {
+            let chunk_size = u32::from_le_bytes([
+                buffer[pos], buffer[pos + 1], buffer[pos + 2], buffer[pos + 3]
+            ]) as usize;
+
+            pos += 4;
+
+            if pos + 4 > buffer.len() {
+                break;
+            }
+
+            let chunk_type = &buffer[pos..pos + 4];
+            pos += 4;
+
+            if chunk_type == b"EXIF" {
+                // 找到EXIF chunk
+                let exif_data = &buffer[pos..pos + chunk_size];
+                return self.parse_standard_exif(exif_data).await;
+            }
+
+            pos += chunk_size;
+            if pos % 2 != 0 {
+                pos += 1; // 对齐到偶数
+            }
+        }
+
+        Ok(vec![ExifTag::Unknown(
+            "WebP解析状态".to_string(),
+            "WebP文件已成功读取，但未找到EXIF chunk。这是正常的，因为WebP文件不总是包含EXIF数据。".to_string()
+        )])
+    }
+
+    /// 解析HEIF格式的EXIF数据
+    async fn parse_heif_exif(&self, _buffer: &[u8]) -> Result<Vec<ExifTag>, String> {
+        // HEIF格式的EXIF解析比较复杂，这里提供基本实现
+        Ok(vec![ExifTag::Unknown(
+            "HEIF解析状态".to_string(),
+            "HEIF文件格式支持正在开发中。当前版本可以读取HEIF文件，但EXIF解析功能有限。建议使用JPEG格式以获得最佳的EXIF支持。".to_string()
+        )])
+    }
+
+    /// 解析RAW格式的EXIF数据
+    async fn parse_raw_exif(&self, buffer: &[u8], format: &str) -> Result<Vec<ExifTag>, String> {
+        // RAW格式的EXIF解析需要专门的库支持
+        // 这里提供基本的 TIFF-based RAW格式支持
+        if self.is_tiff_based_raw(format) {
+            return self.parse_standard_exif(buffer).await;
+        }
+
+        Ok(vec![ExifTag::Unknown(
+            "RAW解析状态".to_string(),
+            format!("{} 格式是RAW格式，当前版本支持基本的TIFF-based RAW文件。对于完整的RAW格式支持，建议使用专业RAW处理软件转换格式后再进行EXIF解析。", format.to_uppercase())
+        )])
+    }
+
+    /// 检查是否为基于TIFF的RAW格式
+    fn is_tiff_based_raw(&self, format: &str) -> bool {
+        matches!(format, "dng" | "cr2" | "nef" | "nrw" | "arw" | "pef" | "srw")
+    }
+
+    /// 将EXIF字段转换为自定义标签
+    fn convert_exif_field_to_tag(&self, field: &kamadak_exif::Field) -> Option<ExifTag> {
+        let tag = field.tag;
+        let value = self.format_exif_value(field);
+
+        match tag {
+            Tag::ImageWidth => Some(ExifTag::ImageWidth(value)),
+            Tag::ImageLength => Some(ExifTag::ImageLength(value)),
+            Tag::Make => Some(ExifTag::Make(value)),
+            Tag::Model => Some(ExifTag::Model(value)),
+            Tag::DateTime => Some(ExifTag::DateTime(value)),
+            Tag::DateTimeOriginal => Some(ExifTag::DateTimeOriginal(value)),
+            Tag::DateTimeDigitized => Some(ExifTag::DateTimeDigitized(value)),
+            Tag::Software => Some(ExifTag::Software(value)),
+            Tag::Artist => Some(ExifTag::Artist(value)),
+            Tag::Copyright => Some(ExifTag::Copyright(value)),
+            Tag::ExposureTime => Some(ExifTag::ExposureTime(value)),
+            Tag::FNumber => Some(ExifTag::FNumber(value)),
+            Tag::ISOSpeedRatings => Some(ExifTag::ISOSpeedRatings(value)),
+            Tag::FocalLength => Some(ExifTag::FocalLength(value)),
+            Tag::Flash => Some(ExifTag::Flash(value)),
+            Tag::WhiteBalance => Some(ExifTag::WhiteBalance(value)),
+            Tag::ExposureMode => Some(ExifTag::ExposureMode(value)),
+            Tag::MeteringMode => Some(ExifTag::MeteringMode(value)),
+            Tag::GPSLatitudeRef => Some(ExifTag::GPSLatitudeRef(value)),
+            Tag::GPSLatitude => Some(ExifTag::GPSLatitude(value)),
+            Tag::GPSLongitudeRef => Some(ExifTag::GPSLongitudeRef(value)),
+            Tag::GPSLongitude => Some(ExifTag::GPSLongitude(value)),
+            Tag::GPSAltitudeRef => Some(ExifTag::GPSAltitudeRef(value)),
+            Tag::GPSAltitude => Some(ExifTag::GPSAltitude(value)),
+            Tag::Orientation => Some(ExifTag::Orientation(value)),
+            Tag::XResolution => Some(ExifTag::XResolution(value)),
+            Tag::YResolution => Some(ExifTag::YResolution(value)),
+            Tag::ResolutionUnit => Some(ExifTag::ResolutionUnit(value)),
+            Tag::ColorSpace => Some(ExifTag::ColorSpace(value)),
+            Tag::ExifVersion => Some(ExifTag::ExifVersion(value)),
+            Tag::PixelXDimension => Some(ExifTag::PixelXDimension(value)),
+            Tag::PixelYDimension => Some(ExifTag::PixelYDimension(value)),
+            _ => Some(ExifTag::Unknown(format!("{:?}", tag), value)),
+        }
+    }
+
+    /// 格式化EXIF值为可读字符串
+    fn format_exif_value(&self, field: &kamadak_exif::Field) -> String {
+        match &field.value {
+            Value::Ascii(bytes) => {
+                String::from_utf8_lossy(bytes).trim_matches('\0').to_string()
+            }
+            Value::Short(nums) => {
+                if nums.len() == 1 {
+                    nums[0].to_string()
+                } else {
+                    format!("{:?}", nums)
+                }
+            }
+            Value::Long(nums) => {
+                if nums.len() == 1 {
+                    nums[0].to_string()
+                } else {
+                    format!("{:?}", nums)
+                }
+            }
+            Value::Rational(nums) => {
+                if nums.len() == 1 {
+                    format!("{}/{}", nums[0].num, nums[0].denom)
+                } else {
+                    format!("{:?}", nums)
+                }
+            }
+            Value::SRational(nums) => {
+                if nums.len() == 1 {
+                    format!("{}/{}", nums[0].num, nums[0].denom)
+                } else {
+                    format!("{:?}", nums)
+                }
+            }
+            Value::Undefined(bytes) => {
+                if bytes.len() == 1 {
+                    bytes[0].to_string()
+                } else {
+                    format!("{:?}", bytes)
+                }
+            }
+            Value::Float(nums) => {
+                if nums.len() == 1 {
+                    nums[0].to_string()
+                } else {
+                    format!("{:?}", nums)
+                }
+            }
+            Value::Double(nums) => {
+                if nums.len() == 1 {
+                    nums[0].to_string()
+                } else {
+                    format!("{:?}", nums)
+                }
+            }
+        }
+    }
+
+    /// 获取文件的基本信息（不依赖EXIF）
+    pub fn get_file_info(&self, path: &str) -> Result<HashMap<String, String>, String> {
+        let path_obj = Path::new(path);
+        let mut info = HashMap::new();
+
+        // 文件基本信息
+        if let Some(name) = path_obj.file_name().and_then(|n| n.to_str()) {
+            info.insert("文件名".to_string(), name.to_string());
+        }
+
+        if let Some(extension) = path_obj.extension().and_then(|e| e.to_str()) {
+            info.insert("文件格式".to_string(), extension.to_uppercase());
+        }
+
+        // 文件大小
+        if let Ok(metadata) = fs::metadata(path) {
+            let size = metadata.len();
+            info.insert("文件大小".to_string(), format!("{} bytes", size));
+
+            // 人类可读的大小
+            let size_kb = size as f64 / 1024.0;
+            let size_mb = size_kb / 1024.0;
+            if size_mb >= 1.0 {
+                info.insert("文件大小".to_string(), format!("{:.2} MB", size_mb));
+            } else if size_kb >= 1.0 {
+                info.insert("文件大小".to_string(), format!("{:.2} KB", size_kb));
+            }
+        }
+
+        // 修改时间
+        if let Ok(metadata) = fs::metadata(path) {
+            if let Ok(modified) = metadata.modified() {
+                if let Ok(datetime) = modified.duration_since(std::time::UNIX_EPOCH) {
+                    let datetime = DateTime::from_timestamp(datetime.as_secs() as i64, 0);
+                    if let Some(dt) = datetime {
+                        info.insert("修改时间".to_string(), dt.format("%Y-%m-%d %H:%M:%S").to_string());
+                    }
+                }
+            }
+        }
+
+        // 尝试获取图像尺寸（使用image crate）
+        if let Ok(img) = image::open(path) {
+            let dimensions = img.dimensions();
+            info.insert("图像尺寸".to_string(), format!("{}x{} 像素", dimensions.0, dimensions.1));
+
+            // 颜色类型
+            let color_type = img.color();
+            info.insert("颜色类型".to_string(), format!("{:?}", color_type));
+        }
+
+        Ok(info)
+    }
+}
+
+impl Default for EnhancedExifService {
+    fn default() -> Self {
+        Self::new()
+    }
+}

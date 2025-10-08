@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { PhotoService } from "../services/api";
-import { PhotoInfo, ExifTag, HomeUIState } from "../types";
+import { PhotoInfo, HomeUIState } from "../types";
 
 export const usePhotoSelector = () => {
   const [uiState, setUiState] = useState<HomeUIState>({ type: "empty" });
@@ -23,22 +23,23 @@ export const usePhotoSelector = () => {
         path,
         name: "加载中...",
         size: 0,
+        exif_tags: [],
+        file_info: {},
+        format_supported: false,
+        exif_available: false,
       };
 
       setUiState({ type: "loading", photoInfo: tempPhotoInfo });
 
-      // 并行获取照片信息和EXIF数据
-      const [photoInfo, exifData] = await Promise.all([
-        PhotoService.getPhotoInfo(path),
-        PhotoService.parseExifData(path),
-      ]);
+      // 获取照片信息（已包含EXIF数据）
+      const exifResult = await PhotoService.getPhotoInfo(path);
 
-      setUiState({ type: "success", photoInfo, exifData });
+      setUiState({ type: "success", photoInfo: exifResult.photo_info, exifResult });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "未知错误";
       setError(errorMessage);
       // 保持之前的photoInfo以便在错误状态下仍能显示预览
-      const currentPhotoInfo = uiState.type === "loading" ? uiState.photoInfo : null;
+      const currentPhotoInfo = uiState.type === "loading" ? uiState.photoInfo : undefined;
       setUiState({
         type: "error",
         error: errorMessage,

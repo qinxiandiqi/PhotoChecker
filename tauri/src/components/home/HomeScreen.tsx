@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePhotoSelector } from "../../hooks/usePhotoSelector";
 import { LoadingSpinner, ErrorDisplay } from "../common";
 import { PhotoSelector } from "./PhotoSelector";
@@ -6,18 +6,18 @@ import { PhotoPreview } from "./PhotoPreview";
 import { ExifInfoList } from "./ExifInfoList";
 
 export const HomeScreen = () => {
-  const { uiState, isLoading, error, selectPhoto, retryPhoto } = usePhotoSelector();
+  const { uiState, isLoading, selectPhoto, retryPhoto } = usePhotoSelector();
   const [isCompact, setIsCompact] = useState(window.innerWidth < 768);
 
   // 监听窗口大小变化
-  useState(() => {
+  useEffect(() => {
     const handleResize = () => {
       setIsCompact(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  });
+  }, []);
 
   const renderContent = () => {
     switch (uiState.type) {
@@ -39,7 +39,7 @@ export const HomeScreen = () => {
           <div className={isCompact ? "space-y-4" : "flex gap-4"}>
             <PhotoPreview photoPath={uiState.photoInfo.path} />
             <ExifInfoList
-              exifData={uiState.exifData}
+              exifData={uiState.exifResult.photo_info.exif_tags}
               photoInfo={uiState.photoInfo}
             />
           </div>

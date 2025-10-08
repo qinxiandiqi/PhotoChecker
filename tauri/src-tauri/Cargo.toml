@@ -21,15 +21,20 @@ tauri-build = { version = "2.4.1", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
-tauri = { version = "2.8.5", features = [] }
+tauri = { version = "2.8.5", features = ["protocol-asset"] }
 tauri-plugin-log = { version = "2", features = ["colored"] }
 tauri-plugin-dialog = "2.4.0"
 tauri-plugin-fs = "2.4.2"
 
-# EXIF解析依赖
+# EXIF解析依赖 - 支持多格式
 kamadak-exif = "0.6.1"
-image = "0.24"
+image = { version = "0.24", features = ["png", "jpeg", "webp", "tiff"] }
 chrono = { version = "0.4", features = ["serde"] }
+byteorder = "1.4"
+# PNG EXIF支持
+png = "0.17"
+# WebP EXIF支持
+webp = "0.2"
 
 [profile.dev.package.objc2]
 debug-assertions = false

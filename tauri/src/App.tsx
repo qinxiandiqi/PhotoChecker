@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HomeScreen } from "./components/home";
 import { AboutScreen } from "./components/about";
-import { Button } from "daisyui";
+import { Button } from "react-daisyui";
 
 type ViewType = "home" | "about";
 
@@ -24,7 +24,7 @@ function App() {
         <div className="navbar-end">
           <Button
             size="sm"
-            variant={currentView === "home" ? "ghost" : "default"}
+            variant={currentView === "home" ? "outline" : undefined}
             onClick={() => setCurrentView("home")}
             className="mr-2"
           >
@@ -32,7 +32,7 @@ function App() {
           </Button>
           <Button
             size="sm"
-            variant={currentView === "about" ? "ghost" : "default"}
+            variant={currentView === "about" ? "outline" : undefined}
             onClick={() => setCurrentView("about")}
           >
             关于

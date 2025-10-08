@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Search, Copy, Download, FileDown, FileText } from "lucide-react";
+import { Copy, Download, FileDown, FileText } from "lucide-react";
 import { ExifTag } from "../../types";
-import { Button, Input, Card, Dropdown } from "daisyui";
+import { Button, Input, Card } from "react-daisyui";
 import { PhotoService } from "../../services/api";
 
 interface ExifInfoListProps {
@@ -90,31 +90,99 @@ export const ExifInfoList = ({ exifData, photoInfo }: ExifInfoListProps) => {
             <Copy className="w-4 h-4" />
           </Button>
 
-          <Dropdown>
-            <Dropdown.Button size="sm" className="btn-ghost" title="导出">
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-sm m-1" title="导出">
               <Download className="w-4 h-4" />
-            </Dropdown.Button>
-            <Dropdown.Menu className="dropdown-content-right">
-              <Dropdown.Item onClick={() => handleExport('json')}>
+            </div>
+            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a onClick={() => handleExport('json')} className="flex items-center">
                 <FileText className="w-4 h-4 mr-2" />
                 导出为JSON
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleExport('csv')}>
+              </a></li>
+              <li><a onClick={() => handleExport('csv')} className="flex items-center">
                 <FileDown className="w-4 h-4 mr-2" />
                 导出为CSV
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+              </a></li>
+            </ul>
+          </div>
         </div>
       </div>
 
       {/* EXIF信息列表 */}
       <div className="flex-1 overflow-y-auto space-y-2">
         {filteredData.length === 0 ? (
-          <div className="text-center py-8 text-base-content opacity-50">
-            {searchTerm || selectedGroup !== "all"
-              ? "没有找到匹配的EXIF信息"
-              : "没有EXIF信息"}
+          <div className="text-center py-8">
+            {searchTerm || selectedGroup !== "all" ? (
+              <div className="text-base-content opacity-50">
+                <p>没有找到匹配的EXIF信息</p>
+                <button
+                  className="btn btn-ghost btn-sm mt-2"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedGroup("all");
+                  }}
+                >
+                  清除筛选条件
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-base-200 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold mb-2">没有找到EXIF信息</h3>
+                  <p className="text-base-content opacity-70 mb-4">
+                    这张图片可能不包含EXIF元数据，或者文件格式不支持EXIF。
+                  </p>
+
+                  <div className="text-left space-y-2">
+                    <div className="collapse collapse-arrow bg-base-300">
+                      <input type="checkbox" />
+                      <div className="collapse-title text-sm font-medium">
+                        为什么没有EXIF信息？
+                      </div>
+                      <div className="collapse-content text-sm text-base-content opacity-70">
+                        <ul className="list-disc list-inside space-y-1">
+                          <li><strong>PNG/GIF文件</strong>: 通常不包含EXIF数据</li>
+                          <li><strong>编辑过的图片</strong>: 保存时可能丢失了EXIF信息</li>
+                          <li><strong>截图文件</strong>: 一般不包含相机EXIF数据</li>
+                          <li><strong>某些应用程序</strong>: 可能出于隐私考虑移除了EXIF</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="collapse collapse-arrow bg-base-300">
+                      <input type="checkbox" />
+                      <div className="collapse-title text-sm font-medium">
+                        建议尝试的图片格式
+                      </div>
+                      <div className="collapse-content text-sm text-base-content opacity-70">
+                        <ul className="list-disc list-inside space-y-1">
+                          <li><strong>JPEG/JPG</strong>: 最常见的包含EXIF的格式</li>
+                          <li><strong>TIFF</strong>: 专业摄影格式，通常包含丰富的EXIF</li>
+                          <li><strong>RAW格式</strong>: (CR2, NEF, ARW等) 包含最完整的元数据</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 p-4 bg-info/10 rounded-lg">
+                    <p className="text-sm text-info">
+                      <strong>💡 提示</strong>: 要查看EXIF信息，请尝试使用用相机拍摄的JPEG照片。
+                    </p>
+                  </div>
+                </div>
+
+                {photoInfo && (
+                  <div className="bg-base-200 rounded-lg p-4">
+                    <h4 className="font-medium mb-2">文件信息</h4>
+                    <div className="text-sm space-y-1 text-base-content opacity-70">
+                      <p><strong>文件名:</strong> {photoInfo.name || '未知'}</p>
+                      <p><strong>文件路径:</strong> {photoInfo.path || '未知'}</p>
+                      <p><strong>文件大小:</strong> {photoInfo.size ? PhotoService.formatFileSize(photoInfo.size) : '未知'}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ) : (
           filteredData.map((tag, index) => (

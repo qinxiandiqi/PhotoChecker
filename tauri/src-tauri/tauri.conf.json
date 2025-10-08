@@ -5,7 +5,7 @@
   "identifier": "com.qinxiandiqi.photochecker",
   "build": {
     "frontendDist": "../dist",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:5173",
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build"
   },
@@ -22,7 +22,11 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["$APPCONFIG", "$APPDATA", "$APPLOCALDATA", "$APPCACHE", "$APPLOG", "$DOWNLOAD", "$RESOURCE", "$TEMP", "$HOME", "$DESKTOP", "$DOCUMENT", "$DOWNLOAD", "$MUSIC", "$PICTURE", "$VIDEO", "**"]
+      }
     }
   },
   "bundle": {
