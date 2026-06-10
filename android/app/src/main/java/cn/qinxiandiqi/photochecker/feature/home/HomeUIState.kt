@@ -1,12 +1,11 @@
 package cn.qinxiandiqi.photochecker.feature.home
 
-/**
- *
- * created by Jianan on 2024/3/19
- */
+import android.net.Uri
+import cn.qinxiandiqi.photochecker.feature.home.model.ExifAnalysisResult
+
 sealed class HomeUIState {
     data object Empty : HomeUIState()
-    class Loading(val photoInfo: PhotoInfo) : HomeUIState()
-    class Success(val photoInfo: PhotoInfo) : HomeUIState()
-    class Error(val photoInfo: PhotoInfo?) : HomeUIState()
+    data class Loading(val uri: Uri) : HomeUIState()
+    data class Success(val result: ExifAnalysisResult) : HomeUIState()
+    data class Error(val uri: Uri?, val message: String) : HomeUIState()
 }

@@ -9,4 +9,259 @@
     <string name="error_tips">Please select another photo.</string>
     <string name="version">Version</string>
     <string name="policy">Privacy policy and disclaimer</string>
+
+    <!-- Category titles -->
+    <string name="category_basic">Basic Info</string>
+    <string name="category_camera">Camera</string>
+    <string name="category_exposure">Exposure</string>
+    <string name="category_gps">Location</string>
+    <string name="category_datetime">Date &amp; Time</string>
+    <string name="category_editing">Editing</string>
+    <string name="category_other">Other</string>
+
+    <!-- Risk levels -->
+    <string name="risk_high">High Risk</string>
+    <string name="risk_medium">Medium Risk</string>
+    <string name="risk_low">Low Risk</string>
+    <string name="risk_none">No Risk</string>
+
+    <!-- Tag display names - Basic -->
+    <string name="tag_image_width">Width</string>
+    <string name="tag_image_height">Height</string>
+    <string name="tag_bits_per_sample">Bits Per Sample</string>
+    <string name="tag_orientation">Orientation</string>
+    <string name="tag_x_resolution">X Resolution</string>
+    <string name="tag_y_resolution">Y Resolution</string>
+    <string name="tag_resolution_unit">Resolution Unit</string>
+    <string name="tag_ycbcr_positioning">YCbCr Positioning</string>
+    <string name="tag_pixel_x_dimension">Pixel Width</string>
+    <string name="tag_pixel_y_dimension">Pixel Height</string>
+    <string name="tag_color_space">Color Space</string>
+    <string name="tag_compression">Compression</string>
+    <string name="tag_samples_per_pixel">Samples Per Pixel</string>
+
+    <!-- Tag display names - Camera -->
+    <string name="tag_make">Manufacturer</string>
+    <string name="tag_model">Model</string>
+    <string name="tag_lens_model">Lens Model</string>
+    <string name="tag_lens_make">Lens Make</string>
+    <string name="tag_lens_specification">Lens Specification</string>
+    <string name="tag_focal_length">Focal Length</string>
+    <string name="tag_focal_length_35mm">Focal Length (35mm)</string>
+    <string name="tag_focal_plane_x_res">Focal Plane X Resolution</string>
+    <string name="tag_focal_plane_y_res">Focal Plane Y Resolution</string>
+    <string name="tag_focal_plane_res_unit">Focal Plane Resolution Unit</string>
+    <string name="tag_camera_owner">Camera Owner</string>
+    <string name="tag_body_serial">Body Serial Number</string>
+    <string name="tag_lens_serial">Lens Serial Number</string>
+    <string name="tag_image_unique_id">Image Unique ID</string>
+
+    <!-- Tag display names - Exposure -->
+    <string name="tag_exposure_time">Shutter Speed</string>
+    <string name="tag_f_number">Aperture</string>
+    <string name="tag_exposure_program">Exposure Program</string>
+    <string name="tag_iso">ISO</string>
+    <string name="tag_shutter_speed">Shutter Speed Value</string>
+    <string name="tag_aperture_value">Aperture Value</string>
+    <string name="tag_brightness">Brightness</string>
+    <string name="tag_exposure_bias">Exposure Bias</string>
+    <string name="tag_max_aperture">Max Aperture</string>
+    <string name="tag_metering_mode">Metering Mode</string>
+    <string name="tag_light_source">Light Source</string>
+    <string name="tag_flash">Flash</string>
+    <string name="tag_flash_energy">Flash Energy</string>
+    <string name="tag_exposure_mode">Exposure Mode</string>
+    <string name="tag_white_balance">White Balance</string>
+    <string name="tag_digital_zoom">Digital Zoom</string>
+    <string name="tag_scene_capture">Scene Capture</string>
+    <string name="tag_gain_control">Gain Control</string>
+    <string name="tag_contrast">Contrast</string>
+    <string name="tag_saturation">Saturation</string>
+    <string name="tag_sharpness">Sharpness</string>
+    <string name="tag_subject_distance">Subject Distance</string>
+    <string name="tag_subject_distance_range">Subject Distance Range</string>
+    <string name="tag_sensing_method">Sensing Method</string>
+    <string name="tag_gamma">Gamma</string>
+
+    <!-- Tag display names - GPS -->
+    <string name="tag_gps_latitude_ref">Latitude Ref</string>
+    <string name="tag_gps_latitude">Latitude</string>
+    <string name="tag_gps_longitude_ref">Longitude Ref</string>
+    <string name="tag_gps_longitude">Longitude</string>
+    <string name="tag_gps_altitude">Altitude</string>
+    <string name="tag_gps_altitude_ref">Altitude Ref</string>
+    <string name="tag_gps_timestamp">GPS Time</string>
+    <string name="tag_gps_datestamp">GPS Date</string>
+    <string name="tag_gps_speed">Speed</string>
+    <string name="tag_gps_speed_ref">Speed Ref</string>
+    <string name="tag_gps_img_direction">Image Direction</string>
+    <string name="tag_gps_img_direction_ref">Image Direction Ref</string>
+    <string name="tag_gps_processing_method">Processing Method</string>
+    <string name="tag_gps_map_datum">Map Datum</string>
+    <string name="tag_gps_satellites">Satellites</string>
+
+    <!-- Tag display names - DateTime -->
+    <string name="tag_datetime">Date Time</string>
+    <string name="tag_datetime_original">Date Taken</string>
+    <string name="tag_datetime_digitized">Date Digitized</string>
+    <string name="tag_subsec_time">Sub Second</string>
+    <string name="tag_subsec_time_original">Sub Second (Original)</string>
+    <string name="tag_subsec_time_digitized">Sub Second (Digitized)</string>
+    <string name="tag_offset_time">Offset Time</string>
+    <string name="tag_offset_time_original">Offset Time (Original)</string>
+    <string name="tag_offset_time_digitized">Offset Time (Digitized)</string>
+
+    <!-- Tag display names - Editing -->
+    <string name="tag_software">Software</string>
+    <string name="tag_maker_note">Maker Note</string>
+    <string name="tag_user_comment">User Comment</string>
+    <string name="tag_image_description">Description</string>
+    <string name="tag_artist">Artist</string>
+    <string name="tag_copyright">Copyright</string>
+    <string name="tag_custom_rendered">Custom Rendered</string>
+    <string name="tag_exif_version">Exif Version</string>
+    <string name="tag_flashpix_version">Flashpix Version</string>
+
+    <!-- Value mapping - Orientation -->
+    <string name="value_orientation_normal">Normal</string>
+    <string name="value_orientation_flip_h">Flip Horizontal</string>
+    <string name="value_orientation_rotate_180">Rotate 180°</string>
+    <string name="value_orientation_flip_v">Flip Vertical</string>
+    <string name="value_orientation_transpose">Transpose</string>
+    <string name="value_orientation_rotate_90">Rotate 90° CW</string>
+    <string name="value_orientation_transverse">Transverse</string>
+    <string name="value_orientation_rotate_270">Rotate 270° CW</string>
+    <string name="value_orientation_unknown">Unknown (%d)</string>
+
+    <!-- Value mapping - Flash -->
+    <string name="value_flash_not_fired">Not fired</string>
+    <string name="value_flash_fired">Fired</string>
+    <string name="value_flash_fired_no_return">Fired, no return light</string>
+    <string name="value_flash_fired_return">Fired, return light detected</string>
+    <string name="value_flash_on_no_return">On, no return light</string>
+    <string name="value_flash_on_return">On, return light detected</string>
+    <string name="value_flash_off">Off</string>
+    <string name="value_flash_auto_fired">Auto, fired</string>
+    <string name="value_flash_auto_not_fired">Auto, not fired</string>
+    <string name="value_flash_no_flash">No flash function</string>
+
+    <!-- Value mapping - Metering Mode -->
+    <string name="value_metering_unknown">Unknown</string>
+    <string name="value_metering_average">Average</string>
+    <string name="value_metering_center">Center-weighted</string>
+    <string name="value_metering_spot">Spot</string>
+    <string name="value_metering_matrix">Matrix</string>
+    <string name="value_metering_partial">Partial</string>
+
+    <!-- Value mapping - Exposure Program -->
+    <string name="value_exposure_program_not_defined">Not Defined</string>
+    <string name="value_exposure_program_manual">Manual</string>
+    <string name="value_exposure_program_normal">Normal</string>
+    <string name="value_exposure_program_aperture">Aperture Priority</string>
+    <string name="value_exposure_program_shutter">Shutter Priority</string>
+    <string name="value_exposure_program_creative">Creative</string>
+    <string name="value_exposure_program_action">Action</string>
+    <string name="value_exposure_program_portrait">Portrait</string>
+    <string name="value_exposure_program_landscape">Landscape</string>
+
+    <!-- Value mapping - White Balance -->
+    <string name="value_white_balance_auto">Auto</string>
+    <string name="value_white_balance_manual">Manual</string>
+
+    <!-- Value mapping - Scene Capture -->
+    <string name="value_scene_standard">Standard</string>
+    <string name="value_scene_landscape">Landscape</string>
+    <string name="value_scene_portrait">Portrait</string>
+    <string name="value_scene_night">Night</string>
+
+    <!-- Value mapping - Exposure Mode -->
+    <string name="value_exposure_mode_auto">Auto</string>
+    <string name="value_exposure_mode_manual">Manual</string>
+    <string name="value_exposure_mode_auto_bracket">Auto Bracket</string>
+
+    <!-- Value mapping - Color Space -->
+    <string name="value_color_space_srgb">sRGB</string>
+    <string name="value_color_space_uncalibrated">Uncalibrated</string>
+
+    <!-- Value mapping - Contrast/Saturation/Sharpness -->
+    <string name="value_css_normal">Normal</string>
+    <string name="value_css_soft">Soft</string>
+    <string name="value_css_hard">Hard</string>
+
+    <!-- Value mapping - Gain Control -->
+    <string name="value_gain_none">None</string>
+    <string name="value_gain_low_up">Low gain up</string>
+    <string name="value_gain_high_up">High gain up</string>
+    <string name="value_gain_low_down">Low gain down</string>
+    <string name="value_gain_high_down">High gain down</string>
+
+    <!-- Value mapping - Sensing Method -->
+    <string name="value_sensing_not_defined">Not Defined</string>
+    <string name="value_sensing_one_chip">One-chip Color Area</string>
+    <string name="value_sensing_two_chip">Two-chip Color Area</string>
+    <string name="value_sensing_three_chip">Three-chip Color Area</string>
+    <string name="value_sensing_color_sequential">Color Sequential Area</string>
+    <string name="value_sensing_trilinear">Trilinear</string>
+    <string name="value_sensing_color_sequential_linear">Color Sequential Linear</string>
+
+    <!-- Value mapping - Subject Distance Range -->
+    <string name="value_distance_unknown">Unknown</string>
+    <string name="value_distance_macro">Macro</string>
+    <string name="value_distance_close">Close</string>
+    <string name="value_distance_distant">Distant</string>
+
+    <!-- Value mapping - Altitude Ref -->
+    <string name="value_altitude_above">Above Sea Level</string>
+    <string name="value_altitude_below">Below Sea Level</string>
+
+    <!-- Value mapping - Speed Ref -->
+    <string name="value_speed_kmh">km/h</string>
+    <string name="value_speed_mph">mph</string>
+    <string name="value_speed_knots">knots</string>
+
+    <!-- Actions -->
+    <string name="action_view_on_map">View on Map</string>
+    <string name="action_remove_gps">Remove Location Data</string>
+    <string name="action_remove_personal">Remove Personal Info</string>
+    <string name="action_remove_all">Remove All Metadata</string>
+    <string name="action_share">Share</string>
+    <string name="action_privacy_clean">Privacy Clean</string>
+    <string name="action_collapse">Collapse</string>
+    <string name="action_expand">Expand</string>
+
+    <!-- Messages -->
+    <string name="msg_privacy_summary_gps">This photo contains GPS location data</string>
+    <string name="msg_privacy_summary_personal">This photo contains personal identifying info</string>
+    <string name="msg_privacy_summary_safe">No privacy risks found</string>
+    <string name="msg_no_exif">This photo has no EXIF data</string>
+    <string name="msg_removing">Processing…</string>
+    <string name="msg_remove_success">Done! Metadata removed.</string>
+    <string name="msg_remove_error">Failed to process</string>
+    <string name="msg_unsupported_format">This format does not support metadata editing</string>
+    <string name="msg_no_map_app">No map application found</string>
+
+    <!-- Consistency warnings -->
+    <string name="warning_datetime_mismatch">Date/time mismatch</string>
+    <string name="warning_datetime_mismatch_detail">EXIF date differs from file modified date by %1$s</string>
+    <string name="warning_dimension_mismatch">Dimension mismatch</string>
+    <string name="warning_dimension_mismatch_detail">EXIF dimensions (%1$dx%2$d) differ from actual image dimensions (%3$dx%4$d)</string>
+    <string name="warning_thumbnail_exists">Embedded thumbnail</string>
+    <string name="warning_thumbnail_exists_detail">This photo contains an embedded thumbnail which may retain pre-edit information</string>
+
+    <!-- Time duration plurals -->
+    <plurals name="hours_count">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="days_count">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <!-- Units -->
+    <string name="unit_mm">mm</string>
+    <string name="unit_dpi">dpi</string>
+    <string name="unit_seconds">s</string>
+    <string name="unit_meters">m</string>
+    <string name="unit_km_h">km/h</string>
 </resources>

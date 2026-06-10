@@ -10,4 +10,257 @@
     <string name="error_tips">请选择其它照片再试试吧</string>
     <string name="version">版本：</string>
     <string name="policy">隐私协议和免责声明</string>
+
+    <!-- 分类标题 -->
+    <string name="category_basic">基本信息</string>
+    <string name="category_camera">相机信息</string>
+    <string name="category_exposure">曝光参数</string>
+    <string name="category_gps">位置信息</string>
+    <string name="category_datetime">时间信息</string>
+    <string name="category_editing">编辑信息</string>
+    <string name="category_other">其他</string>
+
+    <!-- 风险等级 -->
+    <string name="risk_high">高风险</string>
+    <string name="risk_medium">中风险</string>
+    <string name="risk_low">低风险</string>
+    <string name="risk_none">无风险</string>
+
+    <!-- 标签友好名称 - 基本信息 -->
+    <string name="tag_image_width">宽度</string>
+    <string name="tag_image_height">高度</string>
+    <string name="tag_bits_per_sample">每像素位数</string>
+    <string name="tag_orientation">方向</string>
+    <string name="tag_x_resolution">水平分辨率</string>
+    <string name="tag_y_resolution">垂直分辨率</string>
+    <string name="tag_resolution_unit">分辨率单位</string>
+    <string name="tag_ycbcr_positioning">YCbCr 位置</string>
+    <string name="tag_pixel_x_dimension">像素宽度</string>
+    <string name="tag_pixel_y_dimension">像素高度</string>
+    <string name="tag_color_space">色彩空间</string>
+    <string name="tag_compression">压缩方式</string>
+    <string name="tag_samples_per_pixel">每像素采样数</string>
+
+    <!-- 标签友好名称 - 相机信息 -->
+    <string name="tag_make">制造商</string>
+    <string name="tag_model">型号</string>
+    <string name="tag_lens_model">镜头型号</string>
+    <string name="tag_lens_make">镜头品牌</string>
+    <string name="tag_lens_specification">镜头规格</string>
+    <string name="tag_focal_length">焦距</string>
+    <string name="tag_focal_length_35mm">等效焦距(35mm)</string>
+    <string name="tag_focal_plane_x_res">焦平面水平分辨率</string>
+    <string name="tag_focal_plane_y_res">焦平面垂直分辨率</string>
+    <string name="tag_focal_plane_res_unit">焦平面分辨率单位</string>
+    <string name="tag_camera_owner">相机所有者</string>
+    <string name="tag_body_serial">机身序列号</string>
+    <string name="tag_lens_serial">镜头序列号</string>
+    <string name="tag_image_unique_id">图片唯一标识</string>
+
+    <!-- 标签友好名称 - 曝光参数 -->
+    <string name="tag_exposure_time">快门速度</string>
+    <string name="tag_f_number">光圈</string>
+    <string name="tag_exposure_program">曝光程序</string>
+    <string name="tag_iso">感光度</string>
+    <string name="tag_shutter_speed">快门速度值</string>
+    <string name="tag_aperture_value">光圈值</string>
+    <string name="tag_brightness">亮度</string>
+    <string name="tag_exposure_bias">曝光补偿</string>
+    <string name="tag_max_aperture">最大光圈</string>
+    <string name="tag_metering_mode">测光模式</string>
+    <string name="tag_light_source">光源</string>
+    <string name="tag_flash">闪光灯</string>
+    <string name="tag_flash_energy">闪光能量</string>
+    <string name="tag_exposure_mode">曝光模式</string>
+    <string name="tag_white_balance">白平衡</string>
+    <string name="tag_digital_zoom">数码变焦</string>
+    <string name="tag_scene_capture">场景类型</string>
+    <string name="tag_gain_control">增益控制</string>
+    <string name="tag_contrast">对比度</string>
+    <string name="tag_saturation">饱和度</string>
+    <string name="tag_sharpness">锐度</string>
+    <string name="tag_subject_distance">主体距离</string>
+    <string name="tag_subject_distance_range">主体距离范围</string>
+    <string name="tag_sensing_method">感测方式</string>
+    <string name="tag_gamma">伽马值</string>
+
+    <!-- 标签友好名称 - 位置信息 -->
+    <string name="tag_gps_latitude_ref">纬度参考</string>
+    <string name="tag_gps_latitude">纬度</string>
+    <string name="tag_gps_longitude_ref">经度参考</string>
+    <string name="tag_gps_longitude">经度</string>
+    <string name="tag_gps_altitude">海拔</string>
+    <string name="tag_gps_altitude_ref">海拔参考</string>
+    <string name="tag_gps_timestamp">GPS 时间</string>
+    <string name="tag_gps_datestamp">GPS 日期</string>
+    <string name="tag_gps_speed">速度</string>
+    <string name="tag_gps_speed_ref">速度单位</string>
+    <string name="tag_gps_img_direction">拍摄方向</string>
+    <string name="tag_gps_img_direction_ref">拍摄方向参考</string>
+    <string name="tag_gps_processing_method">定位方式</string>
+    <string name="tag_gps_map_datum">地图基准</string>
+    <string name="tag_gps_satellites">卫星</string>
+
+    <!-- 标签友好名称 - 时间信息 -->
+    <string name="tag_datetime">日期时间</string>
+    <string name="tag_datetime_original">拍摄时间</string>
+    <string name="tag_datetime_digitized">数字化时间</string>
+    <string name="tag_subsec_time">亚秒</string>
+    <string name="tag_subsec_time_original">亚秒（原始）</string>
+    <string name="tag_subsec_time_digitized">亚秒（数字化）</string>
+    <string name="tag_offset_time">时区偏移</string>
+    <string name="tag_offset_time_original">时区偏移（原始）</string>
+    <string name="tag_offset_time_digitized">时区偏移（数字化）</string>
+
+    <!-- 标签友好名称 - 编辑信息 -->
+    <string name="tag_software">软件</string>
+    <string name="tag_maker_note">制造商注释</string>
+    <string name="tag_user_comment">用户注释</string>
+    <string name="tag_image_description">图片描述</string>
+    <string name="tag_artist">作者</string>
+    <string name="tag_copyright">版权</string>
+    <string name="tag_custom_rendered">自定义渲染</string>
+    <string name="tag_exif_version">Exif 版本</string>
+    <string name="tag_flashpix_version">Flashpix 版本</string>
+
+    <!-- 值映射 - 方向 -->
+    <string name="value_orientation_normal">正常</string>
+    <string name="value_orientation_flip_h">水平翻转</string>
+    <string name="value_orientation_rotate_180">旋转 180°</string>
+    <string name="value_orientation_flip_v">垂直翻转</string>
+    <string name="value_orientation_transpose">转置</string>
+    <string name="value_orientation_rotate_90">旋转 90°</string>
+    <string name="value_orientation_transverse">横转</string>
+    <string name="value_orientation_rotate_270">旋转 270°</string>
+    <string name="value_orientation_unknown">未知 (%d)</string>
+
+    <!-- 值映射 - 闪光灯 -->
+    <string name="value_flash_not_fired">未闪光</string>
+    <string name="value_flash_fired">已闪光</string>
+    <string name="value_flash_fired_no_return">已闪光，无返回光</string>
+    <string name="value_flash_fired_return">已闪光，检测到返回光</string>
+    <string name="value_flash_on_no_return">开启，无返回光</string>
+    <string name="value_flash_on_return">开启，检测到返回光</string>
+    <string name="value_flash_off">关闭</string>
+    <string name="value_flash_auto_fired">自动，已闪光</string>
+    <string name="value_flash_auto_not_fired">自动，未闪光</string>
+    <string name="value_flash_no_flash">无闪光功能</string>
+
+    <!-- 值映射 - 测光模式 -->
+    <string name="value_metering_unknown">未知</string>
+    <string name="value_metering_average">平均测光</string>
+    <string name="value_metering_center">中央重点</string>
+    <string name="value_metering_spot">点测光</string>
+    <string name="value_metering_matrix">矩阵测光</string>
+    <string name="value_metering_partial">局部测光</string>
+
+    <!-- 值映射 - 曝光程序 -->
+    <string name="value_exposure_program_not_defined">未定义</string>
+    <string name="value_exposure_program_manual">手动</string>
+    <string name="value_exposure_program_normal">标准</string>
+    <string name="value_exposure_program_aperture">光圈优先</string>
+    <string name="value_exposure_program_shutter">快门优先</string>
+    <string name="value_exposure_program_creative">创意</string>
+    <string name="value_exposure_program_action">运动</string>
+    <string name="value_exposure_program_portrait">人像</string>
+    <string name="value_exposure_program_landscape">风景</string>
+
+    <!-- 值映射 - 白平衡 -->
+    <string name="value_white_balance_auto">自动</string>
+    <string name="value_white_balance_manual">手动</string>
+
+    <!-- 值映射 - 场景类型 -->
+    <string name="value_scene_standard">标准</string>
+    <string name="value_scene_landscape">风景</string>
+    <string name="value_scene_portrait">人像</string>
+    <string name="value_scene_night">夜景</string>
+
+    <!-- 值映射 - 曝光模式 -->
+    <string name="value_exposure_mode_auto">自动</string>
+    <string name="value_exposure_mode_manual">手动</string>
+    <string name="value_exposure_mode_auto_bracket">自动包围</string>
+
+    <!-- 值映射 - 色彩空间 -->
+    <string name="value_color_space_srgb">sRGB</string>
+    <string name="value_color_space_uncalibrated">未校准</string>
+
+    <!-- 值映射 - 对比度/饱和度/锐度 -->
+    <string name="value_css_normal">标准</string>
+    <string name="value_css_soft">柔和</string>
+    <string name="value_css_hard">强烈</string>
+
+    <!-- 值映射 - 增益控制 -->
+    <string name="value_gain_none">无</string>
+    <string name="value_gain_low_up">低增益</string>
+    <string name="value_gain_high_up">高增益</string>
+    <string name="value_gain_low_down">低减益</string>
+    <string name="value_gain_high_down">高减益</string>
+
+    <!-- 值映射 - 感测方式 -->
+    <string name="value_sensing_not_defined">未定义</string>
+    <string name="value_sensing_one_chip">单片彩色区域</string>
+    <string name="value_sensing_two_chip">双片彩色区域</string>
+    <string name="value_sensing_three_chip">三片彩色区域</string>
+    <string name="value_sensing_color_sequential">色彩顺序区域</string>
+    <string name="value_sensing_trilinear">三线性</string>
+    <string name="value_sensing_color_sequential_linear">色彩顺序线性</string>
+
+    <!-- 值映射 - 主体距离范围 -->
+    <string name="value_distance_unknown">未知</string>
+    <string name="value_distance_macro">微距</string>
+    <string name="value_distance_close">近景</string>
+    <string name="value_distance_distant">远景</string>
+
+    <!-- 值映射 - 海拔参考 -->
+    <string name="value_altitude_above">海平面以上</string>
+    <string name="value_altitude_below">海平面以下</string>
+
+    <!-- 值映射 - 速度单位 -->
+    <string name="value_speed_kmh">km/h</string>
+    <string name="value_speed_mph">mph</string>
+    <string name="value_speed_knots">节</string>
+
+    <!-- 操作 -->
+    <string name="action_view_on_map">在地图中查看</string>
+    <string name="action_remove_gps">移除位置信息</string>
+    <string name="action_remove_personal">移除个人信息</string>
+    <string name="action_remove_all">移除所有元数据</string>
+    <string name="action_share">分享</string>
+    <string name="action_privacy_clean">隐私清理</string>
+    <string name="action_collapse">收起</string>
+    <string name="action_expand">展开</string>
+
+    <!-- 消息 -->
+    <string name="msg_privacy_summary_gps">此照片包含 GPS 位置数据</string>
+    <string name="msg_privacy_summary_personal">此照片包含个人身份信息</string>
+    <string name="msg_privacy_summary_safe">未发现隐私风险</string>
+    <string name="msg_no_exif">此照片不含 EXIF 数据</string>
+    <string name="msg_removing">正在处理…</string>
+    <string name="msg_remove_success">处理完成，元数据已移除</string>
+    <string name="msg_remove_error">处理失败</string>
+    <string name="msg_unsupported_format">此格式不支持元数据编辑</string>
+    <string name="msg_no_map_app">未找到地图应用</string>
+
+    <!-- 一致性警告 -->
+    <string name="warning_datetime_mismatch">时间不一致</string>
+    <string name="warning_datetime_mismatch_detail">EXIF 拍摄时间与文件修改时间相差 %1$s</string>
+    <string name="warning_dimension_mismatch">尺寸不一致</string>
+    <string name="warning_dimension_mismatch_detail">EXIF 记录尺寸（%1$dx%2$d）与实际图片尺寸（%3$dx%4$d）不一致</string>
+    <string name="warning_thumbnail_exists">内嵌缩略图</string>
+    <string name="warning_thumbnail_exists_detail">此照片包含内嵌缩略图，可能保留编辑前的原始信息</string>
+
+    <!-- 时间跨度复数 -->
+    <plurals name="hours_count">
+        <item quantity="other">%d 小时</item>
+    </plurals>
+    <plurals name="days_count">
+        <item quantity="other">%d 天</item>
+    </plurals>
+
+    <!-- 单位 -->
+    <string name="unit_mm">mm</string>
+    <string name="unit_dpi">dpi</string>
+    <string name="unit_seconds">秒</string>
+    <string name="unit_meters">米</string>
+    <string name="unit_km_h">km/h</string>
 </resources>
