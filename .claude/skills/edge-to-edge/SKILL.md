@@ -74,23 +74,22 @@ metadata:
     3.  `TopAppBar(windowInsets = WindowInsets.systemBars.add(WindowInsets.captionBar))`
   2. For components outside a Scaffold, use padding modifiers, such as `Modifier.safeDrawingPadding()` or `Modifier.windowInsetsPadding(WindowInsets.safeDrawing)`.
 
-     ```kotlin
-     Box(
-         modifier = Modifier
-             .fillMaxSize()
-             .safeDrawingPadding()
-     ) {
-         Button(
-             onClick = {},
-             modifier = Modifier.align(Alignment.BottomCenter)
-         ) {
-             Text("Login")
-         }
-     }
-     ```
+  ```kotlin
+  Box(
+      modifier = Modifier
+          .fillMaxSize()
+          .safeDrawingPadding()
+  ) {
+      Button(
+          onClick = {},
+          modifier = Modifier.align(Alignment.BottomCenter)
+      ) {
+          Text("Login")
+      }
+  }
+  ```
 
      <br />
-
   3. For deeply nested components with excessive padding, use `WindowInsetsRulers` (e.g. `Modifier.fitInside(WindowInsetsRulers.SafeDrawing.current)`). See the _IME_ section for a code sample.
 
   4. When you need an element (e.g. a custom header or decorative scrim) to
