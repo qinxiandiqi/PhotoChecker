@@ -91,7 +91,6 @@ metadata:
 
      <br />
   3. For deeply nested components with excessive padding, use `WindowInsetsRulers` (e.g. `Modifier.fitInside(WindowInsetsRulers.SafeDrawing.current)`). See the _IME_ section for a code sample.
-
   4. When you need an element (e.g. a custom header or decorative scrim) to
      equal the dimensions of a system bar, use inset size modifiers (e.g.
      `Modifier.windowInsetsTopHeight(WindowInsets.systemBars)`).

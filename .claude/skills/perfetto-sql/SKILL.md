@@ -53,10 +53,10 @@ end1`.
   2.  **Duration:** The overlap duration is calculated as `MIN(end1, end2) -
 MAX(start1, start2)`
 
-                 > **Important:** Incomplete Perfetto slices have a duration of -1
-                 > (`dur = -1`). Always calculate the effective end time using `ts +
+                       > **Important:** Incomplete Perfetto slices have a duration of -1
+                       > (`dur = -1`). Always calculate the effective end time using `ts +
 
-            IIF(dur = -1, trace_end() - ts, dur)` before applying this logic.
+                  IIF(dur = -1, trace_end() - ts, dur)` before applying this logic.
 
 - Query `android_thread_slices_for_all_startups` for app startup requests.
 
