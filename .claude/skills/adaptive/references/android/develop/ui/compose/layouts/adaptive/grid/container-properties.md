@@ -10,12 +10,11 @@ This page describes how to do the following:
 ## Define a grid
 
 A grid consists of columns and rows.
-The [`Grid`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/Grid.composable#Grid(kotlin.Function1,androidx.compose.ui.Modifier,kotlin.Function1)) composable has a `config` parameter
+The [`Grid`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/Grid.composable#Grid(kotlin.Function1,androidx.compose.ui.Modifier,kotlin.Function1)>) composable has a `config` parameter
 that accepts a lambda to define the columns and rows
 within [`GridConfigurationScope`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope).
 The following example defines a grid that has three rows and two columns,
 each with a fixed size specified in [`Dp`](https://developer.android.com/reference/kotlin/androidx/compose/ui/unit/Dp):
-
 
 ```kotlin
 Grid(
@@ -49,7 +48,6 @@ and places a card into each one (Figure 1).
 Each grid cell is `160dp` x `90dp`,
 making the total grid size `320dp` x `270dp`.
 
-
 ```kotlin
 Grid(
     config = {
@@ -75,8 +73,7 @@ Grid(
 ![Six cards are placed in a grid that has three rows and two columns.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/grid/placement.png) **Figure 1**. Six cards are placed in a grid that has three rows and two columns.
 
 To change this default behavior to filling by column,
-set the [`flow`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#flow()) property to [`GridFlow.Column`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridFlow#Column()).
-
+set the [`flow`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#flow()>) property to [`GridFlow.Column`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridFlow#Column()>).
 
 ```kotlin
 Grid(
@@ -117,7 +114,6 @@ You can specify the size of a grid track using one of the following methods:
 The following example uses the different track sizing options
 to define the row heights:
 
-
 ```kotlin
 Grid(
     config = {
@@ -144,15 +140,14 @@ when you want the layout to adapt to the content,
 rather than forcing it into a fixed container.
 The grid track size is determined with the following values:
 
-- [`GridTrackSize.MaxContent`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridTrackSize#MaxContent()): Use the content's maximum intrinsic size (e.g., the width is determined by the full length of the text in a text block with no wrapping).
-- [`GridTrackSize.MinContent`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridTrackSize#MinContent()): Use the content's minimum intrinsic size (e.g., the width is determined by the longest single word in a text block).
-- [`GridTrackSize.Auto`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridTrackSize#Auto()): Use a flexible size for a track that adapts based on available space. It behaves like `MaxContent` by default, but shrinks and wraps its content to fit within the parent container.
+- [`GridTrackSize.MaxContent`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridTrackSize#MaxContent()>): Use the content's maximum intrinsic size (e.g., the width is determined by the full length of the text in a text block with no wrapping).
+- [`GridTrackSize.MinContent`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridTrackSize#MinContent()>): Use the content's minimum intrinsic size (e.g., the width is determined by the longest single word in a text block).
+- [`GridTrackSize.Auto`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridTrackSize#Auto()>): Use a flexible size for a track that adapts based on available space. It behaves like `MaxContent` by default, but shrinks and wraps its content to fit within the parent container.
 
 The following example places two texts side by side.
 The column size for the first text is determined
 by the required minimum width to display the text,
 and the second column width depends on the required maximum width of the text.
-
 
 ```kotlin
 Grid(
@@ -176,11 +171,10 @@ Grid(
 
 Once your grid tracks are sized,
 you can modify the [grid gap](https://developer.android.com/develop/ui/compose/layouts/adaptive/grid#grid-gap) to refine the spacing between the tracks.
-You can specify the column gap with the [`columnGap`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#columnGap(androidx.compose.ui.unit.Dp)) function,
-and the row gap with [`rowGap`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#rowGap(androidx.compose.ui.unit.Dp)). In the following example,
+You can specify the column gap with the [`columnGap`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#columnGap(androidx.compose.ui.unit.Dp)>) function,
+and the row gap with [`rowGap`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#rowGap(androidx.compose.ui.unit.Dp)>). In the following example,
 there is a `16dp` gap between each row,
 and an `8dp` gap between each column (Figure 5).
-
 
 ```kotlin
 Grid(
@@ -208,11 +202,10 @@ Grid(
 
 ![Gaps between rows and columns.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/grid/gaps.png) **Figure 5**. Gaps between rows and columns.
 
-You can also use the convenience function [`gap`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#gap(androidx.compose.ui.unit.Dp))
+You can also use the convenience function [`gap`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridConfigurationScope#gap(androidx.compose.ui.unit.Dp)>)
 to define gaps of the same column and row size,
 and to define column and gap sizes separately using a single function.
 The following code adds `8dp` gaps to the grid:
-
 
 ```kotlin
 Grid(

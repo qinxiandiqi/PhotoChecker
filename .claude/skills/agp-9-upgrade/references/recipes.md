@@ -20,19 +20,19 @@ lists the compatibility for recipes for each version of AGP.
 ## Compatibility table
 
 | AGP version | gradle-recipes branch |
-|---|---|
-| 9.0.x | agp-9.0 |
-| 9.1.x | agp-9.1 |
-| 9.2.x | agp-9.2 |
+| ----------- | --------------------- |
+| 9.0.x       | agp-9.0               |
+| 9.1.x       | agp-9.1               |
+| 9.2.x       | agp-9.2               |
 
 ## Recipes and use-cases
 
 The following table links use-cases to recipes.
 
-| Recipe | Use-case |
-|---|---|
+| Recipe                     | Use-case                      |
+| -------------------------- | ----------------------------- |
 | addCustomBuildConfigFields | Add custom BuildConfig fields |
-| listenToArtifacts | Rename APK |
+| listenToArtifacts          | Rename APK                    |
 
 Additional details for each use-case follow.
 

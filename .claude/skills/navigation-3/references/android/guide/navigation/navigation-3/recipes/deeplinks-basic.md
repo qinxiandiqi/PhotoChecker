@@ -685,7 +685,7 @@ internal class DeepLinkMatcher<T : NavKey>(
             // If the pattern does not define this query parameter, ignore it.
             // This prevents a NullPointerException.
             val queryStringParser = deepLinkPattern.queryValueParsers[name]?: return@forEach
-            
+
             val queryParsedValue = try {
                 queryStringParser.invoke(query.value)
             } catch (e: IllegalArgumentException) {

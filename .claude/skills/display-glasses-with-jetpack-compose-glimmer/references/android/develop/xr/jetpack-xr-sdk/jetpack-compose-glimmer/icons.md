@@ -1,6 +1,5 @@
 <br />
 
-
 Applicable XR devices This guidance helps you build experiences for these types of XR devices. [Learn about XR device types →](https://developer.android.com/develop/xr/devices) ![](https://developer.android.com/static/images/develop/xr/ai-glasses-icon.svg) Display Glasses [](https://developer.android.com/develop/xr/devices#audio-display) [Learn about XR device types →](https://developer.android.com/develop/xr/devices)
 
 <br />
@@ -11,15 +10,15 @@ that they remain legible and visually consistent with the [`GlimmerTheme`](https
 
 ## Sizes
 
-While icons default to the size provided by [`LocalIconSize`](https://developer.android.com/reference/kotlin/androidx/xr/glimmer/package-summary#LocalIconSize()), you can also
+While icons default to the size provided by [`LocalIconSize`](<https://developer.android.com/reference/kotlin/androidx/xr/glimmer/package-summary#LocalIconSize()>), you can also
 use the three icon sizes provided to set an specific size. These sizes are also
 used by default for the following contexts:
 
-| Size token | Default usage |
-|---|---|
-| `small` | For standard list items or small chips. |
-| `medium` | For standalone icons and title chips. |
-| `large` | For high-emphasis components like cards. |
+| Size token | Default usage                            |
+| ---------- | ---------------------------------------- |
+| `small`    | For standard list items or small chips.  |
+| `medium`   | For standalone icons and title chips.    |
+| `large`    | For high-emphasis components like cards. |
 
 ## Icon sources
 
@@ -38,7 +37,6 @@ promote sharp rendering at any scale on display glasses.
 
 The following code creates an icon placed inside a circular surface, utilizing
 the theme's primary color:
-
 
 ```kotlin
 @Composable
@@ -70,7 +68,6 @@ fun IconSampleUsage() {
 
 The following code demonstrates the different icon sizes:
 
-
 ```kotlin
 @Composable
 fun IconSizesSample() {
@@ -91,5 +88,5 @@ fun IconSizesSample() {
 
 ### Key points about the code
 
-- Each icon's size is customized using [`GlimmerTheme.iconSizes`](https://developer.android.com/reference/kotlin/androidx/xr/glimmer/IconSizes) with a modifier. For icons, the default value is [`GlimmerTheme.iconSizes.medium`](https://developer.android.com/reference/kotlin/androidx/xr/glimmer/IconSizes#medium()). Use these sizes instead of hard-coding values to maintain consistency across your UI.
+- Each icon's size is customized using [`GlimmerTheme.iconSizes`](https://developer.android.com/reference/kotlin/androidx/xr/glimmer/IconSizes) with a modifier. For icons, the default value is [`GlimmerTheme.iconSizes.medium`](<https://developer.android.com/reference/kotlin/androidx/xr/glimmer/IconSizes#medium()>). Use these sizes instead of hard-coding values to maintain consistency across your UI.
 - Provides a localized `contentDescription` for each icon. Always provide these descriptions unless the icon is purely decorative.

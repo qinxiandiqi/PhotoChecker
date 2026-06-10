@@ -12,6 +12,7 @@ The application is divided into several modules:
 
   - A `Navigator` class that manages the back stack.
   - An `EntryProviderInstaller` type, which is a function that feature modules use to contribute their navigation entries to the application's `entryProvider`.
+
 - **Feature modules (e.g., `conversation`, `profile`)**: Each feature is split into two sub-modules:
 
   - **`api` module**: Defines the public API for the feature, including its navigation routes. This allows other modules to navigate to this feature without needing to know about its implementation details.

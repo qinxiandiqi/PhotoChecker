@@ -12,13 +12,13 @@ Material 3 Compose theming.
 
 ## Glossary
 
-| Term | Definition |
-|---|---|
-| `MaterialTheme` | The composable function that provides theming (colors, typography, shapes) to Compose UI components. |
-| `Shapes` | A Compose object used to define custom component shapes for a `MaterialTheme`. |
-| `Typography` | A Compose object used to define custom text styles (font families, sizes, weights) for a `MaterialTheme`. |
-| `ColorScheme` | A Compose object used to define custom color schemes for `MaterialTheme`. |
-| XML Theme | The Android theming system defined in XML files, used by the View system. |
+| Term            | Definition                                                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------- |
+| `MaterialTheme` | The composable function that provides theming (colors, typography, shapes) to Compose UI components.      |
+| `Shapes`        | A Compose object used to define custom component shapes for a `MaterialTheme`.                            |
+| `Typography`    | A Compose object used to define custom text styles (font families, sizes, weights) for a `MaterialTheme`. |
+| `ColorScheme`   | A Compose object used to define custom color schemes for `MaterialTheme`.                                 |
+| XML Theme       | The Android theming system defined in XML files, used by the View system.                                 |
 
 ## Limitations
 
@@ -47,27 +47,27 @@ Resources such as strings can be reused as is and don't need to be migrated.
 ## Step 3: Migrate colors
 
 **Key principle:** XML uses named hex colors.
-Material 3 uses *semantic roles* (e.g., `primary`, `onPrimary`, `surface`).
+Material 3 uses _semantic roles_ (e.g., `primary`, `onPrimary`, `surface`).
 Stop naming colors by their hex; name them by their role.
 
 Examples:
 
-| XML color name | Material 3 role |
-|---|---|
-| `colorPrimary` | `primary` |
+| XML color name                             | Material 3 role                   |
+| ------------------------------------------ | --------------------------------- |
+| `colorPrimary`                             | `primary`                         |
 | `colorPrimaryDark` / `colorPrimaryVariant` | `primaryContainer` or `secondary` |
-| `colorAccent` | `secondary` or `tertiary` |
-| `colorOnPrimary` | `onPrimary` |
-| `android:colorBackground` | `background` |
-| `colorSurface` | `surface` |
-| `colorOnSurface` | `onSurface` |
-| `colorError` | `error` |
-| `colorOnError` | `onError` |
-| `colorOutline` | `outline` |
-| `colorSurfaceVariant` | `surfaceVariant` |
-| `colorOnSurfaceVariant` | `onSurfaceVariant` |
+| `colorAccent`                              | `secondary` or `tertiary`         |
+| `colorOnPrimary`                           | `onPrimary`                       |
+| `android:colorBackground`                  | `background`                      |
+| `colorSurface`                             | `surface`                         |
+| `colorOnSurface`                           | `onSurface`                       |
+| `colorError`                               | `error`                           |
+| `colorOnError`                             | `onError`                         |
+| `colorOutline`                             | `outline`                         |
+| `colorSurfaceVariant`                      | `surfaceVariant`                  |
+| `colorOnSurfaceVariant`                    | `onSurfaceVariant`                |
 
-*** ** * ** ***
+---
 
 Migrate the dark and light color schemes from XML to their equivalents in
 Material 3 Compose.
@@ -83,6 +83,7 @@ Material 3 Compose.
   2. Provide this `Shapes` object to your `MaterialTheme`.
 
      For more details, see [shapes](https://developer.android.com/develop/ui/compose/designsystems/material3#shapes).
+
 - If your app uses custom typography:
 
   1. In your Compose code, define a `Typography` object in your Compose code to replicate your XML text styles and font definitions.
@@ -90,23 +91,23 @@ Material 3 Compose.
 
      For more details, see [typography](https://developer.android.com/develop/ui/compose/designsystems/material3#typography).
 
-| Compose role | XML name |
-|---|---|
-| `displayLarge` | `TextAppearance.Material3.DisplayLarge` |
-| `displayMedium` | `TextAppearance.Material3.DisplayMedium` |
-| `displaySmall` | `TextAppearance.Material3.DisplaySmall` |
-| `headlineLarge` | `TextAppearance.Material3.HeadlineLarge` |
+| Compose role     | XML name                                  |
+| ---------------- | ----------------------------------------- |
+| `displayLarge`   | `TextAppearance.Material3.DisplayLarge`   |
+| `displayMedium`  | `TextAppearance.Material3.DisplayMedium`  |
+| `displaySmall`   | `TextAppearance.Material3.DisplaySmall`   |
+| `headlineLarge`  | `TextAppearance.Material3.HeadlineLarge`  |
 | `headlineMedium` | `TextAppearance.Material3.HeadlineMedium` |
-| `headlineSmall` | `TextAppearance.Material3.HeadlineSmall` |
-| `titleLarge` | `TextAppearance.Material3.TitleLarge` |
-| `titleMedium` | `TextAppearance.Material3.TitleMedium` |
-| `titleSmall` | `TextAppearance.Material3.TitleSmall` |
-| `bodyLarge` | `TextAppearance.Material3.BodyLarge` |
-| `bodyMedium` | `TextAppearance.Material3.BodyMedium` |
-| `bodySmall` | `TextAppearance.Material3.BodySmall` |
-| `labelLarge` | `TextAppearance.Material3.LabelLarge` |
-| `labelMedium` | `TextAppearance.Material3.LabelMedium` |
-| `labelSmall` | `TextAppearance.Material3.LabelSmall` |
+| `headlineSmall`  | `TextAppearance.Material3.HeadlineSmall`  |
+| `titleLarge`     | `TextAppearance.Material3.TitleLarge`     |
+| `titleMedium`    | `TextAppearance.Material3.TitleMedium`    |
+| `titleSmall`     | `TextAppearance.Material3.TitleSmall`     |
+| `bodyLarge`      | `TextAppearance.Material3.BodyLarge`      |
+| `bodyMedium`     | `TextAppearance.Material3.BodyMedium`     |
+| `bodySmall`      | `TextAppearance.Material3.BodySmall`      |
+| `labelLarge`     | `TextAppearance.Material3.LabelLarge`     |
+| `labelMedium`    | `TextAppearance.Material3.LabelMedium`    |
+| `labelSmall`     | `TextAppearance.Material3.LabelSmall`     |
 
 ## Step 5: Migrate styles (styles.xml)
 
@@ -134,31 +135,31 @@ components.
 
 - **Pattern:** If an XML element uses a custom style (e.g., `style="@style/MyPrimaryButton"`), don't try to replicate the style inline. Instead, suggest creating a specific composable.
 - **Example:**
-  - *XML:* `<Button style="@style/MyPrimaryButton" ... />`
-  - *Compose:* `MyPrimaryButton(onClick = { ... })`
+  - _XML:_ `<Button style="@style/MyPrimaryButton" ... />`
+  - _Compose:_ `MyPrimaryButton(onClick = { ... })`
 - **Common Attribute Groups:** If a style sets common modifiers (like padding + height), extract them into a readable extension property or a shared Modifier variable.
 
 ### Common examples
 
-| XML | Compose |
-|---|---|
-| `Theme.Material3.*` | `MaterialTheme(colorScheme, typography, shapes) { }` |
-| `TextAppearance.Material3.BodyMedium` | `TextStyle(...)` defined in `Typography(bodyMedium = ...)` |
-| `ShapeAppearance.*.SmallComponent` | `Shapes(small = RoundedCornerShape(X.dp))` |
-| `Widget.Material3.Button` | `Button(colors = ButtonDefaults.buttonColors(...))` |
-| `Widget.Material3.CardView` | `Card(shape=..., elevation=..., colors=...)` |
+| XML                                    | Compose                                                             |
+| -------------------------------------- | ------------------------------------------------------------------- |
+| `Theme.Material3.*`                    | `MaterialTheme(colorScheme, typography, shapes) { }`                |
+| `TextAppearance.Material3.BodyMedium`  | `TextStyle(...)` defined in `Typography(bodyMedium = ...)`          |
+| `ShapeAppearance.*.SmallComponent`     | `Shapes(small = RoundedCornerShape(X.dp))`                          |
+| `Widget.Material3.Button`              | `Button(colors = ButtonDefaults.buttonColors(...))`                 |
+| `Widget.Material3.CardView`            | `Card(shape=..., elevation=..., colors=...)`                        |
 | `Widget.*.TextInputLayout.OutlinedBox` | `OutlinedTextField(colors = OutlinedTextFieldDefaults.colors(...))` |
-| `Widget.*.Chip.Filter` | `FilterChip(colors = FilterChipDefaults.filterChipColors(...))` |
-| `Widget.*.Toolbar.Primary` | `TopAppBar(colors = TopAppBarDefaults.topAppBarColors(...))` |
-| `Widget.*.FloatingActionButton` | `FloatingActionButton(containerColor = ...)` |
-| `backgroundTint` | `containerColor` in `ComponentDefaults.ComponentColors()` |
-| `android:textColor` | `contentColor` in `ComponentDefaults.ComponentColors()` |
-| `cornerRadius` | `shape = RoundedCornerShape(X.dp)` |
-| `android:elevation` | `elevation = ComponentDefaults.elevation(defaultElevation = X.dp)` |
-| `android:padding` | `contentPadding = PaddingValues(...)` or `Modifier.padding()` |
-| `android:minHeight` | `Modifier.heightIn(min = X.dp)` |
-| `strokeColor` + `strokeWidth` | `border = BorderStroke(width, color)` |
-| `android:textSize` | `fontSize = X.sp` in `TextStyle` |
+| `Widget.*.Chip.Filter`                 | `FilterChip(colors = FilterChipDefaults.filterChipColors(...))`     |
+| `Widget.*.Toolbar.Primary`             | `TopAppBar(colors = TopAppBarDefaults.topAppBarColors(...))`        |
+| `Widget.*.FloatingActionButton`        | `FloatingActionButton(containerColor = ...)`                        |
+| `backgroundTint`                       | `containerColor` in `ComponentDefaults.ComponentColors()`           |
+| `android:textColor`                    | `contentColor` in `ComponentDefaults.ComponentColors()`             |
+| `cornerRadius`                         | `shape = RoundedCornerShape(X.dp)`                                  |
+| `android:elevation`                    | `elevation = ComponentDefaults.elevation(defaultElevation = X.dp)`  |
+| `android:padding`                      | `contentPadding = PaddingValues(...)` or `Modifier.padding()`       |
+| `android:minHeight`                    | `Modifier.heightIn(min = X.dp)`                                     |
+| `strokeColor` + `strokeWidth`          | `border = BorderStroke(width, color)`                               |
+| `android:textSize`                     | `fontSize = X.sp` in `TextStyle`                                    |
 
 ## Step 6: Validate the theme migration
 

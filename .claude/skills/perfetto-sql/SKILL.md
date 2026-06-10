@@ -1,31 +1,32 @@
 ---
 name: perfetto-sql
-description: Translates natural language data intents into syntactically valid Perfetto
+description:
+  Translates natural language data intents into syntactically valid Perfetto
   SQL queries and executes them against a local trace file. Use this skill to extract
   slice, thread, or memory data from Android Perfetto traces using trace_processor.
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-14'
+  last-updated: "2026-05-14"
   keywords:
-  - Android
-  - Perfetto SQL
-  - Query Guidelines
-  - Performance Profiling
-  - Trace Analysis
-  - SQL Best Practices
-  - SPAN_JOIN
-  - Idempotency
+    - Android
+    - Perfetto SQL
+    - Query Guidelines
+    - Performance Profiling
+    - Trace Analysis
+    - SQL Best Practices
+    - SPAN_JOIN
+    - Idempotency
 ---
 
 ## Guidelines and Hints
 
 - **Idempotency:** Ensure queries are idempotent to prevent "already exists" errors during multiple executions.
   - For Perfetto objects, always use `CREATE OR REPLACE`: `CREATE OR REPLACE
-    PERFETTO TABLE`, `CREATE OR REPLACE PERFETTO VIEW`, `CREATE OR REPLACE
-    PERFETTO FUNCTION`, `CREATE OR REPLACE PERFETTO MACRO`.
+PERFETTO TABLE`, `CREATE OR REPLACE PERFETTO VIEW`, `CREATE OR REPLACE
+PERFETTO FUNCTION`, `CREATE OR REPLACE PERFETTO MACRO`.
   - For SQLite Virtual Tables (such as `SPAN_JOIN`), `CREATE OR REPLACE` is not supported. Explicitly drop them first: `DROP TABLE IF EXISTS
-    my_table; CREATE VIRTUAL TABLE my_table USING SPAN_JOIN(...);`
+my_table; CREATE VIRTUAL TABLE my_table USING SPAN_JOIN(...);`
   - For standard SQLite indexes, prepend `DROP INDEX IF EXISTS index_name;`.
 - `SPAN_JOIN` will crash if intervals **within the same input table** overlap. Always use the `PARTITIONED {column}` (for example, `PARTITIONED upid`) clause to isolate intervals.
 - Intermediate tables fed into a `SPAN_JOIN` must be materialized using `CREATE PERFETTO TABLE`, not `CREATE VIEW`.
@@ -36,9 +37,9 @@ metadata:
 - **String Matching (Always use GLOB):** Use `GLOB` instead of `LIKE`. `LIKE` causes performance bottlenecks and treats underscores (`_`) as wildcards, leading to bugs.
   - **Exact matches:** Use `=`.
   - **Substring matches:** Use `GLOB` with `*` (for example, `name GLOB
-    '*RenderThread*'`).
+'*RenderThread*'`).
   - **Case-insensitive matches:** Use `LOWER(name) GLOB` and make sure the search string is fully lowercase (for example, `LOWER(name) GLOB
-    '*renderthread*'`). Use this when dealing with inconsistent trace capitalization (for example, `WakeLock` versus `wakelock`).
+'*renderthread*'`). Use this when dealing with inconsistent trace capitalization (for example, `WakeLock` versus `wakelock`).
 - **Calculating Time Overlaps:** To calculate the overlap duration between two
   time intervals `[start1, end1]` and `[start2, end2]`:
 
@@ -48,13 +49,14 @@ metadata:
   > standard library feature or `SPAN_JOIN` can achieve the same result. Use
   > the following logic if no built-in alternative exists.
   1. **Condition:** The intervals overlap if `start1 < end2` and `start2 <
-     end1`.
+end1`.
   2. **Duration:** The overlap duration is calculated as `MIN(end1, end2) -
-     MAX(start1, start2)`
+MAX(start1, start2)`
 
      > **Important:** Incomplete Perfetto slices have a duration of -1
      > (`dur = -1`). Always calculate the effective end time using `ts +
-     > IIF(dur = -1, trace_end() - ts, dur)` before applying this logic.
+IIF(dur = -1, trace_end() - ts, dur)` before applying this logic.
+
 - Query `android_thread_slices_for_all_startups` for app startup requests.
 
 - Join `counter_track` with `counter` to get values of counter with a specific
@@ -74,9 +76,9 @@ metadata:
   useful** : This helps quantify the total impact of a specific function or
   feature on performance across multiple calls. Here is an example query (note
   the safe handling of incomplete slices): `sql SELECT count(*) as
-  total_count, sum(IIF(slice.dur = -1, trace_end() - slice.ts, slice.dur)) /
-  1000000.0 as total_dur_ms FROM slice WHERE slice.name GLOB
-  '*{name_pattern}*';`
+total_count, sum(IIF(slice.dur = -1, trace_end() - slice.ts, slice.dur)) /
+1000000.0 as total_dur_ms FROM slice WHERE slice.name GLOB
+'*{name_pattern}*';`
 
 ## Resources
 
@@ -107,10 +109,10 @@ Perform a direct file check at the top level of your workspace (e.g., `ls trace_
      - **Note:** You must verify if a Standard Library module already provides the needed abstraction before drafting manual arithmetic or custom functions.
    - **Targeted Bounded Reads:** Once you identify the relevant modules, efficiently read the tables and views within that module section.
    - **Extract:** Extract only the schema, columns, and the exact `INCLUDE
-     PERFETTO MODULE` statements for the required object from the documentation.
+PERFETTO MODULE` statements for the required object from the documentation.
    - **Verify:** Review the columns, types, and descriptions to ensure the table matches your needs.
 4. Print the research results before drafting the query:
-5. *Tables/Views:* `Schema for {name}:` listing columns and types.
+5. _Tables/Views:_ `Schema for {name}:` listing columns and types.
 
 ### Step 2: Draft and Validate Loop (Max 3 Iterations)
 

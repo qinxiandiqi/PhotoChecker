@@ -4,8 +4,8 @@ Optimizes AppFunction KDoc for AI agents and Model Context Protocol.
 
 ### Workflow: Agent-Centric Documentation
 
-1. **Identify the Core Outcome** : Start the description with a strong, imperative verb (e.g., "Search", "Create", "Update"). Focus on the *user
-   benefit*, not the code implementation.
+1. **Identify the Core Outcome** : Start the description with a strong, imperative verb (e.g., "Search", "Create", "Update"). Focus on the _user
+   benefit_, not the code implementation.
 2. **Workflow Dependencies** : Explicitly state if another function must be called first using the standard phrase: **Required workflow: Call "Function
    A" first to "Objective"**.
 3. **Parameter Documentation** :
@@ -30,7 +30,7 @@ instructions:
 
 ### Descriptive, Not Imperative
 
-Describe what the function *does* , not what the LLM *must* do. Avoid phrases
+Describe what the function _does_ , not what the LLM _must_ do. Avoid phrases
 like "You must call this..." in favor of "This function provides...".
 
 ### No "Fluff"

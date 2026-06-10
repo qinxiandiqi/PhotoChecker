@@ -40,7 +40,7 @@ validation failures entirely within the IDE. Here are some of the key features:
 
 - **Integrated test results and diff viewer.** View results without leaving the IDE.
   - **Unified run panel.** Screenshot test results appear in the standard **Run** tool window. Tests are grouped by class and function, with pass or fail status clearly marked.
-  - **Visual diff tool.** When a test fails, the **Screenshot** tab lets you compare the *Reference* , *Actual* , and *Diff* images side-by-side.
+  - **Visual diff tool.** When a test fails, the **Screenshot** tab lets you compare the _Reference_ , _Actual_ , and _Diff_ images side-by-side.
   - **Detailed attributes.** An **Attributes** tab provides metadata on failed tests, including match percentage, image dimensions, and the specific preview configuration used (for example, `uiMode` or `fontScale`).
 
 - **Flexible test scoping.** You can now execute screenshot tests with various scopes directly from the Project View. Right-click a module, directory, file, or class to run screenshot tests specifically for that selection.
@@ -74,53 +74,53 @@ the requirements are as follows:
 Both the integrated tool and the underlying Gradle tasks rely on the Compose
 Preview Screenshot Testing plugin. To set up the plugin, follow these steps:
 
-1. Enable the experimental property in your project's `gradle.properties` file.
+1.  Enable the experimental property in your project's `gradle.properties` file.
 
-       android.experimental.enableScreenshotTest=true
+    android.experimental.enableScreenshotTest=true
 
-2. In the `android {}` block of your module-level `build.gradle.kts` file,
-   enable the experimental flag to use the `screenshotTest` source set.
+2.  In the `android {}` block of your module-level `build.gradle.kts` file,
+    enable the experimental flag to use the `screenshotTest` source set.
 
-       android {
-           experimentalProperties["android.experimental.enableScreenshotTest"] = true
+        android {
+            experimentalProperties["android.experimental.enableScreenshotTest"] = true
+        }
+
+3.  Add the `com.android.compose.screenshot` plugin, version `0.0.1-alpha15` to
+    your project.
+
+    1.  Add the plugin to your version catalogs file:
+
+        [versions]
+        agp = "9.0.0-rc03"
+        kotlin = "2.2.10"
+        screenshot = "0.0.1-alpha15"
+
+        [plugins]
+        screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"}
+
+    2.  In your module-level `build.gradle.kts` file, add the plugin in the
+        `plugins {}` block:
+
+            plugins {
+                alias(libs.plugins.screenshot)
+            }
+
+4.  Add the [`screenshot-validation-api`](https://maven.google.com/web/index.html?q=screenshot-validation-api#com.android.tools.screenshot:screenshot-validation-api)
+    and [`ui-tooling`](https://maven.google.com/web/index.html?q=tooling#androidx.compose.ui:ui-tooling)
+    dependencies.
+
+    1. Add them to your version catalogs:
+
+       [libraries]
+       screenshot-validation-api = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot"}
+       androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling"}
+
+    2. Add them to your module-level `build.gradle.kts` file:
+
+       dependencies {
+       screenshotTestImplementation(libs.screenshot.validation.api)
+       screenshotTestImplementation(libs.androidx.ui.tooling)
        }
-
-3. Add the `com.android.compose.screenshot` plugin, version `0.0.1-alpha15` to
-   your project.
-
-   1. Add the plugin to your version catalogs file:
-
-          [versions]
-          agp = "9.0.0-rc03"
-          kotlin = "2.2.10"
-          screenshot = "0.0.1-alpha15"
-
-          [plugins]
-          screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"}
-
-   2. In your module-level `build.gradle.kts` file, add the plugin in the
-      `plugins {}` block:
-
-          plugins {
-              alias(libs.plugins.screenshot)
-          }
-
-4. Add the [`screenshot-validation-api`](https://maven.google.com/web/index.html?q=screenshot-validation-api#com.android.tools.screenshot:screenshot-validation-api)
-   and [`ui-tooling`](https://maven.google.com/web/index.html?q=tooling#androidx.compose.ui:ui-tooling)
-   dependencies.
-
-   1. Add them to your version catalogs:
-
-          [libraries]
-          screenshot-validation-api = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot"}
-          androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling"}
-
-   2. Add them to your module-level `build.gradle.kts` file:
-
-          dependencies {
-            screenshotTestImplementation(libs.screenshot.validation.api)
-            screenshotTestImplementation(libs.androidx.ui.tooling)
-          }
 
 ## Designate composable previews to use for screenshot tests
 

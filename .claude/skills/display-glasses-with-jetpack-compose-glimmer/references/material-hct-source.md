@@ -34,12 +34,11 @@ Use the following calculation metrics for color contrast in `hct.ts`:
  * and a difference of 50 guarantees a contrast ratio >= 4.5.
  */
 
-import * as utils from '../utils/color_utils.js';
+import * as utils from "../utils/color_utils.js";
 
-import {Cam16} from './cam16.js';
-import {HctSolver} from './hct_solver.js';
-import {ViewingConditions} from './viewing_conditions.js';
-
+import { Cam16 } from "./cam16.js";
+import { HctSolver } from "./hct_solver.js";
+import { ViewingConditions } from "./viewing_conditions.js";
 
 /**
  * HCT, hue, chroma, and tone. A color system that provides a perceptually
@@ -91,11 +90,7 @@ export class Hct {
    */
   set hue(newHue: number) {
     this.setInternalState(
-        HctSolver.solveToInt(
-            newHue,
-            this.internalChroma,
-            this.internalTone,
-            ),
+      HctSolver.solveToInt(newHue, this.internalChroma, this.internalTone),
     );
   }
 
@@ -110,11 +105,7 @@ export class Hct {
    */
   set chroma(newChroma: number) {
     this.setInternalState(
-        HctSolver.solveToInt(
-            this.internalHue,
-            newChroma,
-            this.internalTone,
-            ),
+      HctSolver.solveToInt(this.internalHue, newChroma, this.internalTone),
     );
   }
 
@@ -130,11 +121,7 @@ export class Hct {
    */
   set tone(newTone: number) {
     this.setInternalState(
-        HctSolver.solveToInt(
-            this.internalHue,
-            this.internalChroma,
-            newTone,
-            ),
+      HctSolver.solveToInt(this.internalHue, this.internalChroma, newTone),
     );
   }
 
@@ -144,8 +131,9 @@ export class Hct {
   }
 
   toString(): string {
-    return `HCT(${this.hue.toFixed(0)}, ${this.chroma.toFixed(0)}, ${
-        this.tone.toFixed(0)})`;
+    return `HCT(${this.hue.toFixed(0)}, ${this.chroma.toFixed(0)}, ${this.tone.toFixed(
+      0,
+    )})`;
   }
 
   static isBlue(hue: number): boolean {
@@ -197,19 +185,19 @@ export class Hct {
 
     // 2. Create CAM16 of those XYZ coordinates in default VC.
     const recastInVc = Cam16.fromXyzInViewingConditions(
-        viewedInVc[0],
-        viewedInVc[1],
-        viewedInVc[2],
-        ViewingConditions.make(),
+      viewedInVc[0],
+      viewedInVc[1],
+      viewedInVc[2],
+      ViewingConditions.make(),
     );
 
     // 3. Create HCT from:
     // - CAM16 using default VC with XYZ coordinates in specified VC.
     // - L* converted from Y in XYZ coordinates in specified VC.
     const recastHct = Hct.from(
-        recastInVc.hue,
-        recastInVc.chroma,
-        utils.lstarFromY(viewedInVc[1]),
+      recastInVc.hue,
+      recastInVc.chroma,
+      utils.lstarFromY(viewedInVc[1]),
     );
     return recastHct;
   }

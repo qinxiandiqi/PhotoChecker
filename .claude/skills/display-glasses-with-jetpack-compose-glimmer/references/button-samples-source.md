@@ -1,7 +1,6 @@
 When creating a Glimmer Button component, refer to the following implementation
 samples in `ButtonSamples.kt`:
 
-
 ```kotlin
 /*
  * Copyright 2025 The Android Open Source Project

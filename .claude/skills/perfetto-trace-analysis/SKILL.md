@@ -1,21 +1,22 @@
 ---
 name: perfetto-trace-analysis
-description: Analyzes Perfetto traces to find the root cause of latency, memory, or
+description:
+  Analyzes Perfetto traces to find the root cause of latency, memory, or
   jank issues in Android apps. Use when the user provides a Perfetto trace file and
   asks any question, ongoing investigation, or open-ended request to analyze its contents.
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-14'
+  last-updated: "2026-05-14"
   keywords:
-  - Perfetto
-  - trace analysis
-  - Android performance
-  - debugging
-  - profiling
-  - jank
-  - bottleneck
-  - SQL
+    - Perfetto
+    - trace analysis
+    - Android performance
+    - debugging
+    - profiling
+    - jank
+    - bottleneck
+    - SQL
 ---
 
 ## Resources
@@ -34,8 +35,8 @@ metadata:
 3. **Review SQL Reference:** Read the SQL reference in [`references/sql.md`](references/sql.md) and follow its Execution Protocol for all SQL generation. Do not guess schemas.
 4. **Target Resolution:** If the user's request is broad (e.g., "why is the app slow?") and doesn't specify a package name:
    - Execute a query to identify the active application: `sql INCLUDE
-     PERFETTO MODULE android.startup.startups; SELECT package FROM
-     android_startups;`
+PERFETTO MODULE android.startup.startups; SELECT package FROM
+android_startups;`
    - If multiple packages are returned, ask the user to choose one. Save the chosen `package_name` to your scratchpad.
 
 ## Investigation Protocol
@@ -47,12 +48,12 @@ Follow this iterative loop until you have isolated the definitive root cause(s):
 - **Prioritization:** Form hypotheses using information from: user prompt \> "Domain Hints" ([`CPU`](references/hints_cpu.md), [`Graphics`](references/hints_graphics.md), [`I/O`](references/hints_io.md), [`IPC`](references/hints_ipc.md), [`Memory`](references/hints_memory.md), [`Power`](references/hints_power.md)) \> general knowledge. Be sure to leverage these "Domain Hints" as they are expert-vetted analysis techniques.
 - **Source Attribution:** Explicitly mention the source of your hypothesis (e.g., "Based on hints_io.md...").
 - **Focus Constraint:** Focus on the primary bottleneck. Avoid investigating deep into binder transactions unless the user explicitly asks for it or there is no other obvious bottleneck.
-- **State Reasoning:** Briefly state your reasoning based on previous findings *before* generating a new query.
+- **State Reasoning:** Briefly state your reasoning based on previous findings _before_ generating a new query.
 
 ### 2. Plan and Collect Data
 
 - **Metrics First:** Start with a high-level view using trace metrics before diving into custom SQL (e.g., `./trace_processor --run-metrics
-  android_startup`).
+android_startup`).
 - **Broad to Narrow:** Begin with broad queries using minimal filters. Favor fuzzy matching (e.g., `GLOB '*abc*'`) over exact matching.
 - **Overlapping Time:** When filtering by time, you MUST check for events that overlap with the target time range (e.g., `start1 < end2 AND start2 < end1`) to ensure you don't miss slices that span across the boundaries.
 
@@ -60,7 +61,7 @@ Follow this iterative loop until you have isolated the definitive root cause(s):
 
 - **Evidentiary Rigor:** Do not draw conclusions without explicit data.
 - **Wall Time vs. CPU Time:** Do not assume a long-running slice is actively computing. You MUST query the `thread_state` table for the exact timestamp window of suspicious slices to verify if the thread was `Running`, `Runnable` (waiting for CPU), or `Sleeping`/`Uninterruptible Sleep` (blocked).
-- **Follow Dependencies:** If a thread is blocked/waiting, you MUST find what it is waiting *for* (Binder, Lock, I/O, etc.). Cross process boundaries if necessary. You cannot conclude an investigation on a waiting thread without identifying the blocker.
+- **Follow Dependencies:** If a thread is blocked/waiting, you MUST find what it is waiting _for_ (Binder, Lock, I/O, etc.). Cross process boundaries if necessary. You cannot conclude an investigation on a waiting thread without identifying the blocker.
 
 ### 4. Exhaustive Investigation (Do Not Give Up Early)
 

@@ -65,6 +65,7 @@ This integration includes the following five cluster types: **Recommendation** ,
 
     - Images for X items in the user's previous order.
     - Labels for X items in the user's previous order.
+
 - The **Shopping Order Tracking** cluster shows a sneak peek of pending
   or recently completed shopping orders from many developer partners in one UI
   grouping, allowing users to track their orders.
@@ -103,14 +104,14 @@ service](https://developer.android.com/guide/components/bound-services).
 The data a client can publish is subject to the following limits for different
 cluster types:
 
-| Cluster type | Cluster limits | Maximum entity limits in a cluster |
-|---|---|---|
-| Recommendation Cluster(s) | At most 7 | At most 50 `ShoppingEntity` |
-| Featured Cluster | At most 1 | At most 20 `ShoppingEntity` |
-| Shopping Cart Cluster | At most 1 | At most 3 `ShoppingCart` Multiple carts only expected for apps with separate carts per merchant. |
-| Shopping List Cluster | At most 1 | At most 3 `ShoppingList` |
-| Shopping Reorder Cluster | At most 1 | At most 1 `ReorderEntity` |
-| Shopping Order Tracking Cluster | At most 3 | At most 3 `ShoppingOrderTrackingEntity` |
+| Cluster type                    | Cluster limits | Maximum entity limits in a cluster                                                               |
+| ------------------------------- | -------------- | ------------------------------------------------------------------------------------------------ |
+| Recommendation Cluster(s)       | At most 7      | At most 50 `ShoppingEntity`                                                                      |
+| Featured Cluster                | At most 1      | At most 20 `ShoppingEntity`                                                                      |
+| Shopping Cart Cluster           | At most 1      | At most 3 `ShoppingCart` Multiple carts only expected for apps with separate carts per merchant. |
+| Shopping List Cluster           | At most 1      | At most 3 `ShoppingList`                                                                         |
+| Shopping Reorder Cluster        | At most 1      | At most 1 `ReorderEntity`                                                                        |
+| Shopping Order Tracking Cluster | At most 3      | At most 3 `ShoppingOrderTrackingEntity`                                                          |
 
 ### Step 1: Provide entity data
 
@@ -132,99 +133,99 @@ or event that developer partners want to publish.
 
 ##### `ShoppingEntity`
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Poster images | **Required** | At least one image must be provided. | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
-| Action Uri | **Required** | The deep link to the page in the app displaying details about the entity. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Title | Optional | The name of the entity. | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses) |
-| Price - current | Conditionally required | The current price of the entity. **Must be provided if strikethrough price is provided.** | Free text |
-| Price - strikethrough | Optional | The original price of the entity, which is be struck-through in the UI. | Free text |
-| Callout | Optional | Callout to feature a promo, event, or update for the entity, if available. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Callout fine print | Optional | Fine print text for the callout. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| **Rating (Optional) - Note: All ratings are displayed using our standard star rating system.** ||||
-| Rating - Max value | Optional | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Current value | Optional | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Count | Optional | The count of the ratings for the entity. **Note:** Provide this field if your app controls how the count is displayed to the users. Use a concise string. For example, if the count is 1,000,000, consider using an abbreviation like 1M so that the count isn't truncated on smaller display sizes. | String |
-| Rating - Count Value | Optional | The count of the ratings for the entity. **Note:** Provide this field if you don't handle the display abbreviation logic yourself. If both Count and Count Value are present, Count is displayed to users. | Long |
-| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface** ||||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
+| Attribute                                                                                      | Requirement            | Description                                                                                                                                                                                                                                                                                          | Format                                                                                                             |
+| ---------------------------------------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Poster images                                                                                  | **Required**           | At least one image must be provided.                                                                                                                                                                                                                                                                 | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
+| Action Uri                                                                                     | **Required**           | The deep link to the page in the app displaying details about the entity. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                                                                           | Uri                                                                                                                |
+| Title                                                                                          | Optional               | The name of the entity.                                                                                                                                                                                                                                                                              | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses)                      |
+| Price - current                                                                                | Conditionally required | The current price of the entity. **Must be provided if strikethrough price is provided.**                                                                                                                                                                                                            | Free text                                                                                                          |
+| Price - strikethrough                                                                          | Optional               | The original price of the entity, which is be struck-through in the UI.                                                                                                                                                                                                                              | Free text                                                                                                          |
+| Callout                                                                                        | Optional               | Callout to feature a promo, event, or update for the entity, if available.                                                                                                                                                                                                                           | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                      |
+| Callout fine print                                                                             | Optional               | Fine print text for the callout.                                                                                                                                                                                                                                                                     | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                      |
+| **Rating (Optional) - Note: All ratings are displayed using our standard star rating system.** |                        |                                                                                                                                                                                                                                                                                                      |                                                                                                                    |
+| Rating - Max value                                                                             | Optional               | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.**                                                                                                                                                                                             | Number \>= 0.0                                                                                                     |
+| Rating - Current value                                                                         | Optional               | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.**                                                                                                                                                                                             | Number \>= 0.0                                                                                                     |
+| Rating - Count                                                                                 | Optional               | The count of the ratings for the entity. **Note:** Provide this field if your app controls how the count is displayed to the users. Use a concise string. For example, if the count is 1,000,000, consider using an abbreviation like 1M so that the count isn't truncated on smaller display sizes. | String                                                                                                             |
+| Rating - Count Value                                                                           | Optional               | The count of the ratings for the entity. **Note:** Provide this field if you don't handle the display abbreviation logic yourself. If both Count and Count Value are present, Count is displayed to users.                                                                                           | Long                                                                                                               |
+| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface**  |                        |                                                                                                                                                                                                                                                                                                      |                                                                                                                    |
+| Start Timestamp                                                                                | Optional               | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                                                                                              | Epoch timestamp in milliseconds                                                                                    |
+| End Timestamp                                                                                  | Optional               | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                                                                                           | Epoch timestamp in milliseconds                                                                                    |
 
 #### `ShoppingCart`
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Action Uri | **Required** | The deep link to the shopping cart in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Number of items | **Required** | The number of items (not just number of products) in the shopping cart. **For example: If there are 3 identical shirts and 1 hat in the cart, this number should be 4.** | Integer \>= 1 |
-| Action Text | Optional | The call to action text of the button on the Shopping Cart (for example, *Your Shopping Bag*). **If no action text is provided by the developer, *View Cart* is the default.** This attribute is supported in version 1.1.0 onwards. | String |
-| Title | Optional | The title of the cart (for example, *Your Shopping Bag*). **If no title is provided by the developer, *Your cart* is the default.** **If developer partner publishes a separate cart per merchant, please include *merchant name* in the title.** | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses) |
-| Cart images | Optional | Images of each product in the cart. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.** | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
-| Item labels | Optional | The list of labels for items on the shopping list. **The actual number of labels displayed depends on the device form factor.** | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses) |
-| Last user interaction timestamp | Optional | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the cart. **This will be passed as input by the developer partners publishing separate cart per merchant and maybe used for ranking.** | Epoch timestamp in milliseconds |
-| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface** ||||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
+| Attribute                                                                                     | Requirement  | Description                                                                                                                                                                                                                                       | Format                                                                                                             |
+| --------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Action Uri                                                                                    | **Required** | The deep link to the shopping cart in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                                         | Uri                                                                                                                |
+| Number of items                                                                               | **Required** | The number of items (not just number of products) in the shopping cart. **For example: If there are 3 identical shirts and 1 hat in the cart, this number should be 4.**                                                                          | Integer \>= 1                                                                                                      |
+| Action Text                                                                                   | Optional     | The call to action text of the button on the Shopping Cart (for example, _Your Shopping Bag_). **If no action text is provided by the developer, _View Cart_ is the default.** This attribute is supported in version 1.1.0 onwards.              | String                                                                                                             |
+| Title                                                                                         | Optional     | The title of the cart (for example, _Your Shopping Bag_). **If no title is provided by the developer, _Your cart_ is the default.** **If developer partner publishes a separate cart per merchant, please include _merchant name_ in the title.** | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses)                      |
+| Cart images                                                                                   | Optional     | Images of each product in the cart. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.**                                                                            | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
+| Item labels                                                                                   | Optional     | The list of labels for items on the shopping list. **The actual number of labels displayed depends on the device form factor.**                                                                                                                   | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses)       |
+| Last user interaction timestamp                                                               | Optional     | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the cart. **This will be passed as input by the developer partners publishing separate cart per merchant and maybe used for ranking.**         | Epoch timestamp in milliseconds                                                                                    |
+| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface** |              |                                                                                                                                                                                                                                                   |                                                                                                                    |
+| Start Timestamp                                                                               | Optional     | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                                           | Epoch timestamp in milliseconds                                                                                    |
+| End Timestamp                                                                                 | Optional     | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                                        | Epoch timestamp in milliseconds                                                                                    |
 
 #### `ShoppingList`
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Action Uri | **Required** | The deep link to the shopping list in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Number of items | **Required** | The number of items in the shopping list. | Integer \>= 1 |
-| Title | Optional | The title of the list (for example, *Your Grocery List*). **If no title is provided by the developer, *Shopping list* is the default.** | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses) |
-| Item labels | **Required** | The list of labels for items on the shopping list. **At least 1 label must be provided and up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.** | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses) |
-| Last user interaction timestamp | **Required** | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the shopping list. | Epoch timestamp in milliseconds |
+| Attribute                       | Requirement  | Description                                                                                                                                                                                                                 | Format                                                                                                       |
+| ------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Action Uri                      | **Required** | The deep link to the shopping list in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                   | Uri                                                                                                          |
+| Number of items                 | **Required** | The number of items in the shopping list.                                                                                                                                                                                   | Integer \>= 1                                                                                                |
+| Title                           | Optional     | The title of the list (for example, _Your Grocery List_). **If no title is provided by the developer, _Shopping list_ is the default.**                                                                                     | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses)                |
+| Item labels                     | **Required** | The list of labels for items on the shopping list. **At least 1 label must be provided and up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.** | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses) |
+| Last user interaction timestamp | **Required** | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the shopping list.                                                                                                       | Epoch timestamp in milliseconds                                                                              |
 
 #### `ShoppingReorderCluster`
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Action Uri | **Required** | The deep link to reorder in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Action Text | Optional | The call to action text of the button on the Reorder (for example, *Order again*). **If no action text is provided by the developer, *Reorder* is the default.** This attribute is supported in version 1.1.0 onwards. | String |
-| Number of items | **Required** | The number of items (not just number of products) in the previous order. **For example: If there were 3 small coffees and 1 croissant in the previous order, this number should be 4.** | Integer \>= 1 |
-| Title | **Required** | The title of the reorder item. | Free text **Recommended text size: under 40 chars** (Text that is too long may show ellipses) |
-| Item labels | Optional (If not provided, poster images should be provided) | The list of item labels for the previous order. **Up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.** | List of free text **Recommended text size per label: under 20 chars** (Text that is too long may show ellipses) |
-| Poster images | Optional (If not provided, item labels should be provided) | Images of the items in the previous order. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.** | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
+| Attribute       | Requirement                                                  | Description                                                                                                                                                                                                            | Format                                                                                                             |
+| --------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Action Uri      | **Required**                                                 | The deep link to reorder in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                        | Uri                                                                                                                |
+| Action Text     | Optional                                                     | The call to action text of the button on the Reorder (for example, _Order again_). **If no action text is provided by the developer, _Reorder_ is the default.** This attribute is supported in version 1.1.0 onwards. | String                                                                                                             |
+| Number of items | **Required**                                                 | The number of items (not just number of products) in the previous order. **For example: If there were 3 small coffees and 1 croissant in the previous order, this number should be 4.**                                | Integer \>= 1                                                                                                      |
+| Title           | **Required**                                                 | The title of the reorder item.                                                                                                                                                                                         | Free text **Recommended text size: under 40 chars** (Text that is too long may show ellipses)                      |
+| Item labels     | Optional (If not provided, poster images should be provided) | The list of item labels for the previous order. **Up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.**                                     | List of free text **Recommended text size per label: under 20 chars** (Text that is too long may show ellipses)    |
+| Poster images   | Optional (If not provided, item labels should be provided)   | Images of the items in the previous order. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.**                                          | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
 
 #### `ShoppingOrderTrackingCluster`
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Title | **Required** | A short title of the package/items being tracked or the tracking number. | Free text **Recommended text size: 50 chars (Text that is too long will show ellipses)** |
-| Order Type | **Required** | A short title of the package/items being tracked or the tracking number. | Enum: IN_STORE_PICKUP, SAME_DAY_DELIVERY, MULTI_DAY_DELIVERY |
-| Status | **Required** | The current status of the order. **For example: "Running late", "In transit", "Delayed", "Shipped", "Delivered", "Out of stock", "Order ready"** | Free text **Recommended text size: 25 chars (Text that is too long will show ellipses)** |
-| Order Time | **Required** | The epoch timestamp in milliseconds at which the order was placed. **Order time will be displayed if expected delivery time window is not present** | Epoch timestamp in milliseconds |
-| Action Uri | **Required** | Deep link to the order tracking in the partner's app. | Uri |
-| **OrderDeliveryTimeWindow (Optional) - Set a time window for the order that is being tracked from the time the order was placed to the time of expected/actual delivery.** ||||
-| OrderDeliveryTimeWindow - Start Time | Optional | The epoch timestamp in milliseconds on/after which the order will be delivered or be ready for pickup. | Epoch timestamp in milliseconds |
-| OrderDeliveryTimeWindow - End Time | Optional | The epoch timestamp in milliseconds on/before which the order will be delivered or be ready for pickup. | Epoch timestamp in milliseconds |
-| Poster images | Optional | Image of one item/product that is part of the order. Recommended aspect ratio is 1:1 | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
-| Number of items | Optional | The number of items in the order. | Integer \>= 1 |
-| Description | Optional | A single paragraph of text to describe the items in the order. **Note:** Either description or subtitle list will be displayed to the user, not both. | Free text **Recommended text size: 180 chars** |
-| Subtitle list | Optional | Up to 3 subtitles, with each subtitle a single line of text. **Note:** Either description or subtitle list will be displayed to the user, not both. | Free text **Recommended text size for each subtitle: max 50 chars** |
-| Order Value - CurrentPrice | Optional | The current value of the order. | Free text |
-| Order number | Optional | The order number/ID that can be used to uniquely identify the order. | Free text **Recommended text size: max 25 chars** |
-| Tracking number | Optional | The tracking number for the order/parcel delivery in case the order requires a delivery. | Free text **Recommended text size: max 25 chars** |
+| Attribute                                                                                                                                                                  | Requirement  | Description                                                                                                                                           | Format                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Title                                                                                                                                                                      | **Required** | A short title of the package/items being tracked or the tracking number.                                                                              | Free text **Recommended text size: 50 chars (Text that is too long will show ellipses)**                           |
+| Order Type                                                                                                                                                                 | **Required** | A short title of the package/items being tracked or the tracking number.                                                                              | Enum: IN_STORE_PICKUP, SAME_DAY_DELIVERY, MULTI_DAY_DELIVERY                                                       |
+| Status                                                                                                                                                                     | **Required** | The current status of the order. **For example: "Running late", "In transit", "Delayed", "Shipped", "Delivered", "Out of stock", "Order ready"**      | Free text **Recommended text size: 25 chars (Text that is too long will show ellipses)**                           |
+| Order Time                                                                                                                                                                 | **Required** | The epoch timestamp in milliseconds at which the order was placed. **Order time will be displayed if expected delivery time window is not present**   | Epoch timestamp in milliseconds                                                                                    |
+| Action Uri                                                                                                                                                                 | **Required** | Deep link to the order tracking in the partner's app.                                                                                                 | Uri                                                                                                                |
+| **OrderDeliveryTimeWindow (Optional) - Set a time window for the order that is being tracked from the time the order was placed to the time of expected/actual delivery.** |              |                                                                                                                                                       |                                                                                                                    |
+| OrderDeliveryTimeWindow - Start Time                                                                                                                                       | Optional     | The epoch timestamp in milliseconds on/after which the order will be delivered or be ready for pickup.                                                | Epoch timestamp in milliseconds                                                                                    |
+| OrderDeliveryTimeWindow - End Time                                                                                                                                         | Optional     | The epoch timestamp in milliseconds on/before which the order will be delivered or be ready for pickup.                                               | Epoch timestamp in milliseconds                                                                                    |
+| Poster images                                                                                                                                                              | Optional     | Image of one item/product that is part of the order. Recommended aspect ratio is 1:1                                                                  | See [Image Specifications](https://developer.android.com/guide/playcore/engage/shopping#image-specs) for guidance. |
+| Number of items                                                                                                                                                            | Optional     | The number of items in the order.                                                                                                                     | Integer \>= 1                                                                                                      |
+| Description                                                                                                                                                                | Optional     | A single paragraph of text to describe the items in the order. **Note:** Either description or subtitle list will be displayed to the user, not both. | Free text **Recommended text size: 180 chars**                                                                     |
+| Subtitle list                                                                                                                                                              | Optional     | Up to 3 subtitles, with each subtitle a single line of text. **Note:** Either description or subtitle list will be displayed to the user, not both.   | Free text **Recommended text size for each subtitle: max 50 chars**                                                |
+| Order Value - CurrentPrice                                                                                                                                                 | Optional     | The current value of the order.                                                                                                                       | Free text                                                                                                          |
+| Order number                                                                                                                                                               | Optional     | The order number/ID that can be used to uniquely identify the order.                                                                                  | Free text **Recommended text size: max 25 chars**                                                                  |
+| Tracking number                                                                                                                                                            | Optional     | The tracking number for the order/parcel delivery in case the order requires a delivery.                                                              | Free text **Recommended text size: max 25 chars**                                                                  |
 
 #### Image specifications
 
 Required specifications for image assets are listed below:
 
-| Aspect ratio | Minimum pixels | Recommended pixels |
-|---|---|---|
-| Square (1x1) **Preferred for non featured clusters** | 300x300 | 1200x1200 |
-| Landscape (1.91x1) **Preferred for featured clusters** | 600x314 | 1200x628 |
-| Portrait (4x5) | 480x600 | 960x1200 |
+| Aspect ratio                                           | Minimum pixels | Recommended pixels |
+| ------------------------------------------------------ | -------------- | ------------------ |
+| Square (1x1) **Preferred for non featured clusters**   | 300x300        | 1200x1200          |
+| Landscape (1.91x1) **Preferred for featured clusters** | 600x314        | 1200x628           |
+| Portrait (4x5)                                         | 480x600        | 960x1200           |
 
-*File formats*
+_File formats_
 
 PNG, JPG, static GIF, WebP
 
-*Maximum file size*
+_Maximum file size_
 
 5120 KB
 
-*Additional recommendations*
+_Additional recommendations_
 
 - **Image safe area:** Put your important content in the center 80% of the image.
 - Use a transparent background so that the image can be properly displayed in Dark and Light theme settings.
@@ -306,12 +307,12 @@ This API is used to publish a list of `RecommendationCluster` objects.
 
 A `RecommendationCluster` object can have the following attributes:
 
-| Attribute | Requirement | Description |
-|---|---|---|
-| List of ShoppingEntity | **Required** | A list of ShoppingEntity objects that make up the recommendations for this Recommendation Cluster. |
-| Title | **Required** | The title for the Recommendation Cluster. **Recommended text size: under 25 chars** (Text that is too long may show ellipses) |
-| Subtitle | Optional | The subtitle for the Recommendation Cluster. |
-| Action Uri | Optional | The deep link to the page in the partner app where users can see the complete list of recommendations. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
+| Attribute              | Requirement  | Description                                                                                                                                                                                                                                             |
+| ---------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| List of ShoppingEntity | **Required** | A list of ShoppingEntity objects that make up the recommendations for this Recommendation Cluster.                                                                                                                                                      |
+| Title                  | **Required** | The title for the Recommendation Cluster. **Recommended text size: under 25 chars** (Text that is too long may show ellipses)                                                                                                                           |
+| Subtitle               | Optional     | The subtitle for the Recommendation Cluster.                                                                                                                                                                                                            |
+| Action Uri             | Optional     | The deep link to the page in the partner app where users can see the complete list of recommendations. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
 
 > [!IMPORTANT]
 > **Important:** The publish APIs are upsert APIs; it replaces the existing content. **Don't** call delete and publish APIs subsequently to replace the content as the publish APIs do that inherently.
@@ -539,13 +540,13 @@ personalized content)
 
 The following metadata is part of the Sign In Card -
 
-| Attribute | Requirement | Description |
-|---|---|---|
-| Action Uri | Required | Deeplink to Action (i.e. navigates to app sign in page) |
-| Image | Optional - If not provided, Title must be provided | Image Shown on the Card 16x9 aspect ratio images with a resolution of 1264x712 |
-| Title | Optional - If not provided, Image must be provided | Title on the Card |
-| Action Text | Optional | Text Shown on the CTA (i.e. Sign in) |
-| Subtitle | Optional | Optional Subtitle on the Card |
+| Attribute   | Requirement                                        | Description                                                                    |
+| ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Action Uri  | Required                                           | Deeplink to Action (i.e. navigates to app sign in page)                        |
+| Image       | Optional - If not provided, Title must be provided | Image Shown on the Card 16x9 aspect ratio images with a resolution of 1264x712 |
+| Title       | Optional - If not provided, Image must be provided | Title on the Card                                                              |
+| Action Text | Optional                                           | Text Shown on the CTA (i.e. Sign in)                                           |
+| Subtitle    | Optional                                           | Optional Subtitle on the Card                                                  |
 
 > [!IMPORTANT]
 > **Important:** The publish APIs are upsert APIs; it replaces the existing content. **Don't** call delete and publish APIs subsequently to replace the content as the publish APIs do that inherently.
@@ -896,15 +897,15 @@ that a follow-up action can be taken to recover and resubmit an successful task.
 The error is returned as an `AppEngageException` with the cause included as an
 error code.
 
-| Error code | Error name | Note |
-|---|---|---|
-| `1` | `SERVICE_NOT_FOUND` | The service is not available on the given device. |
-| `2` | `SERVICE_NOT_AVAILABLE` | The service is available on the given device, but it is not available at the time of the call (for example, it is explicitly disabled). |
-| `3` | `SERVICE_CALL_EXECUTION_FAILURE` | The task execution failed due to threading issues. In this case, it can be retried. |
-| `4` | `SERVICE_CALL_PERMISSION_DENIED` | The caller is not allowed to make the service call. |
-| `5` | `SERVICE_CALL_INVALID_ARGUMENT` | The request contains invalid data (for example, more than the allowed number of clusters). |
-| `6` | `SERVICE_CALL_INTERNAL` | There is an error on the service side. |
-| `7` | `SERVICE_CALL_RESOURCE_EXHAUSTED` | The service call is made too frequently. |
+| Error code | Error name                        | Note                                                                                                                                    |
+| ---------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `1`        | `SERVICE_NOT_FOUND`               | The service is not available on the given device.                                                                                       |
+| `2`        | `SERVICE_NOT_AVAILABLE`           | The service is available on the given device, but it is not available at the time of the call (for example, it is explicitly disabled). |
+| `3`        | `SERVICE_CALL_EXECUTION_FAILURE`  | The task execution failed due to threading issues. In this case, it can be retried.                                                     |
+| `4`        | `SERVICE_CALL_PERMISSION_DENIED`  | The caller is not allowed to make the service call.                                                                                     |
+| `5`        | `SERVICE_CALL_INVALID_ARGUMENT`   | The request contains invalid data (for example, more than the allowed number of clusters).                                              |
+| `6`        | `SERVICE_CALL_INTERNAL`           | There is an error on the service side.                                                                                                  |
+| `7`        | `SERVICE_CALL_RESOURCE_EXHAUSTED` | The service call is made too frequently.                                                                                                |
 
 ### Step 3: Handle broadcast intents
 

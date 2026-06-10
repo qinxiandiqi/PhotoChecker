@@ -21,12 +21,12 @@ and refined in v8.
   - **Change** : `queryProductDetailsAsync` no longer returns a list in the listener.
   - **New Intent** : You must receive a `QueryProductDetailsResult` object.
   - **Refactor** : `kotlin
-    // PBL 8+ Pattern
-    billingClient.queryProductDetailsAsync(params) { result: QueryProductDetailsResult ->
-    val responseCode = result.billingResult.responseCode
-    val productDetailsList = result.productDetailsList // Retrieve list from result object
-    // Process list...
-    }`
+// PBL 8+ Pattern
+billingClient.queryProductDetailsAsync(params) { result: QueryProductDetailsResult ->
+val responseCode = result.billingResult.responseCode
+val productDetailsList = result.productDetailsList // Retrieve list from result object
+// Process list...
+}`
 
 ### 3. Subscription Modernization (v6 \& v7)
 
@@ -37,6 +37,7 @@ and refined in v8.
   - **Legacy** : `setOldSkuPurchaseToken()` in `BillingFlowParams`.
   - **Modern** : Use `SubscriptionUpdateParams`. You must specify the `PurchaseToken` of the existing subscription and the `ReplacementMode` (which replaces the deprecated `ProrationMode`).
   - **Logic** : Verify that the `ReplacementMode` matches the business intent (e.g., `CHARGE_FULL_PRICE` versus `WITH_TIME_PRORATION`).
+
 - **Installment Plans (v7+)**:
 
   - **Intent**: Allow users to pay for a subscription in monthly installments.

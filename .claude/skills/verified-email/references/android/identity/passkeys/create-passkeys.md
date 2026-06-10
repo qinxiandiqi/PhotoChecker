@@ -112,7 +112,7 @@ by the app server:
       "attestation": "none",
       "excludeCredentials": [
         {
-            "id": "<base64url-encoded credential ID to exclude>", 
+            "id": "<base64url-encoded credential ID to exclude>",
             "type": "public-key"
         }
       ],
@@ -139,8 +139,9 @@ Key fields in the public key creation options include:
   - `authenticatorAttachment`: Indicates the preferred [authenticator](https://www.w3.org/TR/webauthn/#authenticator). The possible values are as follows: - `platform`: This value is used for an authenticator built into the user's device, such as a fingerprint sensor. - `cross-platform`: This value is used for roaming devices such as security keys. It is not typically used in the passkey context. - Unspecified (recommended): Leaving this value unspecified provides users with the flexibility to create passkeys on their preferred devices. In most cases, leaving the parameter unspecified is the best option.
     - `requireResidentKey`: To create a passkey, set the value of this `Boolean` field to `true`.
     - `residentKey`: To create a passkey, set the value to `required`.
-    - `userVerification`: Used to specify the requirements for user verification during a passkey registration. The possible values are as follows: - `preferred`: Use this value if you prioritize user experience over protection, such as in environments where user verification causes more friction than protection. - `required`: Use this value if invoking a user verification method available on the device is required. - `discouraged`: Use this value if using a user verification method is discouraged.   
+    - `userVerification`: Used to specify the requirements for user verification during a passkey registration. The possible values are as follows: - `preferred`: Use this value if you prioritize user experience over protection, such as in environments where user verification causes more friction than protection. - `required`: Use this value if invoking a user verification method available on the device is required. - `discouraged`: Use this value if using a user verification method is discouraged.  
       To learn more about `userVerification`, see [userVerification deep dive](https://web.dev/articles/webauthn-user-verification).
+
 - `excludeCredentials`: List credential IDs in an [array](https://w3c.github.io/webauthn/#dom-publickeycredentialcreationoptions-excludecredentials) to
   prevent the creation of a duplicate passkey if one already exists with the
   same credential provider.
@@ -156,7 +157,7 @@ The `createPublicKeyCredentialRequest` includes the following:
 - `requestJson`: The credential creation options sent by the app server.
 - `preferImmediatelyAvailableCredentials`: This is an optional Boolean field that defines whether to only use locally-available or credential provider-synced credentials to fulfill the request, instead of credentials from security keys or [hybrid](https://w3c.github.io/webauthn/#dom-authenticatortransport-hybrid) key flows. The possible usages are as follows:
   - `false` (default): Use this value if the call to Credential Manager was triggered by an explicit user action.
-  - `true`: Use this value if Credential Manager is opportunistically called, such as when first opening the app.   
+  - `true`: Use this value if Credential Manager is opportunistically called, such as when first opening the app.  
     If you set the value to `true` and there are no immediately available credentials, Credential Manager won't show any UI and the request will fail immediately, returning NoCredentialException for get requests and [`CreateCredentialNoCreateOptionException`](https://developer.android.com/reference/kotlin/androidx/credentials/exceptions/CreateCredentialNoCreateOptionException) for create requests.
 - `origin`: This field is automatically set for Android apps. For browsers and similarly privileged apps that need to set `origin`, see [Make Credential
   Manager calls on behalf of other parties for privileged apps](https://developer.android.com/training/sign-in/privileged-apps).
@@ -250,30 +251,31 @@ of approved apps. If a key has an unrecognized origin, reject it.
 
 To obtain the app's SHA 256 fingerprint:
 
-1. Print your release app's signing certificate by running the following
-   command in a terminal:
+1.  Print your release app's signing certificate by running the following
+    command in a terminal:
 
-       keytool -list -keystore <path-to-apk-signing-keystore>
+        keytool -list -keystore <path-to-apk-signing-keystore>
 
-   In the response, identify the signing certificate's SHA 256 fingerprint,
-   mentioned as `Certificate fingerprints block` : `SHA256`.
-2. Encode the SHA256 fingerprint with base64url encoding. This Python example
-   demonstrates how to properly encode the fingerprint:
+    In the response, identify the signing certificate's SHA 256 fingerprint,
+    mentioned as `Certificate fingerprints block` : `SHA256`.
 
-       import binascii
-       import base64
-       fingerprint = '<SHA256 finerprint>' # your app's SHA256 fingerprint
-       print(base64.urlsafe_b64encode(binascii.a2b_hex(fingerprint.replace(':', ''))).decode('utf8').replace('=', ''))
+2.  Encode the SHA256 fingerprint with base64url encoding. This Python example
+    demonstrates how to properly encode the fingerprint:
 
-3. Append `android:apk-key-hash`: to the start of the output from the previous
-   step so that you get something that is similar to the following:
+        import binascii
+        import base64
+        fingerprint = '<SHA256 finerprint>' # your app's SHA256 fingerprint
+        print(base64.urlsafe_b64encode(binascii.a2b_hex(fingerprint.replace(':', ''))).decode('utf8').replace('=', ''))
 
-       android:apk-key-hash:<encoded SHA 256 fingerprint>
+3.  Append `android:apk-key-hash`: to the start of the output from the previous
+    step so that you get something that is similar to the following:
 
-   The result should match with an allowed origin on your app server. If you
-   have multiple signing certificates, such as certificates for debugging and
-   release, or multiple apps, then repeat the process and accept all the
-   origins as valid on the app server.
+        android:apk-key-hash:<encoded SHA 256 fingerprint>
+
+    The result should match with an allowed origin on your app server. If you
+    have multiple signing certificates, such as certificates for debugging and
+    release, or multiple apps, then repeat the process and accept all the
+    origins as valid on the app server.
 
 > [!NOTE]
 > **Note:** When you save the passkey on the app server, make sure that you save the Authenticator Attestation Globally Unique Identifier ([AAGUID](https://web.dev/articles/webauthn-aaguid)) from the client data. The AAGUID is a unique number that identifies the model of the authenticator. For more information, see [Manage passkeys](https://developer.android.com/identity/passkeys/manage-passkeys).

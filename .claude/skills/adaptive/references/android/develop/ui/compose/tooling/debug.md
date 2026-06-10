@@ -59,7 +59,7 @@ specific interaction with your app. If you want to reset the count, click
 
 > [!NOTE]
 > **Note:** If you don't see the new columns in the **Component Tree** pane, you can view them by selecting **Show Recomposition Counts** from the **View Options** menu ![Layout Inspector View Options
-> icon](https://developer.android.com/static/studio/images/buttons/live-layout-inspector-view-options-icon.png) near the top of the **Component Tree** pane, as shown in the following image.
+icon](https://developer.android.com/static/studio/images/buttons/live-layout-inspector-view-options-icon.png) near the top of the **Component Tree** pane, as shown in the following image.
 
 ![Enable the composition and skip counter in Layout
 Inspector](https://developer.android.com/static/develop/ui/compose/images/li-show-recomposition-counts.png)

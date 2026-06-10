@@ -1,6 +1,7 @@
 ---
 name: verified-email
-description: Provides a complete workflow for implementing verified email retrieval
+description:
+  Provides a complete workflow for implementing verified email retrieval
   on Android Credential Manager API. Use this skill to integrate a secure, OTP-less
   email verification flow into an Android app. This skill solves the problem of high-friction
   sign-up processes by leveraging cryptographically verified credentials from trusted
@@ -8,34 +9,34 @@ description: Provides a complete workflow for implementing verified email retrie
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-22'
+  last-updated: "2026-05-22"
   keywords:
-  - implementation
-  - Android
-  - Credential Manager
-  - Digital Credentials
-  - Verified Email
-  - OpenID4VP
-  - SD-JWT
-  - OTP-less
-  - authentication
-  - passkeys
-  - CredMan
-  - identity.
+    - implementation
+    - Android
+    - Credential Manager
+    - Digital Credentials
+    - Verified Email
+    - OpenID4VP
+    - SD-JWT
+    - OTP-less
+    - authentication
+    - passkeys
+    - CredMan
+    - identity.
 ---
 
 ## Fundamentals
 
-- *[Overview of Digital Credentials](references/android/identity/digital-credentials/email-verification.md)*: Learn about cryptographically verifiable documents and the role of Credential Manager.
-- *[Glossary](references/android/identity/digital-credentials/email-verification-implementation.md)* : Definitions for `dcql_query`, `UserInfoCredential`, and `GetDigitalCredentialOption`.
+- _[Overview of Digital Credentials](references/android/identity/digital-credentials/email-verification.md)_: Learn about cryptographically verifiable documents and the role of Credential Manager.
+- _[Glossary](references/android/identity/digital-credentials/email-verification-implementation.md)_ : Definitions for `dcql_query`, `UserInfoCredential`, and `GetDigitalCredentialOption`.
 
 ### Standards \& Examples
 
-- *[OpenID4VP Standard](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#name-introduction)*: The specification used to create digital credentials requests.
-- *[Digital Credentials Demo](https://digital-credentials.dev/)*: Example requests and cross-platform testing tool.
-- *[W3C Verifiable Credentials](https://www.w3.org/TR/vc-data-model-2.0/)*: The data model for cryptographically secured claims.
-- *[SD-JWT](https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/)*: Selective Disclosure JSON Web Token format used for responses.
-- *[mdoc](https://www.iso.org/standard/69084.html)*: ISO/IEC 18013-5 standard for mobile documents.
+- _[OpenID4VP Standard](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#name-introduction)_: The specification used to create digital credentials requests.
+- _[Digital Credentials Demo](https://digital-credentials.dev/)_: Example requests and cross-platform testing tool.
+- _[W3C Verifiable Credentials](https://www.w3.org/TR/vc-data-model-2.0/)_: The data model for cryptographically secured claims.
+- _[SD-JWT](https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/)_: Selective Disclosure JSON Web Token format used for responses.
+- _[mdoc](https://www.iso.org/standard/69084.html)_: ISO/IEC 18013-5 standard for mobile documents.
 
 ### Requirements
 
@@ -180,12 +181,12 @@ providers support a JSON structure with an outer `"digital": {"requests":
                 {
                   "id": "user_info_query",
                   "format": "dc+sd-jwt",
-                   "meta": { 
-                      "vct_values": ["UserInfoCredential"] 
+                   "meta": {
+                      "vct_values": ["UserInfoCredential"]
                    },
-                  "claims": [ 
-                    {"path": ["email"]}, 
-                    {"path": ["name"]},  
+                  "claims": [
+                    {"path": ["email"]},
+                    {"path": ["name"]},
                     {"path": ["given_name"]},
                     {"path": ["family_name"]},
                     {"path": ["picture"]},

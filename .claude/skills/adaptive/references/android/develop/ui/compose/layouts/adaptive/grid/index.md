@@ -1,7 +1,7 @@
 > [!NOTE]
 > **Note:** `Grid` is an experimental API and is subject to change. File any issues on the [issue tracker](https://issuetracker.google.com/issues/new?component=1876021&template=1424126).
 
-[`Grid`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/Grid.composable#Grid(kotlin.Function1,androidx.compose.ui.Modifier,kotlin.Function1)) is a Jetpack Compose API
+[`Grid`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/Grid.composable#Grid(kotlin.Function1,androidx.compose.ui.Modifier,kotlin.Function1)>) is a Jetpack Compose API
 that lets you flexibly implement a two-dimensional layout.
 With this API, you can display items in multi-column
 or multi-row layouts that adapt to the available container size.
@@ -9,7 +9,7 @@ or multi-row layouts that adapt to the available container size.
 
 ## How is Grid different from similar composables?
 
-Compose already offers similar components, such as [`LazyVerticalGrid`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/lazy/grid/LazyVerticalGrid.composable#LazyVerticalGrid(androidx.compose.foundation.lazy.grid.GridCells,androidx.compose.ui.Modifier,androidx.compose.foundation.lazy.grid.LazyGridState,androidx.compose.foundation.layout.PaddingValues,kotlin.Boolean,androidx.compose.foundation.layout.Arrangement.Vertical,androidx.compose.foundation.layout.Arrangement.Horizontal,androidx.compose.foundation.gestures.FlingBehavior,kotlin.Boolean,androidx.compose.foundation.OverscrollEffect,kotlin.Function1)).
+Compose already offers similar components, such as [`LazyVerticalGrid`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/lazy/grid/LazyVerticalGrid.composable#LazyVerticalGrid(androidx.compose.foundation.lazy.grid.GridCells,androidx.compose.ui.Modifier,androidx.compose.foundation.lazy.grid.LazyGridState,androidx.compose.foundation.layout.PaddingValues,kotlin.Boolean,androidx.compose.foundation.layout.Arrangement.Vertical,androidx.compose.foundation.layout.Arrangement.Horizontal,androidx.compose.foundation.gestures.FlingBehavior,kotlin.Boolean,androidx.compose.foundation.OverscrollEffect,kotlin.Function1)>).
 These components are mainly for visualization of large, homogeneous data sets---
 for example, displaying a content catalog in a video streaming app.
 These components are NOT designed
@@ -23,11 +23,11 @@ such as deep hierarchies and difficulties in adaptability.
 The following table provides an overview
 of which layouts are suitable for each API:
 
-| Component | Purpose |
-|---|---|
+| Component                                                     | Purpose                                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | `LazyVerticalGrid`, `LazyStaggeredGrid`, `LazyHorizontalGrid` | Visualization of large, homogeneous data sets that requires lazy loading. |
-| `Row`, `Column`, `FlexBox` | One-dimensional layout |
-| `Grid` | Two-dimensional layout |
+| `Row`, `Column`, `FlexBox`                                    | One-dimensional layout                                                    |
+| `Grid`                                                        | Two-dimensional layout                                                    |
 
 > [!NOTE]
 > **Note:** `Grid` doesn't support lazy loading.

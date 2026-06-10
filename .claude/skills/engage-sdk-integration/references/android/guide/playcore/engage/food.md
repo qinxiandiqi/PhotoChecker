@@ -26,6 +26,7 @@ This integration includes the following five cluster types: **Recommendation** ,
   - A Recommendation cluster can be made of `ProductEntity`, `StoreEntity`, or `RecipeEntity` listings, but not a mix of different entity types.
 
   ![](https://developer.android.com/static/images/guide/playcore/engage/food-entities.png) **Figure :**\`ProductEntity\`, \`StoreEntity\`, and \`RecipeEntity\`. (\*UI for illustrative purposes only)
+
 - The **Featured** cluster showcases a selection of entities from multiple
   developer partners in one UI grouping. There will be a single Featured
   cluster, which is surfaced near the top of the UI with a priority placement
@@ -33,6 +34,7 @@ This integration includes the following five cluster types: **Recommendation** ,
   broadcast up to 10 entities in the Featured cluster.
 
   ![](https://developer.android.com/static/images/guide/playcore/engage/food-featured.png) **Figure :** Featured cluster with the \`RecipeEntity\`. (\*UI for illustrative purposes only)
+
 - The **Food Shopping Cart** cluster shows a sneak peek of grocery shopping
   carts from multiple developer partners in one UI grouping, prompting users to
   complete their outstanding carts. There is a single Food Shopping Cart
@@ -42,12 +44,14 @@ This integration includes the following five cluster types: **Recommendation** ,
     cart and may also include images for X items in the user's cart.
 
     ![](https://developer.android.com/static/images/guide/playcore/engage/food-shopping-cart.png) **Figure:** Food Shopping Cart cluster from a single partner. (\*UI for illustrative purposes only)
+
 - The **Food Shopping List** cluster shows a sneak peek of the grocery shopping
   lists from multiple developer partners in one UI grouping, prompting users to
   return to the corresponding app to update and complete their lists. There is a
   single Food Shopping List cluster.
 
   ![](https://developer.android.com/static/images/guide/playcore/engage/food-shopping-list.png) **Figure:** Food Shopping List cluster from a single partner. (\*UI for illustrative purposes only)
+
 - The **Reorder** cluster shows a sneak peek of the previous orders from
   multiple developer partners in one UI grouping, prompting users to reorder.
   There is a single Reorder cluster.
@@ -79,13 +83,13 @@ service](https://developer.android.com/guide/components/bound-services).
 The data a client can publish is subject to the following limits for different
 cluster types:
 
-| Cluster type | Cluster limits | Maximum entity limits in a cluster |
-|---|---|---|
-| Recommendation Cluster(s) | At most 7 | At most 50 (`ProductEntity`, `RecipeEntity`, or `StoreEntity`) |
-| Featured Cluster | At most 1 | At most 20 (`ProductEntity`, `RecipeEntity`, or `StoreEntity`) |
-| Food Shopping Cart Cluster | At most 1 | At most 3 `FoodShoppingCart` |
-| Food Shopping List Cluster | At most 1 | At most 3 `FoodShoppingList` |
-| Food Reorder Cluster | At most 1 | At most 1 `ReorderEntity` |
+| Cluster type               | Cluster limits | Maximum entity limits in a cluster                             |
+| -------------------------- | -------------- | -------------------------------------------------------------- |
+| Recommendation Cluster(s)  | At most 7      | At most 50 (`ProductEntity`, `RecipeEntity`, or `StoreEntity`) |
+| Featured Cluster           | At most 1      | At most 20 (`ProductEntity`, `RecipeEntity`, or `StoreEntity`) |
+| Food Shopping Cart Cluster | At most 1      | At most 3 `FoodShoppingCart`                                   |
+| Food Shopping List Cluster | At most 1      | At most 3 `FoodShoppingList`                                   |
+| Food Reorder Cluster       | At most 1      | At most 1 `ReorderEntity`                                      |
 
 ### Step 1: Provide entity data
 
@@ -113,23 +117,23 @@ publish.
 
 <br />
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Poster images | **Required** | At least one image must be provided. | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
-| Action Uri | **Required** | The deep link to the page in the app displaying details about the product. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Title | Optional | The name of the product. | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses) |
-| Price - current | Conditionally required | The current price of the product. **Must be provided if strikethrough price is provided.** | Free text |
-| Price - strikethrough | Optional | The original price of the entity, which is struck-through in the UI. | Free text |
-| Callout | Optional | Callout to feature a promo, event, or update for the product, if available. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Callout fine print | Optional | Fine print text for the callout. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| **Rating (Optional) - Note: All ratings are displayed using our standard star rating system.** ||||
-| Rating - Max value | Optional | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Current value | Optional | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Count | Optional | The count of the ratings for the product. **Note:** Provide this field if your app controls how the count is displayed to the users. Use a concise string. For example, if the count is 1,000,000, consider using an abbreviation like 1M so that the count isn't truncated on smaller display sizes. | String |
-| Rating - Count Value | Optional | The count of the ratings for the product. **Note:** Provide this field if you don't handle the display abbreviation logic yourself. If both Count and Count Value are present, Count is displayed to users. | Long |
-| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface** ||||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
+| Attribute                                                                                      | Requirement            | Description                                                                                                                                                                                                                                                                                           | Format                                                                                                         |
+| ---------------------------------------------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Poster images                                                                                  | **Required**           | At least one image must be provided.                                                                                                                                                                                                                                                                  | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
+| Action Uri                                                                                     | **Required**           | The deep link to the page in the app displaying details about the product. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                                                                           | Uri                                                                                                            |
+| Title                                                                                          | Optional               | The name of the product.                                                                                                                                                                                                                                                                              | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses)                  |
+| Price - current                                                                                | Conditionally required | The current price of the product. **Must be provided if strikethrough price is provided.**                                                                                                                                                                                                            | Free text                                                                                                      |
+| Price - strikethrough                                                                          | Optional               | The original price of the entity, which is struck-through in the UI.                                                                                                                                                                                                                                  | Free text                                                                                                      |
+| Callout                                                                                        | Optional               | Callout to feature a promo, event, or update for the product, if available.                                                                                                                                                                                                                           | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Callout fine print                                                                             | Optional               | Fine print text for the callout.                                                                                                                                                                                                                                                                      | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| **Rating (Optional) - Note: All ratings are displayed using our standard star rating system.** |                        |                                                                                                                                                                                                                                                                                                       |                                                                                                                |
+| Rating - Max value                                                                             | Optional               | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.**                                                                                                                                                                                              | Number \>= 0.0                                                                                                 |
+| Rating - Current value                                                                         | Optional               | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.**                                                                                                                                                                                              | Number \>= 0.0                                                                                                 |
+| Rating - Count                                                                                 | Optional               | The count of the ratings for the product. **Note:** Provide this field if your app controls how the count is displayed to the users. Use a concise string. For example, if the count is 1,000,000, consider using an abbreviation like 1M so that the count isn't truncated on smaller display sizes. | String                                                                                                         |
+| Rating - Count Value                                                                           | Optional               | The count of the ratings for the product. **Note:** Provide this field if you don't handle the display abbreviation logic yourself. If both Count and Count Value are present, Count is displayed to users.                                                                                           | Long                                                                                                           |
+| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface**  |                        |                                                                                                                                                                                                                                                                                                       |                                                                                                                |
+| Start Timestamp                                                                                | Optional               | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                                                                                               | Epoch timestamp in milliseconds                                                                                |
+| End Timestamp                                                                                  | Optional               | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                                                                                            | Epoch timestamp in milliseconds                                                                                |
 
 #### `StoreEntity`
 
@@ -142,21 +146,21 @@ want to publish, such as a restaurant or a grocery store.
 
 <br />
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Poster images | **Required** | At least one image must be provided. | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
-| Action Uri | **Required** | The deep link to the page in the app displaying details about the store. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Title | Optional | The name of the store. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Location | Optional | The location of the store. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Callout | Optional | Callout to feature a promo, event, or update for the store, if available. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Callout fine print | Optional | Fine print text for the callout. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Description | Optional | A description of the store. | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses) |
-| Category | Optional | Category of a store, in the context of dining places, it can be cuisine like "french", "new american", "ramen", "fine dining". | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| **Note: All ratings is displayed using our standard star rating system.** ||||
-| Rating - Max value | Optional | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Current value | Optional | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Count | Optional | The count of the ratings for the store. **Note:** Provide this field if your app wants to control how this is displayed to the users. Provide the concise string that can be displayed to the user. For example, if the count is 1,000,000, consider using abbreviations like 1M, so that it won't be truncated on smaller display sizes. | String |
-| Rating - Count Value | Optional | The count of the ratings for the store. **Note:** Provide this field if you don't want to handle the display abbreviation logic yourself. If both Count and Count Value are present, we will use the Count to display to users | Long |
+| Attribute                                                                 | Requirement  | Description                                                                                                                                                                                                                                                                                                                               | Format                                                                                                         |
+| ------------------------------------------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Poster images                                                             | **Required** | At least one image must be provided.                                                                                                                                                                                                                                                                                                      | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
+| Action Uri                                                                | **Required** | The deep link to the page in the app displaying details about the store. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                                                                                                                 | Uri                                                                                                            |
+| Title                                                                     | Optional     | The name of the store.                                                                                                                                                                                                                                                                                                                    | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Location                                                                  | Optional     | The location of the store.                                                                                                                                                                                                                                                                                                                | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Callout                                                                   | Optional     | Callout to feature a promo, event, or update for the store, if available.                                                                                                                                                                                                                                                                 | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Callout fine print                                                        | Optional     | Fine print text for the callout.                                                                                                                                                                                                                                                                                                          | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Description                                                               | Optional     | A description of the store.                                                                                                                                                                                                                                                                                                               | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses)                  |
+| Category                                                                  | Optional     | Category of a store, in the context of dining places, it can be cuisine like "french", "new american", "ramen", "fine dining".                                                                                                                                                                                                            | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| **Note: All ratings is displayed using our standard star rating system.** |              |                                                                                                                                                                                                                                                                                                                                           |                                                                                                                |
+| Rating - Max value                                                        | Optional     | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.**                                                                                                                                                                                                                                  | Number \>= 0.0                                                                                                 |
+| Rating - Current value                                                    | Optional     | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.**                                                                                                                                                                                                                                  | Number \>= 0.0                                                                                                 |
+| Rating - Count                                                            | Optional     | The count of the ratings for the store. **Note:** Provide this field if your app wants to control how this is displayed to the users. Provide the concise string that can be displayed to the user. For example, if the count is 1,000,000, consider using abbreviations like 1M, so that it won't be truncated on smaller display sizes. | String                                                                                                         |
+| Rating - Count Value                                                      | Optional     | The count of the ratings for the store. **Note:** Provide this field if you don't want to handle the display abbreviation logic yourself. If both Count and Count Value are present, we will use the Count to display to users                                                                                                            | Long                                                                                                           |
 
 #### `RecipeEntity`
 
@@ -169,21 +173,21 @@ to publish.
 
 <br />
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Poster images | **Required** | At least one image must be provided. | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
-| Action Uri | **Required** | The deep link to the page in the app displaying details about the recipe. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Title | Optional | The name of the recipe. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Author | Optional | The author of the recipe. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Cook/Preparation time | Optional | The cooking time of the recipe. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Callout | Optional | Callout to feature a promo, event, or update for the recipe, if available. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Category | Optional | The category of the recipe. | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses) |
-| Description | Optional | A description of the recipe. | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses) |
-| **Note: All ratings are displayed using our standard star rating system.** ||||
-| Rating - Max value | Optional | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Current value | Optional | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.** | Number \>= 0.0 |
-| Rating - Count | Optional | The count of the ratings for the recipe. **Note:** Provide this field if your app wants to control how this is displayed to the users. Provide the concise string that can be displayed to the user. For example, if the count is 1,000,000, consider using abbreviations like 1M, so that it won't be truncated on smaller display sizes. | String |
-| Rating - Count Value | Optional | The count of the ratings for the recipe. **Note:** Provide this field if you don't want to handle the display abbreviation logic yourself. If both Count and Count Value are present, we will use the Count to display to users | Long |
+| Attribute                                                                  | Requirement  | Description                                                                                                                                                                                                                                                                                                                                | Format                                                                                                         |
+| -------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Poster images                                                              | **Required** | At least one image must be provided.                                                                                                                                                                                                                                                                                                       | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
+| Action Uri                                                                 | **Required** | The deep link to the page in the app displaying details about the recipe. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                                                                                                                 | Uri                                                                                                            |
+| Title                                                                      | Optional     | The name of the recipe.                                                                                                                                                                                                                                                                                                                    | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Author                                                                     | Optional     | The author of the recipe.                                                                                                                                                                                                                                                                                                                  | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Cook/Preparation time                                                      | Optional     | The cooking time of the recipe.                                                                                                                                                                                                                                                                                                            | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Callout                                                                    | Optional     | Callout to feature a promo, event, or update for the recipe, if available.                                                                                                                                                                                                                                                                 | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Category                                                                   | Optional     | The category of the recipe.                                                                                                                                                                                                                                                                                                                | Free text **Recommended text size: under 45 chars** (Text that is too long may show ellipses)                  |
+| Description                                                                | Optional     | A description of the recipe.                                                                                                                                                                                                                                                                                                               | Free text **Recommended text size: under 90 chars** (Text that is too long may show ellipses)                  |
+| **Note: All ratings are displayed using our standard star rating system.** |              |                                                                                                                                                                                                                                                                                                                                            |                                                                                                                |
+| Rating - Max value                                                         | Optional     | The maximum value of the rating scale. **Must be provided if current value of rating is also provided.**                                                                                                                                                                                                                                   | Number \>= 0.0                                                                                                 |
+| Rating - Current value                                                     | Optional     | The current value of the rating scale. **Must be provided if maximum value of rating is also provided.**                                                                                                                                                                                                                                   | Number \>= 0.0                                                                                                 |
+| Rating - Count                                                             | Optional     | The count of the ratings for the recipe. **Note:** Provide this field if your app wants to control how this is displayed to the users. Provide the concise string that can be displayed to the user. For example, if the count is 1,000,000, consider using abbreviations like 1M, so that it won't be truncated on smaller display sizes. | String                                                                                                         |
+| Rating - Count Value                                                       | Optional     | The count of the ratings for the recipe. **Note:** Provide this field if you don't want to handle the display abbreviation logic yourself. If both Count and Count Value are present, we will use the Count to display to users                                                                                                            | Long                                                                                                           |
 
 #### `FoodShoppingCart`
 
@@ -193,18 +197,18 @@ to publish.
 
 <br />
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Action Uri | **Required** | The deep link to the shopping cart in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Number of items | **Required** | The number of items (not just number of products) in the shopping cart. **For example: If there are 3 oranges and 1 apple in the cart, this number should be 4.** | Integer \>= 1 |
-| Last user interaction timestamp | **Required** | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the shopping cart. | Epoch timestamp in milliseconds |
-| Title | Optional | The title of the cart (for example, *Your cart*). **If no title is provided by the developer, *Your cart* is the default.** | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses) |
-| Action Text | Optional | The call to action text of the button on the Shopping Cart (for example, *Your Shopping Bag*). **If no action text is provided by the developer, *View Cart* is the default.** This attribute is supported in version 1.1.0 onwards. | String |
-| Cart images | Optional | Images of each product in the cart. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.** | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
-| Item labels | Optional | The list of labels for items on the shopping list. **The actual number of labels displayed depends on the device form factor.** | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses) |
-| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface** ||||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. | Epoch timestamp in milliseconds |
+| Attribute                                                                                     | Requirement  | Description                                                                                                                                                                                                                          | Format                                                                                                         |
+| --------------------------------------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Action Uri                                                                                    | **Required** | The deep link to the shopping cart in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                            | Uri                                                                                                            |
+| Number of items                                                                               | **Required** | The number of items (not just number of products) in the shopping cart. **For example: If there are 3 oranges and 1 apple in the cart, this number should be 4.**                                                                    | Integer \>= 1                                                                                                  |
+| Last user interaction timestamp                                                               | **Required** | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the shopping cart.                                                                                                                | Epoch timestamp in milliseconds                                                                                |
+| Title                                                                                         | Optional     | The title of the cart (for example, _Your cart_). **If no title is provided by the developer, _Your cart_ is the default.**                                                                                                          | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses)                  |
+| Action Text                                                                                   | Optional     | The call to action text of the button on the Shopping Cart (for example, _Your Shopping Bag_). **If no action text is provided by the developer, _View Cart_ is the default.** This attribute is supported in version 1.1.0 onwards. | String                                                                                                         |
+| Cart images                                                                                   | Optional     | Images of each product in the cart. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.**                                                               | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
+| Item labels                                                                                   | Optional     | The list of labels for items on the shopping list. **The actual number of labels displayed depends on the device form factor.**                                                                                                      | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses)   |
+| **DisplayTimeWindow (Optional) - Set a time window for a content to be shown on the surface** |              |                                                                                                                                                                                                                                      |                                                                                                                |
+| Start Timestamp                                                                               | Optional     | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                              | Epoch timestamp in milliseconds                                                                                |
+| End Timestamp                                                                                 | Optional     | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface.                                                                                           | Epoch timestamp in milliseconds                                                                                |
 
 #### `FoodShoppingList`
 
@@ -214,13 +218,13 @@ to publish.
 
 <br />
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Action Uri | **Required** | The deep link to the shopping list in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Number of items | **Required** | The number of items in the shopping list. | Integer \>= 1 |
-| Last user interaction timestamp | **Required** | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the shopping list. | Epoch timestamp in milliseconds |
-| Title | Optional | The title of the list (for example, *Your Grocery List*). **If no title is provided by the developer, *Shopping list* is the default.** | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses) |
-| Item labels | **Required** | The list of labels for items on the shopping list. **At least 1 label must be provided and up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.** | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses) |
+| Attribute                       | Requirement  | Description                                                                                                                                                                                                                 | Format                                                                                                       |
+| ------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Action Uri                      | **Required** | The deep link to the shopping list in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                   | Uri                                                                                                          |
+| Number of items                 | **Required** | The number of items in the shopping list.                                                                                                                                                                                   | Integer \>= 1                                                                                                |
+| Last user interaction timestamp | **Required** | Number of milliseconds elapsed from the epoch, identifying the last time when user interacted with the shopping list.                                                                                                       | Epoch timestamp in milliseconds                                                                              |
+| Title                           | Optional     | The title of the list (for example, _Your Grocery List_). **If no title is provided by the developer, _Shopping list_ is the default.**                                                                                     | Free text **Recommended text size: under 25 chars** (Text that is too long may show ellipses)                |
+| Item labels                     | **Required** | The list of labels for items on the shopping list. **At least 1 label must be provided and up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.** | List of free text labels **Recommended text size: under 20 chars** (Text that is too long may show ellipses) |
 
 #### `FoodReorderCluster`
 
@@ -230,34 +234,34 @@ to publish.
 
 <br />
 
-| Attribute | Requirement | Description | Format |
-|---|---|---|---|
-| Action Uri | **Required** | The deep link to reorder in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) | Uri |
-| Action Text | Optional | The call to action text of the button on the Reorder (for example, *Order again*). **If no action text is provided by the developer, *Reorder* is the default.** This attribute is supported in version 1.1.0 onwards. | String |
-| Number of items | **Required** | The number of items (not just number of products) in the previous order. **For example: If there were 3 small coffees and 1 croissant in the previous order, this number should be 4.** | Integer \>= 1 |
-| Title | **Required** | The title of the reorder item. | Free text **Recommended text size: under 40 chars** (Text that is too long may show ellipses) |
-| Item labels | Optional (If not provided, poster images should be provided) | The list of item labels for the previous order. **Up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.** | List of free text **Recommended text size per label: under 20 chars** (Text that is too long may show ellipses) |
-| Poster images | Optional (If not provided, item labels should be provided) | Images of the items in the previous order. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.** | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance. |
+| Attribute       | Requirement                                                  | Description                                                                                                                                                                                                            | Format                                                                                                          |
+| --------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Action Uri      | **Required**                                                 | The deep link to reorder in the partner's app. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)                        | Uri                                                                                                             |
+| Action Text     | Optional                                                     | The call to action text of the button on the Reorder (for example, _Order again_). **If no action text is provided by the developer, _Reorder_ is the default.** This attribute is supported in version 1.1.0 onwards. | String                                                                                                          |
+| Number of items | **Required**                                                 | The number of items (not just number of products) in the previous order. **For example: If there were 3 small coffees and 1 croissant in the previous order, this number should be 4.**                                | Integer \>= 1                                                                                                   |
+| Title           | **Required**                                                 | The title of the reorder item.                                                                                                                                                                                         | Free text **Recommended text size: under 40 chars** (Text that is too long may show ellipses)                   |
+| Item labels     | Optional (If not provided, poster images should be provided) | The list of item labels for the previous order. **Up to 10 labels can be provided in order of priority; the actual number of labels displayed depends on the device form factor.**                                     | List of free text **Recommended text size per label: under 20 chars** (Text that is too long may show ellipses) |
+| Poster images   | Optional (If not provided, item labels should be provided)   | Images of the items in the previous order. **Up to 10 images can be provided in order of priority; the actual number of images displayed depends on the device form factor.**                                          | See [Image Specifications](https://developer.android.com/guide/playcore/engage/food#image-specs) for guidance.  |
 
 #### Image specifications
 
 Required specifications for image assets are listed below:
 
-| Aspect ratio | Minimum pixels | Recommended pixels |
-|---|---|---|
-| Square (1x1) **Preferred** | 300x300 | 1200x1200 |
-| Landscape (1.91x1) | 600x314 | 1200x628 |
-| Portrait (4x5) | 480x600 | 960x1200 |
+| Aspect ratio               | Minimum pixels | Recommended pixels |
+| -------------------------- | -------------- | ------------------ |
+| Square (1x1) **Preferred** | 300x300        | 1200x1200          |
+| Landscape (1.91x1)         | 600x314        | 1200x628           |
+| Portrait (4x5)             | 480x600        | 960x1200           |
 
-*File formats*
+_File formats_
 
 PNG, JPG, static GIF, WebP
 
-*Maximum file size*
+_Maximum file size_
 
 5120 KB
 
-*Additional recommendations*
+_Additional recommendations_
 
 - **Image safe area:** Put your important content in the center 80% of the image.
 - Use a transparent background so that the image can be properly displayed in Dark and Light theme settings.
@@ -337,12 +341,12 @@ This API is used to publish a list of `RecommendationCluster` objects.
 
 A `RecommendationCluster` object can have the following attributes:
 
-| Attribute | Requirement | Description |
-|---|---|---|
-| List of ProductEntity, StoreEntity, or RecipeEntity | **Required** | A list of entities that make up the recommendations for this Recommendation Cluster. Entities in a single cluster must be of the same type. |
-| Title | **Required** | The title for the Recommendation Cluster (for example, *Big savings on Thanksgiving menu*). **Recommended text size: under 25 chars** (Text that is too long may show ellipses) |
-| Subtitle | Optional | The subtitle for the Recommendation Cluster. |
-| Action Uri | Optional | The deep link to the page in the partner app where users can see the complete list of recommendations. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
+| Attribute                                           | Requirement  | Description                                                                                                                                                                                                                                             |
+| --------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| List of ProductEntity, StoreEntity, or RecipeEntity | **Required** | A list of entities that make up the recommendations for this Recommendation Cluster. Entities in a single cluster must be of the same type.                                                                                                             |
+| Title                                               | **Required** | The title for the Recommendation Cluster (for example, _Big savings on Thanksgiving menu_). **Recommended text size: under 25 chars** (Text that is too long may show ellipses)                                                                         |
+| Subtitle                                            | Optional     | The subtitle for the Recommendation Cluster.                                                                                                                                                                                                            |
+| Action Uri                                          | Optional     | The deep link to the page in the partner app where users can see the complete list of recommendations. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
 
 > [!IMPORTANT]
 > **Important:** The publish APIs are upsert APIs; it replaces the existing content. **Don't** call delete and publish APIs subsequently to replace the content as the publish APIs do that inherently.
@@ -532,13 +536,13 @@ personalized content)
 
 The following metadata is part of the Sign In Card -
 
-| Attribute | Requirement | Description |
-|---|---|---|
-| Action Uri | Required | Deeplink to Action (i.e. navigates to app sign in page) |
-| Image | Optional - If not provided, Title must be provided | Image Shown on the Card 16x9 aspect ratio images with a resolution of 1264x712 |
-| Title | Optional - If not provided, Image must be provided | Title on the Card |
-| Action Text | Optional | Text Shown on the CTA (i.e. Sign in) |
-| Subtitle | Optional | Optional Subtitle on the Card |
+| Attribute   | Requirement                                        | Description                                                                    |
+| ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Action Uri  | Required                                           | Deeplink to Action (i.e. navigates to app sign in page)                        |
+| Image       | Optional - If not provided, Title must be provided | Image Shown on the Card 16x9 aspect ratio images with a resolution of 1264x712 |
+| Title       | Optional - If not provided, Image must be provided | Title on the Card                                                              |
+| Action Text | Optional                                           | Text Shown on the CTA (i.e. Sign in)                                           |
+| Subtitle    | Optional                                           | Optional Subtitle on the Card                                                  |
 
 > [!IMPORTANT]
 > **Important:** The publish APIs are upsert APIs; it replaces the existing content. **Don't** call delete and publish APIs subsequently to replace the content as the publish APIs do that inherently.
@@ -845,15 +849,15 @@ that a follow-up action can be taken to recover and resubmit an successful task.
 The error is returned as an `AppEngageException` with the cause included as an
 error code.
 
-| Error code | Error name | Note |
-|---|---|---|
-| `1` | `SERVICE_NOT_FOUND` | The service is not available on the given device. |
-| `2` | `SERVICE_NOT_AVAILABLE` | The service is available on the given device, but it is not available at the time of the call (for example, it is explicitly disabled). |
-| `3` | `SERVICE_CALL_EXECUTION_FAILURE` | The task execution failed due to threading issues. In this case, it can be retried. |
-| `4` | `SERVICE_CALL_PERMISSION_DENIED` | The caller is not allowed to make the service call. |
-| `5` | `SERVICE_CALL_INVALID_ARGUMENT` | The request contains invalid data (for example, more than the allowed number of clusters). |
-| `6` | `SERVICE_CALL_INTERNAL` | There is an error on the service side. |
-| `7` | `SERVICE_CALL_RESOURCE_EXHAUSTED` | The service call is made too frequently. |
+| Error code | Error name                        | Note                                                                                                                                    |
+| ---------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `1`        | `SERVICE_NOT_FOUND`               | The service is not available on the given device.                                                                                       |
+| `2`        | `SERVICE_NOT_AVAILABLE`           | The service is available on the given device, but it is not available at the time of the call (for example, it is explicitly disabled). |
+| `3`        | `SERVICE_CALL_EXECUTION_FAILURE`  | The task execution failed due to threading issues. In this case, it can be retried.                                                     |
+| `4`        | `SERVICE_CALL_PERMISSION_DENIED`  | The caller is not allowed to make the service call.                                                                                     |
+| `5`        | `SERVICE_CALL_INVALID_ARGUMENT`   | The request contains invalid data (for example, more than the allowed number of clusters).                                              |
+| `6`        | `SERVICE_CALL_INTERNAL`           | There is an error on the service side.                                                                                                  |
+| `7`        | `SERVICE_CALL_RESOURCE_EXHAUSTED` | The service call is made too frequently.                                                                                                |
 
 ### Step 3: Handle broadcast intents
 

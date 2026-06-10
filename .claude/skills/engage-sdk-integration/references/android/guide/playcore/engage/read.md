@@ -28,17 +28,20 @@ This integration includes the following three cluster types: **Recommendation** 
     recommendations from a single developer partner.
 
     ![](https://developer.android.com/static/images/guide/playcore/engage/read-term-1.png) **Figure 1.** Entertainment Space UI showing a Recommendation Cluster from a single partner.
+
   - **Entity:** An object representing a single item in a cluster. An entity
     can be an ebook, an audio book, a book series, and more. See the [Provide
     entity data](https://developer.android.com/guide/playcore/engage/read#provide-entity-data) section for a list of supported entity
     types.
 
     ![](https://developer.android.com/static/images/guide/playcore/engage/read-term-2.png) **Figure 2.** Entertainment Space UI showing a single Entity within a single partner's Recommendation Cluster.
+
 - The **Continuation** cluster shows unfinished books from multiple developer
   partners in a single UI grouping. Each developer partner will be allowed to
   broadcast a maximum of 10 entities in the Continuation cluster.
 
   ![](https://developer.android.com/static/images/guide/playcore/engage/read-term-3.png) **Figure 3.** Entertainment Space UI showing a Continuation cluster with unfinished recommendations from multiple partners (only one recommendation is currently visible).
+
 - The **Featured** cluster showcases a selection of items from multiple
   developer partners in a single UI grouping. There will be a single Featured
   cluster, which is surfaced near the top of the UI with a priority placement
@@ -66,11 +69,11 @@ service](https://developer.android.com/guide/components/bound-services).
 The data a client can publish is subject to the following limits for different
 cluster types:
 
-| Cluster type | Cluster limits | Maximum entity limits in a cluster |
-|---|---|---|
-| Recommendation Cluster(s) | At most 7 | At most 50 |
-| Continuation Cluster | At most 1 | At most 20 |
-| Featured Cluster | At most 1 | At most 20 |
+| Cluster type              | Cluster limits | Maximum entity limits in a cluster |
+| ------------------------- | -------------- | ---------------------------------- |
+| Recommendation Cluster(s) | At most 7      | At most 50                         |
+| Continuation Cluster      | At most 1      | At most 20                         |
+| Featured Cluster          | At most 1      | At most 20                         |
 
 ### Step 1: Provide entity data
 
@@ -86,94 +89,94 @@ The charts below outline available attributes and requirements for each type.
 #### `EbookEntity`
 
 The `EbookEntity` object represents an ebook (for example, the ebook of
-*Becoming* by Michelle Obama).
+_Becoming_ by Michelle Obama).
 
-| Attribute | Requirement | Notes |
-|---|---|---|
-| Name | **Required** |   |
-| Poster images | **Required** | At least one image must be provided. See [Image Specifications](https://developer.android.com/guide/playcore/engage/read#image-specs) for guidance. |
-| Author | **Required** | At least one author name must be provided. |
-| Action link uri | **Required** | The deep link to the provider app for the ebook. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
-| Publish date | Optional | In epoch milliseconds if provided. |
-| Description | Optional | Must be within 200 characters if provided. |
-| Price | Optional | Free text |
-| Page count | Optional | Must be a positive integer if provided. |
-| Genre | Optional | List of genres associated with the book. |
-| Series name | Optional | Name of the series that the ebook belongs to (for example, *Harry Potter*). |
-| Series unit index | Optional | The index of the ebook in the series, where 1 is the first ebook in the series. For example, if *Harry Potter and the Prisoner of Azkaban* is the 3rd book in the series, this should be set to 3. |
-| Continue book type | Optional | TYPE_CONTINUE - Resume on a unfinished book. TYPE_NEXT - Continue on a new one of a series. TYPE_NEW - Newly released. |
-| Last Engagement Time | Conditionally required | Must be provided when the item is in the Continuation cluster. \*Newly\* acquired ebooks can be a part of the continue reading cluster. In epoch milliseconds. |
-| Progress Percentage Complete | Conditionally required | Must be provided when the item is in the Continuation cluster. Value must be greater than 0 and less than 100. |
-| **DisplayTimeWindow - Set a time window for a content to be shown on the surface** |||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds. |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds. |
+| Attribute                                                                          | Requirement            | Notes                                                                                                                                                                                              |
+| ---------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                                                                               | **Required**           |                                                                                                                                                                                                    |
+| Poster images                                                                      | **Required**           | At least one image must be provided. See [Image Specifications](https://developer.android.com/guide/playcore/engage/read#image-specs) for guidance.                                                |
+| Author                                                                             | **Required**           | At least one author name must be provided.                                                                                                                                                         |
+| Action link uri                                                                    | **Required**           | The deep link to the provider app for the ebook. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)  |
+| Publish date                                                                       | Optional               | In epoch milliseconds if provided.                                                                                                                                                                 |
+| Description                                                                        | Optional               | Must be within 200 characters if provided.                                                                                                                                                         |
+| Price                                                                              | Optional               | Free text                                                                                                                                                                                          |
+| Page count                                                                         | Optional               | Must be a positive integer if provided.                                                                                                                                                            |
+| Genre                                                                              | Optional               | List of genres associated with the book.                                                                                                                                                           |
+| Series name                                                                        | Optional               | Name of the series that the ebook belongs to (for example, _Harry Potter_).                                                                                                                        |
+| Series unit index                                                                  | Optional               | The index of the ebook in the series, where 1 is the first ebook in the series. For example, if _Harry Potter and the Prisoner of Azkaban_ is the 3rd book in the series, this should be set to 3. |
+| Continue book type                                                                 | Optional               | TYPE_CONTINUE - Resume on a unfinished book. TYPE_NEXT - Continue on a new one of a series. TYPE_NEW - Newly released.                                                                             |
+| Last Engagement Time                                                               | Conditionally required | Must be provided when the item is in the Continuation cluster. \*Newly\* acquired ebooks can be a part of the continue reading cluster. In epoch milliseconds.                                     |
+| Progress Percentage Complete                                                       | Conditionally required | Must be provided when the item is in the Continuation cluster. Value must be greater than 0 and less than 100.                                                                                     |
+| **DisplayTimeWindow - Set a time window for a content to be shown on the surface** |                        |                                                                                                                                                                                                    |
+| Start Timestamp                                                                    | Optional               | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds.                                     |
+| End Timestamp                                                                      | Optional               | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds.                                  |
 
 #### `AudiobookEntity`
 
 The `AudiobookEntity` object represents an audiobook (for example, the audiobook
-of *Becoming* by Michelle Obama).
+of _Becoming_ by Michelle Obama).
 
-| Attribute | Requirement | Notes |
-|---|---|---|
-| Name | **Required** |   |
-| Poster images | **Required** | At least one image must be provided. See [Image Specifications](https://developer.android.com/guide/playcore/engage/read#image-specs) for guidance. |
-| Author | **Required** | At least one author name must be provided. |
-| Action link uri | **Required** | The deep link to the provider app for the audiobook. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
-| Narrator | Optional | At least one narrator's name must be provided. |
-| Publish date | Optional | In epoch milliseconds if provided. |
-| Description | Optional | Must be within 200 characters if provided. |
-| Price | Optional | Free text |
-| Duration | Optional | Must be a positive value if provided. |
-| Genre | Optional | List of genres associated with the book. |
-| Series name | Optional | Name of the series that the audiobook belongs to (for example, *Harry Potter*. |
-| Series unit index | Optional | The index of the audiobook in the series, where 1 is the first audiobook in the series. For example, if *Harry Potter and the Prisoner of Azkaban* is the 3rd book in the series, this should be set to 3. |
-| Continue book type | Optional | TYPE_CONTINUE - Resume on a unfinished book. TYPE_NEXT - Continue on a new one of a series. TYPE_NEW - Newly released. |
-| Last Engagement Time | Conditionally required | Must be provided when the item is in the Continuation cluster. In epoch milliseconds. |
-| Progress Percentage Complete | Conditionally required | Must be provided when the item is in the Continuation cluster. \*Newly\* acquired audiobooks can be a part of the continue reading cluster. Value must be greater than 0 and less than 100. |
-| **DisplayTimeWindow - Set a time window for a content to be shown on the surface** |||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds. |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds. |
+| Attribute                                                                          | Requirement            | Notes                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                                                                               | **Required**           |                                                                                                                                                                                                            |
+| Poster images                                                                      | **Required**           | At least one image must be provided. See [Image Specifications](https://developer.android.com/guide/playcore/engage/read#image-specs) for guidance.                                                        |
+| Author                                                                             | **Required**           | At least one author name must be provided.                                                                                                                                                                 |
+| Action link uri                                                                    | **Required**           | The deep link to the provider app for the audiobook. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution)      |
+| Narrator                                                                           | Optional               | At least one narrator's name must be provided.                                                                                                                                                             |
+| Publish date                                                                       | Optional               | In epoch milliseconds if provided.                                                                                                                                                                         |
+| Description                                                                        | Optional               | Must be within 200 characters if provided.                                                                                                                                                                 |
+| Price                                                                              | Optional               | Free text                                                                                                                                                                                                  |
+| Duration                                                                           | Optional               | Must be a positive value if provided.                                                                                                                                                                      |
+| Genre                                                                              | Optional               | List of genres associated with the book.                                                                                                                                                                   |
+| Series name                                                                        | Optional               | Name of the series that the audiobook belongs to (for example, _Harry Potter_.                                                                                                                             |
+| Series unit index                                                                  | Optional               | The index of the audiobook in the series, where 1 is the first audiobook in the series. For example, if _Harry Potter and the Prisoner of Azkaban_ is the 3rd book in the series, this should be set to 3. |
+| Continue book type                                                                 | Optional               | TYPE_CONTINUE - Resume on a unfinished book. TYPE_NEXT - Continue on a new one of a series. TYPE_NEW - Newly released.                                                                                     |
+| Last Engagement Time                                                               | Conditionally required | Must be provided when the item is in the Continuation cluster. In epoch milliseconds.                                                                                                                      |
+| Progress Percentage Complete                                                       | Conditionally required | Must be provided when the item is in the Continuation cluster. \*Newly\* acquired audiobooks can be a part of the continue reading cluster. Value must be greater than 0 and less than 100.                |
+| **DisplayTimeWindow - Set a time window for a content to be shown on the surface** |                        |                                                                                                                                                                                                            |
+| Start Timestamp                                                                    | Optional               | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds.                                             |
+| End Timestamp                                                                      | Optional               | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds.                                          |
 
 #### `BookSeriesEntity`
 
-The `BookSeriesEntity` object represents a book series (for example, the *Harry
-Potter* book series, which has 7 books).
+The `BookSeriesEntity` object represents a book series (for example, the _Harry
+Potter_ book series, which has 7 books).
 
-| Attribute | Requirement | Notes |
-|---|---|---|
-| Name | **Required** |   |
-| Poster images | **Required** | At least one image must be provided. See [Image Specifications](https://developer.android.com/guide/playcore/engage/read#image-specs) for guidance. |
-| Author | **Required** | At least one author name must be present. |
-| Action link uri | **Required** | The deep link to the provider app for the audiobook or ebook. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
-| Book count | **Required** | Number of books in the series. |
-| Description | Optional | Must be within 200 characters if provided. |
-| Genre | Optional | List of genres associated with the book. |
-| Continue book type | Optional | TYPE_CONTINUE - Resume on a unfinished book. TYPE_NEXT - Continue on a new one of a series. TYPE_NEW - Newly released. |
-| Last Engagement Time | Conditionally required | Must be provided when the item is in the Continuation cluster. In epoch milliseconds. |
-| Progress Percentage Complete | Conditionally required | Must be provided when the item is in the Continuation cluster. \*Newly\* acquired book series can be a part of the continue reading cluster. Value must be greater than 0 and less than 100. |
-| **DisplayTimeWindow - Set a time window for a content to be shown on the surface** |||
-| Start Timestamp | Optional | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds. |
-| End Timestamp | Optional | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds. |
+| Attribute                                                                          | Requirement            | Notes                                                                                                                                                                                                          |
+| ---------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                                                                               | **Required**           |                                                                                                                                                                                                                |
+| Poster images                                                                      | **Required**           | At least one image must be provided. See [Image Specifications](https://developer.android.com/guide/playcore/engage/read#image-specs) for guidance.                                                            |
+| Author                                                                             | **Required**           | At least one author name must be present.                                                                                                                                                                      |
+| Action link uri                                                                    | **Required**           | The deep link to the provider app for the audiobook or ebook. Note: You can use deep links for attribution. [Refer to this FAQ](https://developer.android.com/guide/playcore/engage/faq#deeplinks-attribution) |
+| Book count                                                                         | **Required**           | Number of books in the series.                                                                                                                                                                                 |
+| Description                                                                        | Optional               | Must be within 200 characters if provided.                                                                                                                                                                     |
+| Genre                                                                              | Optional               | List of genres associated with the book.                                                                                                                                                                       |
+| Continue book type                                                                 | Optional               | TYPE_CONTINUE - Resume on a unfinished book. TYPE_NEXT - Continue on a new one of a series. TYPE_NEW - Newly released.                                                                                         |
+| Last Engagement Time                                                               | Conditionally required | Must be provided when the item is in the Continuation cluster. In epoch milliseconds.                                                                                                                          |
+| Progress Percentage Complete                                                       | Conditionally required | Must be provided when the item is in the Continuation cluster. \*Newly\* acquired book series can be a part of the continue reading cluster. Value must be greater than 0 and less than 100.                   |
+| **DisplayTimeWindow - Set a time window for a content to be shown on the surface** |                        |                                                                                                                                                                                                                |
+| Start Timestamp                                                                    | Optional               | The epoch timestamp after which the content should be shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds.                                                 |
+| End Timestamp                                                                      | Optional               | The epoch timestamp after which the content is no longer shown on the surface. If not set, content is eligible to be shown on the surface. In epoch milliseconds.                                              |
 
 #### Image specifications
 
 Required specifications for image assets are listed below:
 
-| Aspect ratio | Supported cluster(s) | Minimum pixels | Recommended pixels |
-|---|---|---|---|
-| Square (1x1) | All clusters | 300x300 | 1200x1200 |
-| Landscape (1.91x1) | Featured and continuation | 600x314 | 1200x628 |
-| Portrait (4x5) | Recommendation | 480x600 | 960x1200 |
+| Aspect ratio       | Supported cluster(s)      | Minimum pixels | Recommended pixels |
+| ------------------ | ------------------------- | -------------- | ------------------ |
+| Square (1x1)       | All clusters              | 300x300        | 1200x1200          |
+| Landscape (1.91x1) | Featured and continuation | 600x314        | 1200x628           |
+| Portrait (4x5)     | Recommendation            | 480x600        | 960x1200           |
 
-*File formats*
+_File formats_
 
 PNG, JPG, static GIF, WebP
 
-*Maximum file size*
+_Maximum file size_
 
 5120 KB
 
-*Additional recommendations*
+_Additional recommendations_
 
 - **Image safe area:** Put your important content in the center 80% of the image.
 
@@ -384,13 +387,13 @@ personalized content)
 
 The following metadata is part of the Sign In Card -
 
-| Attribute | Requirement | Description |
-|---|---|---|
-| Action Uri | Required | Deeplink to Action (i.e. navigates to app sign in page) |
-| Image | Optional - If not provided, Title must be provided | Image Shown on the Card 16x9 aspect ratio images with a resolution of 1264x712 |
-| Title | Optional - If not provided, Image must be provided | Title on the Card |
-| Action Text | Optional | Text Shown on the CTA (i.e. Sign in) |
-| Subtitle | Optional | Optional Subtitle on the Card |
+| Attribute   | Requirement                                        | Description                                                                    |
+| ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Action Uri  | Required                                           | Deeplink to Action (i.e. navigates to app sign in page)                        |
+| Image       | Optional - If not provided, Title must be provided | Image Shown on the Card 16x9 aspect ratio images with a resolution of 1264x712 |
+| Title       | Optional - If not provided, Image must be provided | Title on the Card                                                              |
+| Action Text | Optional                                           | Text Shown on the CTA (i.e. Sign in)                                           |
+| Subtitle    | Optional                                           | Optional Subtitle on the Card                                                  |
 
 > [!IMPORTANT]
 > **Important:** The publish APIs are upsert APIs; it replaces the existing content. **Don't** call delete and publish APIs subsequently to replace the content as the publish APIs do that inherently.
@@ -653,15 +656,15 @@ that a follow-up action can be taken to recover and resubmit an successful task.
 The error is returned as an `AppEngageException` with the cause included as an
 error code.
 
-| Error code | Error name | Note |
-|---|---|---|
-| `1` | `SERVICE_NOT_FOUND` | The service is not available on the given device. |
-| `2` | `SERVICE_NOT_AVAILABLE` | The service is available on the given device, but it is not available at the time of the call (for example, it is explicitly disabled). |
-| `3` | `SERVICE_CALL_EXECUTION_FAILURE` | The task execution failed due to threading issues. In this case, it can be retried. |
-| `4` | `SERVICE_CALL_PERMISSION_DENIED` | The caller is not allowed to make the service call. |
-| `5` | `SERVICE_CALL_INVALID_ARGUMENT` | The request contains invalid data (for example, more than the allowed number of clusters). |
-| `6` | `SERVICE_CALL_INTERNAL` | There is an error on the service side. |
-| `7` | `SERVICE_CALL_RESOURCE_EXHAUSTED` | The service call is made too frequently. |
+| Error code | Error name                        | Note                                                                                                                                    |
+| ---------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `1`        | `SERVICE_NOT_FOUND`               | The service is not available on the given device.                                                                                       |
+| `2`        | `SERVICE_NOT_AVAILABLE`           | The service is available on the given device, but it is not available at the time of the call (for example, it is explicitly disabled). |
+| `3`        | `SERVICE_CALL_EXECUTION_FAILURE`  | The task execution failed due to threading issues. In this case, it can be retried.                                                     |
+| `4`        | `SERVICE_CALL_PERMISSION_DENIED`  | The caller is not allowed to make the service call.                                                                                     |
+| `5`        | `SERVICE_CALL_INVALID_ARGUMENT`   | The request contains invalid data (for example, more than the allowed number of clusters).                                              |
+| `6`        | `SERVICE_CALL_INTERNAL`           | There is an error on the service side.                                                                                                  |
+| `7`        | `SERVICE_CALL_RESOURCE_EXHAUSTED` | The service call is made too frequently.                                                                                                |
 
 ### Step 3: Handle broadcast intents
 

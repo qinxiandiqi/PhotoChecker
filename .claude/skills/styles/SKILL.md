@@ -1,6 +1,7 @@
 ---
 name: styles
-description: Use this skill to integrate the Jetpack Compose Styles API into an Android
+description:
+  Use this skill to integrate the Jetpack Compose Styles API into an Android
   project. This skill guides you through upgrading dependencies, setting up component
   themes, making custom components styleable, and migrating existing layout properties
   to use unified styles. Migrate custom design system components, replace hard coded
@@ -8,13 +9,13 @@ description: Use this skill to integrate the Jetpack Compose Styles API into an 
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-30'
+  last-updated: "2026-05-30"
   keywords:
-  - Jetpack Compose
-  - Styles
-  - Theming with Styles
-  - Migrate to Styles
-  - Modifier.styleable
+    - Jetpack Compose
+    - Styles
+    - Theming with Styles
+    - Migrate to Styles
+    - Modifier.styleable
 ---
 
 ## Limitations
@@ -31,7 +32,7 @@ metadata:
 - The project must use `androidx.compose.foundation:foundation` version `1.12.0-alpha01` or higher.
 - Alternatively, the project must use Compose BOM version `2026.04.01` or higher.
 - The API requires this exact package: `import
-  androidx.compose.foundation.style.Style`
+androidx.compose.foundation.style.Style`
 
 ### 2. Configure compiler options to enable experimental API
 
@@ -71,7 +72,6 @@ Refer to the official documentation to complete specific development tasks:
 1. Create a new file named `ComponentStyles.kt` in your theme directory.
 2. Define a top-level data class to hold your component styles, for example, the Jetsnack one is called `JetsnackStyles`:
 
-
    ```kotlin
    object ExampleComponentStyles {
        val customButtonStyle: Style = {
@@ -87,7 +87,6 @@ Refer to the official documentation to complete specific development tasks:
 
 3. Expose this class through your custom theme with a static reference, don't
    use `CompositionLocals` here as it's not required.
-
 
    ```kotlin
    @Immutable
@@ -110,7 +109,6 @@ Refer to the official documentation to complete specific development tasks:
 
 4. Provide extensions on `StyleScope` to reference theme tokens directly if
    they are exposed using `CompositionLocals`. For example:
-
 
    ```kotlin
    val StyleScope.colors: JetsnackColors
@@ -142,7 +140,6 @@ sequence:
 
 Before Migration:
 
-
 ```kotlin
 @Composable
 fun CustomButton(
@@ -171,7 +168,6 @@ fun CustomButton(
 <br />
 
 After Migration:
-
 
 ```kotlin
 // Exposed via ComponentStyles.kt

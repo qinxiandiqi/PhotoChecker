@@ -238,58 +238,58 @@ maintained.
 
 ### Keep subscription up-to-date
 
-1. To provide immediate updates upon changes, call
-   `publishSubscriptionCluster` whenever a user's subscription state changes
-   like activation, deactivation, upgrades, downgrades.
+1.  To provide immediate updates upon changes, call
+    `publishSubscriptionCluster` whenever a user's subscription state changes
+    like activation, deactivation, upgrades, downgrades.
 
-2. To provide regular validation for ongoing accuracy, call
-   `publishSubscriptionCluster` at least once per month.
+2.  To provide regular validation for ongoing accuracy, call
+    `publishSubscriptionCluster` at least once per month.
 
-   > [!NOTE]
-   > **Note:** As Google TV automatically deletes historical data beyond 60 days to safeguard user privacy, publishing user subscription data at least once per month verify the validity of data. Unlike `publishContinuationCluster` for continue watching data, don't set `syncAcrossDevices` flag, as subscription information is by default used to provide content across all devices.
+    > [!NOTE]
+    > **Note:** As Google TV automatically deletes historical data beyond 60 days to safeguard user privacy, publishing user subscription data at least once per month verify the validity of data. Unlike `publishContinuationCluster` for continue watching data, don't set `syncAcrossDevices` flag, as subscription information is by default used to provide content across all devices.
 
-3. To delete the Video discovery data, manually delete a user's data from the
-   Google TV server before the standard 60-day retention period, use the
-   `client.deleteClusters` method. This deletes all existing video discovery
-   data for the account profile, or for the entire account depending on the
-   given [`DeleteReason`](https://developer.android.com/reference/com/google/android/engage/service/DeleteReason).
+3.  To delete the Video discovery data, manually delete a user's data from the
+    Google TV server before the standard 60-day retention period, use the
+    `client.deleteClusters` method. This deletes all existing video discovery
+    data for the account profile, or for the entire account depending on the
+    given [`DeleteReason`](https://developer.android.com/reference/com/google/android/engage/service/DeleteReason).
 
-   The following code snippet shows how to remove a user subscription:
+    The following code snippet shows how to remove a user subscription:
 
-       // If the user logs out from your media app, you must make the following call
-       // to remove subscription and other video discovery data from the current
-       // google TV device.
-       client.deleteClusters(
-         new DeleteClustersRequest.Builder()
-           .setAccountProfile(accountProfile)
-         .setReason(DeleteReason.DELETE_REASON_USER_LOG_OUT)
-         .build()
-         )
+        // If the user logs out from your media app, you must make the following call
+        // to remove subscription and other video discovery data from the current
+        // google TV device.
+        client.deleteClusters(
+          new DeleteClustersRequest.Builder()
+            .setAccountProfile(accountProfile)
+          .setReason(DeleteReason.DELETE_REASON_USER_LOG_OUT)
+          .build()
+          )
 
-   The following code snippet demonstrates removal of user subscription
-   when user revokes the consent:
+    The following code snippet demonstrates removal of user subscription
+    when user revokes the consent:
 
-       // If the user revokes the consent to share across device, make the call
-       // to remove subscription and other video discovery data from all google
-       // TV devices.
-       client.deleteClusters(
-         new DeleteClustersRequest.Builder()
-           .setAccountProfile(accountProfile)
-           .setReason(DeleteReason.DELETE_REASON_LOSS_OF_CONSENT)
-           .build()
-       )
+        // If the user revokes the consent to share across device, make the call
+        // to remove subscription and other video discovery data from all google
+        // TV devices.
+        client.deleteClusters(
+          new DeleteClustersRequest.Builder()
+            .setAccountProfile(accountProfile)
+            .setReason(DeleteReason.DELETE_REASON_LOSS_OF_CONSENT)
+            .build()
+        )
 
-   Following code demonstrates how to remove subscription data on user profile
-   deletion.
+    Following code demonstrates how to remove subscription data on user profile
+    deletion.
 
-       // If the user delete a specific profile, you must make the following call
-       // to remove subscription data and other video discovery data.
-       client.deleteClusters(
-         new DeleteClustersRequest.Builder()
-         .setAccountProfile(accountProfile)
-         .setReason(DeleteReason.DELETE_REASON_ACCOUNT_PROFILE_DELETION)
-         .build()
-       )
+        // If the user delete a specific profile, you must make the following call
+        // to remove subscription data and other video discovery data.
+        client.deleteClusters(
+          new DeleteClustersRequest.Builder()
+          .setAccountProfile(accountProfile)
+          .setReason(DeleteReason.DELETE_REASON_ACCOUNT_PROFILE_DELETION)
+          .build()
+        )
 
 ### Testing
 
@@ -308,6 +308,7 @@ implementation. Verify data accuracy and proper functionality before launch.
    - User purchases new subscription.
    - User upgrades subscription.
    - User subscription expires.
+
 3. Check if app is correctly calling `isServiceAvailable()` and
    `publishClusters()` APIs in logcat, on the publishing events.
 
@@ -335,9 +336,11 @@ To test your integration, use the [verification app](https://developer.android.c
    check in all entities.
 
    ![Verification App Success Screenshot](https://developer.android.com/static/images/guide/playcore/engage/ett-va-success.png) **Figure 1.** Successful subscription
+
 3. Problems are also highlighted in verification app
 
    ![Verification App Error Screenshot](https://developer.android.com/static/images/guide/playcore/engage/ett-va-error.png) **Figure 2.**Subscription unsuccessful
+
 4. To see the problems in the bundled subscription, use the TV remote to focus
    on that specific bundled subscription and click to see the problems. You
    might have to first focus on the row and move to the right to find Bundled
@@ -346,6 +349,7 @@ To test your integration, use the [verification app](https://developer.android.c
    bundled subscription
 
    ![Verification App Error Details Screenshot](https://developer.android.com/static/images/guide/playcore/engage/ett-va-error-details.png) **Figure 3.**Subscription Errors
+
 5. To see the problems in the entitlement, use the TV remote to focus on that
    specific entitlement and click to see the problems. The problems are
    highlighted as red.

@@ -12,8 +12,8 @@ The navigation state is converted into `NavEntry`s with `NavigationState.toDecor
 
 Key behaviors:
 
-- This app follows the "exit through home" pattern where the user always exits through the starting back stack. This means that `RouteA`'s entries are *always* in the list of entries.
-- Navigating to a top level route that is not the starting route *replaces* the other entries. For example, navigating A-\>B-\>C would result in entries for A+C, B's entries are removed.
+- This app follows the "exit through home" pattern where the user always exits through the starting back stack. This means that `RouteA`'s entries are _always_ in the list of entries.
+- Navigating to a top level route that is not the starting route _replaces_ the other entries. For example, navigating A-\>B-\>C would result in entries for A+C, B's entries are removed.
 
 Important implementation details:
 

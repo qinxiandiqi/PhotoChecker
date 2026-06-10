@@ -15,6 +15,7 @@ The key to this recipe is the `rememberListDetailSceneStrategy`, which provides 
   - `ListDetailSceneStrategy.listPane()`: For the primary (list) content. This pane is always visible. A placeholder can be provided to be shown in the detail pane area when no detail content is selected.
   - `ListDetailSceneStrategy.detailPane()`: For the secondary (detail) content.
   - `ListDetailSceneStrategy.extraPane()`: For tertiary content.
+
 - **Adaptive Layout** : The `ListDetailSceneStrategy` automatically handles the layout. On smaller screens, only one pane is shown at a time. On wider screens, it will show the list and detail panes side-by-side. On very wide screens, it can show all three panes: list, detail, and extra.
 
 - **Navigation** : Navigation between the panes is handled by adding and removing destinations from the back stack as usual. The `ListDetailSceneStrategy` observes the back stack and adjusts the layout accordingly.

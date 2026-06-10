@@ -1,18 +1,19 @@
 ---
 name: engage-sdk-integration
-description: Helps developers integrate, debug, and resolve Play Engage SDK implementation
+description:
+  Helps developers integrate, debug, and resolve Play Engage SDK implementation
   issues. Use when adding Engage SDK support, generating publishing code, mapping
   data classes to entities, or fixing SDK-related errors.
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-06-02'
+  last-updated: "2026-06-02"
   keywords:
-  - android
-  - engage
-  - engage sdk
-  - play engage library
-  - google play
+    - android
+    - engage
+    - engage sdk
+    - play engage library
+    - google play
 ---
 
 This skill guides you through integrating the Play Engage SDK into an Android
@@ -33,6 +34,7 @@ Follow these steps to assist the developer:
    - Ask which cluster type they want to publish from the supported cluster types for that vertical.
    - Find the method to call from `{VERTICAL}.md` in the **[references/schemas/](references/schemas)** directory for the specified cluster. Each method will specify the request it expects.
    - Get the request structure from [requests.md](references/requests.md) and clusters from [clusters.md](references/clusters.md). Then suggest and use sources to fill the fields in the request structure correctly, along with the required entities and clusters.
+
 2. **Generate Structured Boilerplate Code:**
 
    - Create a new directory for all Engage-related code. Name the directory to match the naming convention of the existing codebase.
@@ -43,20 +45,23 @@ Follow these steps to assist the developer:
      - `EngageWorker`: Handles the actual publishing and publish errors using WorkManager.
      - `EngagePublisher`: Orchestrates periodic and one-time jobs.
      - `EngageBroadcastReceiver`: Listens for AppEngageService intents and starts a one-time publish job from `EngagePublisher`. **Important** : Implement both **static registration** and **dynamic registration** patterns, including the companion object `register` method inside the `EngageBroadcastReceiver` class.
+
 3. **Suggest Entity Mapping:**
 
    - Ask the developer to provide their local model schema(e.g., a data class or a JSON snippet).
    - If they haven't provided one, share entities from `{VERTICAL}.md` in the **[references/schemas/](references/schemas)** directory as a guide.
    - Once the local model is identified, suggest a mapping to the corresponding Engage entity.
    - Generate the conversion logic using the `ItemToEntityConverter` pattern in [patterns.md](references/patterns.md) and add it to the generated `{ENGAGE_CODE_DIR}/ItemToEntityConverter`
+
 4. **Suggest Data Source:**
 
    - Ask the developer to provide the source of actual data you'll publish.
    - Once the source of data is identified, use the source of data to fetch data in app's local model schema.
    - Use `{ENGAGE_CODE_DIR}/ItemToEntityConverter` to convert this data to Engage entity.
    - Use obtained Engage entity model data with `{ENGAGE_CODE_DIR}/
-     ClusterRequestFactory` to get cluster requests.
+ClusterRequestFactory` to get cluster requests.
    - Call corresponding cluster publishing method obtained from `{VERTICAL}.md` in the **[references/schemas/](references/schemas)** directory with the obtained request in previous step in `{ENGAGE_CODE_DIR}/EngageWorker`.
+
 5. **Gradle and Manifest Updates:**
 
    - Suggest updates to `build.gradle` and `AndroidManifest.xml`.
@@ -65,6 +70,7 @@ Follow these steps to assist the developer:
    - Provide the necessary `implementation` dependencies for `build.gradle` or `build.gradle.kts` from [patterns.md](references/patterns.md).
    - Provide the `<receiver>` and `<service>` declarations for `AndroidManifest.xml`.
    - Note: There's no separate import according to vertical except TV. For each vertical other than TV 'com.google.android.engage:engage-core:1.5.12' is enough.
+
 6. **Debugging:**
 
    - Perform a Gradle sync.
@@ -72,6 +78,7 @@ Follow these steps to assist the developer:
      - Fix import errors. For package `com.google.android.engage` or classes starting with `AppEngage`, verify the package name in the `{VERTICAL}.md` in **[references/schemas/](references/schemas)** directory or [common.md](references/common.md).
      - Fix any other errors.
    - Execute a full Gradle build and resolve any remaining compilation issues. Repeat this step until the Gradle build is successful.
+
 7. **User Checklist:**
    At the end of code generation, notify the user to go through this checklist
    to verify that the integration is complete and as intended:
@@ -83,16 +90,16 @@ Follow these steps to assist the developer:
    - `EngageWorker`
    - `{cluster_type}Publisher`
    - `EngageBroadcastReceiver`
-   \[ \] Verify that app's local model is converted to Engage entity by populating
-   the fields correctly in the model in `{ENGAGE_CODE_DIR}/
-   ItemToEntityConverter`.
-   \[ \] Verify that `{ENGAGE_CODE_DIR}/EngageWorker` uses the data source
-   identified in Step 4.
-   \[ \] Verify that `EngageBroadcastReceiver.register(context)` is called within
-   the `Application` class or `MainActivity` to register the receiver
-   dynamically.
-   \[ \] Verify that `AndroidManifest.xml` contains the static `<receiver>`
-   declaration for `EngageBroadcastReceiver` with the necessary intent actions.
+     \[ \] Verify that app's local model is converted to Engage entity by populating
+     the fields correctly in the model in `{ENGAGE_CODE_DIR}/
+ItemToEntityConverter`.
+     \[ \] Verify that `{ENGAGE_CODE_DIR}/EngageWorker` uses the data source
+     identified in Step 4.
+     \[ \] Verify that `EngageBroadcastReceiver.register(context)` is called within
+     the `Application` class or `MainActivity` to register the receiver
+     dynamically.
+     \[ \] Verify that `AndroidManifest.xml` contains the static `<receiver>`
+     declaration for `EngageBroadcastReceiver` with the necessary intent actions.
 
    - **Important** : Explicitly instruct the developer to call `EngageBroadcastReceiver.register(context)` inside their custom `Application` class `onCreate()` (or their main activity `onCreate()`) to dynamically register the receiver. Stress that **both** static and dynamic registrations are required for the integration to function.
 
@@ -116,6 +123,7 @@ Follow these steps to assist the developer:
   - [TV Recommendations](references/android/guide/playcore/engage/tv/recommendations.md)
   - [TV Continue Watching](references/android/guide/playcore/engage/tv/continue-watching/index.md)
   - [TV Entitlements](references/android/guide/playcore/engage/tv/entitlements.md)
+
 - **Vertical-Specific Schemas:**
 
   - [Food Schema](references/schemas/food.md)

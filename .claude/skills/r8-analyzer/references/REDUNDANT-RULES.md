@@ -3,7 +3,7 @@ development and popular libraries. Modern toolchains and libraries include their
 own consumer keep rules embedded in their AAR/JAR files, making many manual
 configurations unnecessary or even harmful to code optimization.
 
-*** ** * ** ***
+---
 
 ## Case: Global Keep Rules
 
@@ -16,7 +16,7 @@ configurations unnecessary or even harmful to code optimization.
 **The Fix:** These keep rules completely disable the core optimizations of R8
 for the entire codebase. They must be removed from the codebase.
 
-*** ** * ** ***
+---
 
 ## Case: Android Components
 
@@ -34,7 +34,7 @@ referenced in XML layout files.
 
 **The Fix:** Delete these manual rules. AAPT2 handles this automatically.
 
-*** ** * ** ***
+---
 
 ## Case: Official Android and Kotlin Libraries
 
@@ -51,7 +51,7 @@ Manual rules are often broader than what is strictly needed.
 **The Fix:** Delete these manual rules. Rely on the consumer keep rules packaged
 within these dependencies.
 
-*** ** * ** ***
+---
 
 ## Case: Gson
 
@@ -105,7 +105,7 @@ code within the library.
    ProGuard
    rules](https://github.com/google/gson/blob/main/gson/src/main/resources/META-INF/proguard/gson.pro)). The bundled keep rules retains the `@SerializedName` annotated fields. If you are on an older version, move towards Gson version 2.11 because it has the necessary keep rules and delete the keep rules that target the classes used for gson serialization and deserialization
 
-*** ** * ** ***
+---
 
 ## Case: Retrofit
 
@@ -144,7 +144,7 @@ embedded ProGuard
 rules](https://github.com/square/retrofit/blob/master/retrofit/src/main/resources/META-INF/proguard/retrofit2.pro)).
 It will automatically keep the method signatures it needs to work.
 
-*** ** * ** ***
+---
 
 ## Case: Kotlin Coroutines
 
@@ -182,7 +182,7 @@ Coroutines, these are handled automatically or are not an issue.
 the necessary keep rules ([View Coroutines' embedded ProGuard
 rules](https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/resources/META-INF/proguard/coroutines.pro)).
 
-*** ** * ** ***
+---
 
 ## Case: Parcelable
 
@@ -197,7 +197,7 @@ android.os.Parcelable { public static final android.os.Parcelable$Creator *; }`.
 4. The default proguard file `proguard-android-optimize.txt` contains the keep rules for keeping all the parcelable classes
 5. **Ideal Rule:** **None.** Delete all manual Parcelable keeps.
 
-*** ** * ** ***
+---
 
 ## Case: Room Database
 
@@ -213,7 +213,7 @@ layers.
 
 - **Ideal Rule:** **None.** Delete all manual Room or DAO keeps.
 
-*** ** * ** ***
+---
 
 ## Summary
 

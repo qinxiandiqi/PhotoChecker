@@ -1,6 +1,5 @@
 <br />
 
-
 Applicable XR devices This guidance helps you build experiences for these types of XR devices. [Learn about XR device types →](https://developer.android.com/develop/xr/devices) ![](https://developer.android.com/static/images/develop/xr/ai-glasses-icon.svg) Display Glasses [](https://developer.android.com/develop/xr/devices#audio-display) [Learn about XR device types →](https://developer.android.com/develop/xr/devices)
 
 <br />
@@ -32,15 +31,15 @@ Typography scale in Jetpack Compose Glimmer is significantly larger than
 standard mobile Material Design. Styles like `TitleLarge` and `BodyLarge` are
 both `30.sp`, and the Caption is `18.sp`:
 
-| Style | Size (sp) | Weight | Line Height |
-|---|---|---|---|
-| titleLarge | 30 | 750 | 36.sp |
-| titleMedium | 24 | 750 | 28.sp |
-| titleSmall | 20 | 750 | 28.sp |
-| bodyLarge | 30 | 520 | 36.sp |
-| bodyMedium | 24 | 520 | 36.sp |
-| bodySmall | 20 | 520 | 28.sp |
-| caption | 18 | 650 | 24.sp |
+| Style       | Size (sp) | Weight | Line Height |
+| ----------- | --------- | ------ | ----------- |
+| titleLarge  | 30        | 750    | 36.sp       |
+| titleMedium | 24        | 750    | 28.sp       |
+| titleSmall  | 20        | 750    | 28.sp       |
+| bodyLarge   | 30        | 520    | 36.sp       |
+| bodyMedium  | 24        | 520    | 36.sp       |
+| bodySmall   | 20        | 520    | 28.sp       |
+| caption     | 18        | 650    | 24.sp       |
 
 ## Use Google Sans Flex
 
@@ -53,7 +52,6 @@ displayed on display glasses.
 
 To use Google Sans Flex, [add the `glimmer-google-fonts` library to your app's
 dependencies](https://developer.android.com/develop/xr/jetpack-xr-sdk/set-up-sdk#augmented), then apply the font globally to the `GlimmerTheme`:
-
 
 ```kotlin
 @Composable

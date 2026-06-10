@@ -11,8 +11,8 @@ look for (imports/usage) and the corresponding suggested rules.
 
 - **Example Code:**
   `kotlin
-  val taskClass = Class.forName(className)
-  val task = taskClass.getDeclaredConstructor().newInstance() as StartupTask`
+val taskClass = Class.forName(className)
+val task = taskClass.getDeclaredConstructor().newInstance() as StartupTask`
 
 - **Suggested Keep Rule:**
   \`\`\`proguard
@@ -27,9 +27,9 @@ look for (imports/usage) and the corresponding suggested rules.
 - **Look for:** `::class.java` (Kotlin) or `.class` (Java) passed as an argument.
 - **Example Code:**
   `kotlin
-  fun <T> register(clazz: Class<T>) { }
-  // Usage:
-  register(MyService::class.java)`
+fun <T> register(clazz: Class<T>) { }
+// Usage:
+register(MyService::class.java)`
 
 - **Suggested Keep Rule:**
   \`\`\`proguard
@@ -54,6 +54,7 @@ annotation class ReflectiveExecutor
 - **Suggested Keep Rule:** \`\`\`proguard # Keep the annotation itself -keep @interface com.example.library.ReflectiveExecutor
 
 # Keep members of any class annotated with this specific annotation
+
 -keepclassmembers class \* {
 @com.example.library.ReflectiveExecutor \*;
 }
@@ -86,8 +87,8 @@ with public APIs.
 - **Look for:** `getDeclaredField("...")` or `getDeclaredMethod("...")` followed by `isAccessible = true`.
 - **Example Code:**
   `kotlin
-  val secretField = instance::class.java.getDeclaredField("secretMessage")
-  secretField.isAccessible = true`
+val secretField = instance::class.java.getDeclaredField("secretMessage")
+secretField.isAccessible = true`
 
 - **Suggested Keep Rule:**
   \`\`\`proguard
@@ -107,17 +108,17 @@ annotation.
 - **Look for:** `implements Parcelable` and a static `CREATOR` field.
 - **Example Code:**
   `kotlin
-  class MyData : Parcelable {
-  // Manual implementation with CREATOR field
-  }`
+class MyData : Parcelable {
+// Manual implementation with CREATOR field
+}`
 
 - **Suggested Keep Rule:**
-  *(Note: If using `import kotlinx.parcelize.Parcelize`, R8/ProGuard rules are
-  generated automatically. If manual, use the following:)*
+  _(Note: If using `import kotlinx.parcelize.Parcelize`, R8/ProGuard rules are
+  generated automatically. If manual, use the following:)_
   `proguard
-  -keepclassmembers class * implements android.os.Parcelable {
-  static android.os.Parcelable$Creator CREATOR;
-  }`
+-keepclassmembers class * implements android.os.Parcelable {
+static android.os.Parcelable$Creator CREATOR;
+}`
 
 ### 7. Enums and Obfuscation
 
@@ -132,6 +133,7 @@ deserialization) and the enum names get obfuscated.
 
   -keepclassmembers enum \* { \*; }
   \`\`\`
+
 - **Suggested Keep Rule:**
   \*(Note: The default `proguard-android-optimize.txt` already contains the optimal
   rules for Enums (keeping `values()` and `valueOf(String)`). Any additional

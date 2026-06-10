@@ -244,8 +244,8 @@ import org.koin.dsl.koinApplication
  * This recipe demonstrates how to use a modular approach with Navigation 3,
  * where different parts of the application are defined in separate modules and injected
  * into the main app using Koin.
- * 
- * Features (Conversation and Profile) are split into two modules: 
+ *
+ * Features (Conversation and Profile) are split into two modules:
  * - api: defines the public facing routes for this feature
  * - impl: defines the entryProviders for this feature, these are injected into the app's main activity
  * The common module defines:

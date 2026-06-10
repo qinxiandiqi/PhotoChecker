@@ -1,6 +1,7 @@
 ---
 name: adaptive
-description: Instructions to make or update an app's UI so that it adapts to different
+description:
+  Instructions to make or update an app's UI so that it adapts to different
   Android devices including phones, tablets, foldables, laptops, desktop, TV, Auto
   and XR. It includes how to handle different window sizes, pointing devices (such
   as mouse) and text entry devices (such as keyboard) using the Compose MediaQuery
@@ -10,15 +11,15 @@ description: Instructions to make or update an app's UI so that it adapts to dif
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-20'
+  last-updated: "2026-05-20"
   keywords:
-  - android
-  - ui
-  - adaptive
-  - Grid
-  - FlexBox
-  - MediaQuery
-  - navigation
+    - android
+    - ui
+    - adaptive
+    - Grid
+    - FlexBox
+    - MediaQuery
+    - navigation
 ---
 
 ## Prerequisites
@@ -45,7 +46,6 @@ Ensure that screenshot tests exist to verify the current UI on different form
 factors. If they don't exist, add the [Compose Preview Screenshot Testing
 tool](references/android/develop/ui/compose/tooling/debug.md). Use the following annotation to create previews for all the major form
 factors. For example:
-
 
 ```kotlin
 @Preview(name = "Phone", device = Devices.PHONE, showBackground = true)
@@ -107,7 +107,6 @@ Steps to migrate:
 
 For example:
 
-
 ```kotlin
 // Pass this variable to any composable that needs to control the navigation area visibility
 var isNavBarVisible by remember { mutableStateOf(true) }
@@ -164,7 +163,7 @@ presentation).
 #### Use metadata to identify the list and detail screens
 
 - Add metadata using `entry(metadata = ...)` or `NavEntry(metadata = ...)` to the list entry using `ListDetailSceneStrategy.listPane(detailPlaceholder = {
-  <placeholder composable> })`.
+<placeholder composable> })`.
 - Use the `detailPlaceholder` parameter to add a placeholder on the detail screen when no list items are selected.
 - Add metadata to the detail entry using `ListDetailSceneStrategy.detailPane()`.
 
@@ -231,7 +230,6 @@ available width is:
 
 - less than 800dp, a 2x4 grid is used
 - 800dp or more, a 4x2 grid is used
-
 
 ```kotlin
 Grid(

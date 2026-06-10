@@ -1,7 +1,6 @@
 When creating a Glimmer List component, refer to the following source code in
 `ListState.kt` for creating a state for the list:
 
-
 ```kotlin
 /*
  * Copyright 2025 The Android Open Source Project

@@ -16,7 +16,7 @@ Complete the [Pre-work](https://developer.android.com/guide/playcore/engage/tv/g
 
 1. Execute publishing on a foreground service.
 2. Publish recommendations data at most once daily, triggered by either of
-   - User's first login of the day. (*or*)
+   - User's first login of the day. (_or_)
    - When the user starts interacting with the application.
 
 ## Integration

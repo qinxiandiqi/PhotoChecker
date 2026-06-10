@@ -1,13 +1,13 @@
 ## 1. Configuration
 
-*(Optional section for the report, omit if no relevant findings are present.)*
+_(Optional section for the report, omit if no relevant findings are present.)_
 
 - **AGP Version**: \[Current\] -\> Upgrade to 9.0.
 - **Full Mode** : Not enabled. Remove `android.enableR8.fullMode=false` from `gradle.properties`.
 
 ## 2. Global disable rules
 
-*(Optional section for the report, omit if no relevant findings are present.)*
+_(Optional section for the report, omit if no relevant findings are present.)_
 
 - \[Rule\]: Disables R8 globally. **Action**: Remove.
 
@@ -33,7 +33,7 @@ optimizations.
 
 ## 5. Subsumed keep rules
 
-*(Optional section for the report, omit if no relevant findings are present.)*
+_(Optional section for the report, omit if no relevant findings are present.)_
 
 ### \[Redundant rules\]
 
@@ -42,8 +42,8 @@ optimizations.
 
 ## 6. Historical analysis summary
 
-*(Only include this section if a previous report existed. Summarize the changes
-in optimization scores here to track progress. For example:)* The previous app
+_(Only include this section if a previous report existed. Summarize the changes
+in optimization scores here to track progress. For example:)_ The previous app
 had scores: Optimization (XX%), Obfuscation (XX%), and Shrinking (XX%). The
 current app has scores: Optimization (YY%), Obfuscation (YY%), and Shrinking
 (YY%).

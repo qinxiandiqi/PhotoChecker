@@ -10,7 +10,6 @@ Symbol Processing) plugin.
 
 1. **Version Check**: Use the latest library versions from maven.google.com.
 
-
 ```kotlin
 implementation(libs.androidx.appfunctions)
 implementation(libs.androidx.appfunctions.service)
@@ -18,7 +17,6 @@ ksp(libs.androidx.appfunctions.compiler)
 ```
 
 <br />
-
 
 ```kotlin
 ksp {
@@ -86,7 +84,6 @@ instances of classes containing `@AppFunction` methods.
 
 **Example Hilt Integration:**
 
-
 ```kotlin
 @HiltAndroidApp
 class AppFunctionApplication : Application(), AppFunctionConfiguration.Provider {
@@ -123,7 +120,6 @@ Configuration APIs and the `@AppFunction` annotation are located in
 
 ### Example: Serializable with Inline KDoc
 
-
 ```kotlin
 /**
  * A note.
@@ -142,7 +138,6 @@ data class Note(
 <br />
 
 ### Example: Implementation Detail
-
 
 ```kotlin
 /**

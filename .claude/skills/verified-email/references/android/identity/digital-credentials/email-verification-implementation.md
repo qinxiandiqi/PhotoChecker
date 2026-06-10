@@ -65,12 +65,12 @@ providers support a JSON structure with an outer `"digital": {"requests":
                 {
                   "id": "user_info_query",
                   "format": "dc+sd-jwt",
-                   "meta": { 
-                      "vct_values": ["UserInfoCredential"] 
+                   "meta": {
+                      "vct_values": ["UserInfoCredential"]
                    },
-                  "claims": [ 
-                    {"path": ["email"]}, 
-                    {"path": ["name"]},  
+                  "claims": [
+                    {"path": ["email"]},
+                    {"path": ["name"]},
                     {"path": ["given_name"]},
                     {"path": ["family_name"]},
                     {"path": ["picture"]},

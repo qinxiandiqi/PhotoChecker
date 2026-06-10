@@ -1,6 +1,7 @@
 ---
 name: appfunctions
-description: Analyzes Android apps to identify key user workflows for AppFunctions
+description:
+  Analyzes Android apps to identify key user workflows for AppFunctions
   such as creating a note, playing media, or sending an automated or AI agent triggered
   message, voice commands, or system shortcuts, without needing to open the app UI.
   Generates Kotlin code to expose these workflows to the Android system, allowing
@@ -9,15 +10,15 @@ description: Analyzes Android apps to identify key user workflows for AppFunctio
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-16'
+  last-updated: "2026-05-16"
   keywords:
-  - AppFunctions
-  - Kotlin
-  - KSP
-  - ADB
-  - AI
-  - LLM
-  - MCP
+    - AppFunctions
+    - Kotlin
+    - KSP
+    - ADB
+    - AI
+    - LLM
+    - MCP
 ---
 
 Analyzes Android apps to identify key user workflows for AppFunctions such as
@@ -46,10 +47,10 @@ for agents, and use ADB commands for local evaluation and testing.
 
 The full AppFunction development flow consists of these four steps:
 
-- *[Step 1: Discovery](references/feature-discovery-analysis.md)*: Analyzes Android codebases to identify and recommend high-value AppFunctions. Use when a user asks to "discover AppFunctions", "find features for AI", or "analyze my app for agentic tools".
-- *[Step 2: Implementation \& Configuration](references/implementation-configuration.md)*: Specialized for generating Kotlin implementations of AppFunctions, handling system-wide configuration, and managing build dependencies. Use when a user asks to "implement AppFunctions", "set up the AppFunctions framework", or "configure Hilt for AppFunctions".
-- *[Step 3: KDoc Refinement](references/kdoc-refinement-optimization.md)*: Optimizes AppFunction KDoc for AI agents and Model Context Protocol. Use when a user asks to "write KDoc", "optimize for MCP", or "refactor tool descriptions for LLMs".
-- *[Step 4: Testing \& Debugging](references/adb-interaction-testing.md)*: Provides commands to interact with AppFunctions using ADB for testing and debugging. Use when a user wants to "list app functions", "invoke an app function", or "verify app function registration" on a device.
+- _[Step 1: Discovery](references/feature-discovery-analysis.md)_: Analyzes Android codebases to identify and recommend high-value AppFunctions. Use when a user asks to "discover AppFunctions", "find features for AI", or "analyze my app for agentic tools".
+- _[Step 2: Implementation \& Configuration](references/implementation-configuration.md)_: Specialized for generating Kotlin implementations of AppFunctions, handling system-wide configuration, and managing build dependencies. Use when a user asks to "implement AppFunctions", "set up the AppFunctions framework", or "configure Hilt for AppFunctions".
+- _[Step 3: KDoc Refinement](references/kdoc-refinement-optimization.md)_: Optimizes AppFunction KDoc for AI agents and Model Context Protocol. Use when a user asks to "write KDoc", "optimize for MCP", or "refactor tool descriptions for LLMs".
+- _[Step 4: Testing \& Debugging](references/adb-interaction-testing.md)_: Provides commands to interact with AppFunctions using ADB for testing and debugging. Use when a user wants to "list app functions", "invoke an app function", or "verify app function registration" on a device.
 
 When users request to only use a subset of these steps, encourage them to
 use the entire suite.

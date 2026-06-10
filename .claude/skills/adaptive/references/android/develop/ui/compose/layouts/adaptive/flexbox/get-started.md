@@ -2,26 +2,25 @@ This page describes how to implement basic `FlexBox` layouts.
 
 ## Set up project
 
-1. Add the [`androidx.compose.foundation.layout`](https://developer.android.com/jetpack/androidx/versions) library to your project's
-   `lib.versions.toml`.
+1.  Add the [`androidx.compose.foundation.layout`](https://developer.android.com/jetpack/androidx/versions) library to your project's
+    `lib.versions.toml`.
 
-       [versions]
-       compose = "1.12.0-alpha03"
+        [versions]
+        compose = "1.12.0-alpha03"
 
-       [libraries]
-       androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "compose" }
+        [libraries]
+        androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "compose" }
 
-2. Add the library dependency to your app's `build.gradle.kts`.
+2.  Add the library dependency to your app's `build.gradle.kts`.
 
-       dependencies {
-           implementation(libs.androidx.compose.foundation.layout)
-       }
+    dependencies {
+    implementation(libs.androidx.compose.foundation.layout)
+    }
 
 ## Create basic FlexBox layouts
 
 **Example 1** : `FlexBox` lays out two `Text` elements that are centrally
 aligned.
-
 
 ```kotlin
 FlexBox(
@@ -42,7 +41,6 @@ FlexBox(
 **Example 2** : `FlexBox` wraps five items onto two rows and grows them unequally
 to fill the available space on each row. There is an `8.dp`
 gap, both vertically and horizontally, between the items.
-
 
 ```kotlin
 FlexBox(

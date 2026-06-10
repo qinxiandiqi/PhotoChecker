@@ -20,7 +20,7 @@ Key features of the modern approach include:
 - A dedicated `uiAutomator` test scope for cleaner and more expressive test code.
 - Methods like `onElement`, `onElements`, and `onElementOrNull` for finding UI elements with clear predicates.
 - Built-in waiting mechanism for conditional elements `onElement*(timeoutMs:
-  Long = 10000)`
+Long = 10000)`
 - Explicit app state management such as `waitForStable` and `waitForAppToBeVisible`.
 - Direct interaction with accessibility window nodes for multi-window testing scenarios.
 - Built-in screenshot capabilities and a `ResultsReporter` for visual testing and debugging.
@@ -302,11 +302,11 @@ debugging.
 If you have existing UI Automator tests written with older API surfaces, use the
 following table as a reference to migrate to the modern approach:
 
-| Action type | Old UI Automator method | New UI Automator method |
-|---|---|---|
-| Entry point | `UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())` | Wrap test logic in the `uiAutomator { ... }` scope. |
-| Find UI elements | `device.findObject(By.res("com.example.app:id/my_button"))` | `onElement { viewIdResourceName == "my\_button" }` |
-| Find UI elements | `device.findObject(By.text("Click Me"))` | `onElement { textAsString() == "Click Me" }` |
-| Wait for idle UI | `device.waitForIdle()` | Prefer `onElement`'s built-in timeout mechanism; otherwise, `activeWindow().waitForStable()` |
-| Find child elements | Manually nested `findObject` calls | `onElement().onElement()` chaining |
-| Handle permission dialogs | `UiAutomator.registerWatcher()` | `watchFor(PermissionDialog)` |
+| Action type               | Old UI Automator method                                              | New UI Automator method                                                                      |
+| ------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Entry point               | `UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())` | Wrap test logic in the `uiAutomator { ... }` scope.                                          |
+| Find UI elements          | `device.findObject(By.res("com.example.app:id/my_button"))`          | `onElement { viewIdResourceName == "my\_button" }`                                           |
+| Find UI elements          | `device.findObject(By.text("Click Me"))`                             | `onElement { textAsString() == "Click Me" }`                                                 |
+| Wait for idle UI          | `device.waitForIdle()`                                               | Prefer `onElement`'s built-in timeout mechanism; otherwise, `activeWindow().waitForStable()` |
+| Find child elements       | Manually nested `findObject` calls                                   | `onElement().onElement()` chaining                                                           |
+| Handle permission dialogs | `UiAutomator.registerWatcher()`                                      | `watchFor(PermissionDialog)`                                                                 |

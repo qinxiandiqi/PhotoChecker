@@ -9,13 +9,13 @@ modifiers is available in Styles.
 
 The following is a comparison between Styles versus modifiers:
 
-| Feature | Modifiers | Styles |
-|---|---|---|
-| **Primary Goal** | Define behaviors, semantics, and complex layouts. Modifiers manipulate individual elements on the fly for a particular composable and don't trickle down from the theme. | Define visual appearance, individual item sizing and themeable properties. Styles operate at a theme level and are over-writeable at a component level. They trickle down and apply styling across different composables. |
-| **Logic** | Additive - the modifiers combine together to form a new result. | Over-writable - the last property set in the Style wins. Styles act as a single layer of properties that override each other based on a defined precedence hierarchy. |
-| **Theming** | Challenging to lift into a theme, normally used individually. | By design, Styles are themeable (they can access `CompositionLocal`s) and can be defined once and used across components. |
-| **Performance** | Updates often require all three phases of Compose: composition, layout and draw. Achieving good animation performance of modifiers often requires writing lambda-based versions. | Skips composition phase, only active in layout and draw phase, reducing recompositions. Requires less object allocation. |
-| **Animations** | Requires using separate animation primitives like `animate*AsState` | Features built-in `animate { }` API that handles some animations for you. |
+| Feature          | Modifiers                                                                                                                                                                        | Styles                                                                                                                                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primary Goal** | Define behaviors, semantics, and complex layouts. Modifiers manipulate individual elements on the fly for a particular composable and don't trickle down from the theme.         | Define visual appearance, individual item sizing and themeable properties. Styles operate at a theme level and are over-writeable at a component level. They trickle down and apply styling across different composables. |
+| **Logic**        | Additive - the modifiers combine together to form a new result.                                                                                                                  | Over-writable - the last property set in the Style wins. Styles act as a single layer of properties that override each other based on a defined precedence hierarchy.                                                     |
+| **Theming**      | Challenging to lift into a theme, normally used individually.                                                                                                                    | By design, Styles are themeable (they can access `CompositionLocal`s) and can be defined once and used across components.                                                                                                 |
+| **Performance**  | Updates often require all three phases of Compose: composition, layout and draw. Achieving good animation performance of modifiers often requires writing lambda-based versions. | Skips composition phase, only active in layout and draw phase, reducing recompositions. Requires less object allocation.                                                                                                  |
+| **Animations**   | Requires using separate animation primitives like `animate*AsState`                                                                                                              | Features built-in `animate { }` API that handles some animations for you.                                                                                                                                                 |
 
 ## Limitations of modifiers
 
@@ -34,8 +34,8 @@ some limitations, which show how they cannot entirely replace modifiers:
 
 - Styles are specialized Modifiers. While a modifier can do anything a Style does, the reverse is not true. Consequently, Styles can supplement, but cannot replace, modifiers.
 - Styles are limited to visual configuration (backgrounds, padding, borders). They cannot handle behaviors like click logic, gesture detection, or accessibility semantics.
-- Resolving a Style into its final state is *more expensive than applying a
-  single modifier*. The system must generate a data structure containing all possible property values, and the lookup of inherited properties further complicates this.
+- Resolving a Style into its final state is _more expensive than applying a
+  single modifier_. The system must generate a data structure containing all possible property values, and the lookup of inherited properties further complicates this.
 
 ## When to use Styles over modifiers
 

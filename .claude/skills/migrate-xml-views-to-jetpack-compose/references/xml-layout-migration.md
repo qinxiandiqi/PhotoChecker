@@ -44,7 +44,6 @@ Example before migration:
 
 Example after migration:
 
-
 ```kotlin
 @Composable
 fun RoundedBorderlessButton(
@@ -77,7 +76,7 @@ fun RoundedBorderlessButton(
 
 <br />
 
-*** ** * ** ***
+---
 
 ## 5. Output requirements
 

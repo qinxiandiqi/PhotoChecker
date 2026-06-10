@@ -41,7 +41,7 @@ Use the **addCustomBuildConfigFields** recipe from the [gradle-recipes](https://
 repository.
 
 **IMPORTANT:** For `BuildConfigField`s with a type of `String`, the `value` field
-*must* include quotation marks as part of the String. For example:
+_must_ include quotation marks as part of the String. For example:
 
     BuildConfigField(
       type = "String",

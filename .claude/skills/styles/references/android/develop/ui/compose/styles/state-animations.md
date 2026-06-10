@@ -30,7 +30,6 @@ The following example demonstrates modifying the `background` and `borderColor`
 in response to interaction states, specifically switching to purple when hovered
 and blue when focused:
 
-
 ```kotlin
 @Preview
 @Composable
@@ -65,7 +64,6 @@ private fun OpenButton() {
 You can also create nested state definitions. For example, you can define a
 specific style for when a button is being both pressed and hovered
 simultaneously:
-
 
 ```kotlin
 @Composable
@@ -119,7 +117,6 @@ alters its colors during interactions, like being pressed.
 - Initialize the `styleState` by providing the `interactionSource`. Make sure the `styleState`'s enabled status reflects the value of the provided enabled parameter.
 - Assign the `interactionSource` to the `focusable` and `clickable` modifiers. Finally, apply the `styleState` to the modifier's `styleable` parameter.
 
-
 ```kotlin
 @Composable
 private fun GradientButton(
@@ -154,7 +151,6 @@ private fun GradientButton(
 You can now use the `interactionSource` state to drive style modifications with
 the pressed, focused, and hovered options inside the style block:
 
-
 ```kotlin
 @Preview
 @Composable
@@ -187,7 +183,6 @@ property within any state change block with `animate` to automatically add
 animations between different states. This is similar to the `animate*AsState`
 APIs. The following example animates the `borderColor` from black to blue when
 the state changes to focused:
-
 
 ```kotlin
 val animatingStyle = Style {
@@ -231,7 +226,6 @@ private fun AnimatingStyleChanges() {
 The `animate` API accepts an `animationSpec` to change the duration or shape of
 the animation curve. The following example animates the size of the box with a
 `spring` spec:
-
 
 ```kotlin
 val animatingStyleSpec = Style {
@@ -292,7 +286,6 @@ To create a custom state-based style, first create a
 app launches, the media player is in the `Stopped` state, so it's initialized in
 this way:
 
-
 ```kotlin
 enum class PlayerState {
     Stopped,
@@ -310,7 +303,6 @@ val playerStateKey = StyleStateKey(PlayerState.Stopped)
 Define an extension function on `StyleState` to query the current `playState`.
 Then, create extension functions on `StyleScope` with your custom states passing
 in the `playStateKey`, a lambda with the specific state, and the style.
-
 
 ```kotlin
 // Extension Function on MutableStyleState to query and set the current playState
@@ -333,7 +325,6 @@ fun StyleScope.playerPaused(value: Style) {
 Define the `styleState` in your composable and set the `styleState.playState`
 equal to incoming state. Pass `styleState` into the `styleable` function on the
 modifier.
-
 
 ```kotlin
 @Composable
@@ -358,7 +349,6 @@ fun MediaPlayer(
 
 Within the `style` lambda, you can apply state based styling for custom states,
 using the previously defined extension functions.
-
 
 ```kotlin
 @Composable
@@ -390,7 +380,6 @@ fun StyleStateKeySample() {
 <br />
 
 The following code is the full snippet for this example:
-
 
 ```kotlin
 enum class PlayerState {

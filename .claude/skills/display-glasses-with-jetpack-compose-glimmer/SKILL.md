@@ -1,6 +1,7 @@
 ---
 name: display-glasses-with-jetpack-compose-glimmer
-description: Provides guidelines for developing projected Android XR apps for display
+description:
+  Provides guidelines for developing projected Android XR apps for display
   glasses using the Jetpack Compose Glimmer UI toolkit. This skill covers foundational
   Glimmer design principles, workflows for implementing Jetpack Compose Glimmer, and
   interaction models for the glasses form factor. Use this skill to build an Android
@@ -9,30 +10,30 @@ description: Provides guidelines for developing projected Android XR apps for di
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-06-03'
+  last-updated: "2026-06-03"
   keywords:
-  - Jetpack Compose Glimmer
-  - audio glasses
-  - display glasses
-  - Projected Activity
-  - GlimmerTheme
-  - Additive Display
-  - Android XR - Augmented Experiences
+    - Jetpack Compose Glimmer
+    - audio glasses
+    - display glasses
+    - Projected Activity
+    - GlimmerTheme
+    - Additive Display
+    - Android XR - Augmented Experiences
 ---
 
 ## Glossary
 
-| Term | Definition |
-|---|---|
-| **Intelligent Eyewear** | All-day wear, hands-free devices that provide access to information. Equipped with speakers, a camera, and a microphone. Some are audio-only (audio glasses), and some also have a display (display glasses). |
-| **Display Glasses** | Audio glasses with the addition of a small, private display for glanceable visuals that harmonize with audio output. |
-| **Jetpack Compose Glimmer** | A Compose UI toolkit for building augmented Android XR experiences, optimized for display glasses. It provides components, theming, and behaviors for transparent displays. |
-| **Projected Activity (Glasses Activity)** | An Android `Activity` that runs on a host device (phone) but its UI and interactions are projected to a connected, intelligent eyewear device (audio or display glasses). |
-| **Projected Device** | An XR device connected to an Android-powered device (host). Host projects the application content to the Projected device and let users interact with it. |
-| **GlimmerTheme** | The root provider for styling tokens, including GlimmerColors, GlimmerTypography, and GlimmerShapes. |
-| **Additive Display** | A display technology where black (#000000) is rendered as 100% transparent. UI is built by adding light to the environment. Display glasses have an additive display. |
-| **Augmented Experiences** | Android XR experiences that enhance a user's focus and presence in the real world. They are lightweight and additive, helping users while they are on-the-go |
-| **Visual Angle** | A unit of measurement for perceived size in XR. The minimum readable text size is 0.6 degrees (approx. 18sp at 1 m). |
+| Term                                      | Definition                                                                                                                                                                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Intelligent Eyewear**                   | All-day wear, hands-free devices that provide access to information. Equipped with speakers, a camera, and a microphone. Some are audio-only (audio glasses), and some also have a display (display glasses). |
+| **Display Glasses**                       | Audio glasses with the addition of a small, private display for glanceable visuals that harmonize with audio output.                                                                                          |
+| **Jetpack Compose Glimmer**               | A Compose UI toolkit for building augmented Android XR experiences, optimized for display glasses. It provides components, theming, and behaviors for transparent displays.                                   |
+| **Projected Activity (Glasses Activity)** | An Android `Activity` that runs on a host device (phone) but its UI and interactions are projected to a connected, intelligent eyewear device (audio or display glasses).                                     |
+| **Projected Device**                      | An XR device connected to an Android-powered device (host). Host projects the application content to the Projected device and let users interact with it.                                                     |
+| **GlimmerTheme**                          | The root provider for styling tokens, including GlimmerColors, GlimmerTypography, and GlimmerShapes.                                                                                                          |
+| **Additive Display**                      | A display technology where black (#000000) is rendered as 100% transparent. UI is built by adding light to the environment. Display glasses have an additive display.                                         |
+| **Augmented Experiences**                 | Android XR experiences that enhance a user's focus and presence in the real world. They are lightweight and additive, helping users while they are on-the-go                                                  |
+| **Visual Angle**                          | A unit of measurement for perceived size in XR. The minimum readable text size is 0.6 degrees (approx. 18sp at 1 m).                                                                                          |
 
 ## Prerequisites
 
@@ -113,14 +114,14 @@ display glasses.
 Glimmer styles are accessed through the `GlimmerTheme` object. Use
 [references/glimmertheme-source.md](references/glimmertheme-source.md) for reference.
 
-| Category | Token | Value / Role |
-|---|---|---|
-| **Color** | primary | #9BBFFF (Focal color) |
-| **Color** | secondary | #4C88E9 (Focal color) |
-| **Color** | surface | #262626 (Transparent base - renders as transparent) |
-| **Color** | outline | #606460 (3.dp border color) |
-| **Shape** | Standard | `RoundedCornerShape(36.dp)` |
-| **Shape** | Small | `RoundedCornerShape(12.dp)` |
+| Category  | Token     | Value / Role                                        |
+| --------- | --------- | --------------------------------------------------- |
+| **Color** | primary   | #9BBFFF (Focal color)                               |
+| **Color** | secondary | #4C88E9 (Focal color)                               |
+| **Color** | surface   | #262626 (Transparent base - renders as transparent) |
+| **Color** | outline   | #606460 (3.dp border color)                         |
+| **Shape** | Standard  | `RoundedCornerShape(36.dp)`                         |
+| **Shape** | Small     | `RoundedCornerShape(12.dp)`                         |
 
 #### Typography Scale (Google Sans Flex)
 
@@ -134,15 +135,15 @@ configure the following axes:
 - **Optical Size (`opsz`):** Set to `9f`.
 - **Weight (`wght`):** Use specific values for different roles (Title: `725f`, Body: `520f`, Caption: `650f`).
 
-| Style Name | Size / Line-Height | Weight Axis | Width | Roundness | Optical size |
-|---|---|---|---|---|---|
-| **Title Large** | 30.sp / 36.sp | 725 | 100 | 100 | 9 |
-| **Title Medium** | 24.sp / 32.sp | 725 | 100 | 100 | 9 |
-| **Title Small** | 20.sp / 28.sp | 725 | 100 | 100 | 9 |
-| **Body Large** | 30.sp / 36.sp | 520 | 100 | 100 | 9 |
-| **Body Medium** | 24.sp / 32.sp | 520 | 100 | 100 | 9 |
-| **Body Small** | 20.sp / 28.sp | 520 | 100 | 100 | 9 |
-| **Caption** | 18.sp / 28.sp | 650 | 100 | 100 | 9 |
+| Style Name       | Size / Line-Height | Weight Axis | Width | Roundness | Optical size |
+| ---------------- | ------------------ | ----------- | ----- | --------- | ------------ |
+| **Title Large**  | 30.sp / 36.sp      | 725         | 100   | 100       | 9            |
+| **Title Medium** | 24.sp / 32.sp      | 725         | 100   | 100       | 9            |
+| **Title Small**  | 20.sp / 28.sp      | 725         | 100   | 100       | 9            |
+| **Body Large**   | 30.sp / 36.sp      | 520         | 100   | 100       | 9            |
+| **Body Medium**  | 24.sp / 32.sp      | 520         | 100   | 100       | 9            |
+| **Body Small**   | 20.sp / 28.sp      | 520         | 100   | 100       | 9            |
+| **Caption**      | 18.sp / 28.sp      | 650         | 100   | 100       | 9            |
 
 #### Depth Levels
 
@@ -154,11 +155,11 @@ controls use `DepthEffect` with 5 preset `DepthEffectLevels`. Use
 
 Some examples:
 
-| Level | Usage |
-|---|---|
-| **level1** | Standard rest state for cards and persistent background UI. |
-| **level2** | Standard focus/pressed state for buttons and interactive cards. |
-| **ExtraSmall** | 4.dp |
+| Level          | Usage                                                           |
+| -------------- | --------------------------------------------------------------- |
+| **level1**     | Standard rest state for cards and persistent background UI.     |
+| **level2**     | Standard focus/pressed state for buttons and interactive cards. |
+| **ExtraSmall** | 4.dp                                                            |
 
 ### Implementing Jetpack Compose Glimmer Components
 
@@ -265,10 +266,10 @@ different types.
 ##### Guidelines and usage
 
 - **ListItem Slots:** Use the `ListItem` composable for rows. It provides predefined slots. Use [references/listitem-source.md](references/listitem-source.md) for reference.
-- **Visual Consistency:** When building lists of similar items, always use a consistent background color (typically `GlimmerTheme.colors.surface`) and corner radius (standard 36.dp) for every item. Don't vary these unless you are visually grouping different *types* of content.
+- **Visual Consistency:** When building lists of similar items, always use a consistent background color (typically `GlimmerTheme.colors.surface`) and corner radius (standard 36.dp) for every item. Don't vary these unless you are visually grouping different _types_ of content.
 - **Integrated Title Chips:** Glimmer Lists support integrated title chips. **IF** you need a section header within a list: **THEN** enable the integrated title chip rather than adding a standalone `TitleChip` to maintain spatial consistency.
 - **Vertical Arrangement:** ALWAYS use `verticalArrangement =
-  Arrangement.spacedBy(20.dp)` for `VerticalList` to ensure visual separation between items on the glasses display.
+Arrangement.spacedBy(20.dp)` for `VerticalList` to ensure visual separation between items on the glasses display.
 - Be sure to use the default 20 dp spacing between list items unless otherwise specified.
 
 ##### Technical Documentation Links

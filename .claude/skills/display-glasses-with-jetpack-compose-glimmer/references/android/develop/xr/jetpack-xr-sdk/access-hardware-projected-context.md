@@ -22,8 +22,7 @@ made within that activity can already access the glasses' hardware.
 If a part of your app outside of your projected activity (such as a phone
 activity or a service) needs to access the glasses' hardware, it must explicitly
 obtain a projected context. To do this, use the
-[`createProjectedDeviceContext`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createProjectedDeviceContext(android.content.Context)) method:
-
+[`createProjectedDeviceContext`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createProjectedDeviceContext(android.content.Context)>) method:
 
 ```kotlin
 @OptIn(ExperimentalProjectedApi::class)
@@ -42,8 +41,8 @@ private fun getGlassesContext(context: Context): Context? {
 
 ### Check for validity
 
-Wrap the [`createProjectedDeviceContext`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createProjectedDeviceContext(android.content.Context)) call within the
-[`ProjectedContext.isProjectedDeviceConnected`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#isProjectedDeviceConnected(android.content.Context,kotlin.coroutines.CoroutineContext)). While this method returns
+Wrap the [`createProjectedDeviceContext`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createProjectedDeviceContext(android.content.Context)>) call within the
+[`ProjectedContext.isProjectedDeviceConnected`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#isProjectedDeviceConnected(android.content.Context,kotlin.coroutines.CoroutineContext)>). While this method returns
 `true`, the projected context remains valid to the connected device, and your
 phone app activity or service (such as a `CameraManager`) can access the AI
 glasses hardware.
@@ -52,7 +51,7 @@ glasses hardware.
 
 The projected context is tied to the lifecycle of the connected device, so it is
 destroyed when the device disconnects. When the device disconnects,
-[`ProjectedContext.isProjectedDeviceConnected`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#isProjectedDeviceConnected(android.content.Context,kotlin.coroutines.CoroutineContext)) returns `false`. Your app
+[`ProjectedContext.isProjectedDeviceConnected`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#isProjectedDeviceConnected(android.content.Context,kotlin.coroutines.CoroutineContext)>) returns `false`. Your app
 should listen for this change and clean up any system services (such as a
 `CameraManager`) or resources that your app created using that projected
 context.
@@ -60,7 +59,7 @@ context.
 ### Re-initialize on reconnect
 
 When the glasses reconnect, your app can obtain another projected
-context instance using [`createProjectedDeviceContext`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createProjectedDeviceContext(android.content.Context)), and then
+context instance using [`createProjectedDeviceContext`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createProjectedDeviceContext(android.content.Context)>), and then
 re-initialize any system services or resources using the new projected context.
 
 ## Record audio with the glasses' microphone
@@ -75,10 +74,10 @@ You can record audio from the glasses using two distinct methods:
 The method you choose depends on whether you need high-fidelity, XR-specific
 audio processing, or standard Bluetooth audio input.
 
-| Recording method | Microphone access | Common use case |
-|---|---|---|
-| Projected Context | Multiple microphones | Recording using a projected context lets your app access multiple microphones from the glasses and its specialized hardware features, such as: - XR-specific spatialization. - Advanced denoising. - Voice separation that distinguishes between wearer's and bystander's voices. - Maintain recording access in multidevice environments even when the glasses are not the active Bluetooth device. |
-| Bluetooth HFP | Single microphone | Relies on the Bluetooth Hands-Free Profile (HFP) for immediate, out-of-the-box compatibility. In this mode, the glasses connect to the phone using standard Headset and Advanced Audio Distribution Profile (A2DP) [profiles](https://developer.android.com/develop/connectivity/bluetooth/profiles), functioning like a typical Bluetooth peripheral. If your app is already designed for standard Bluetooth recording, you can use this method to record audio from the glasses without integrating any XR-specific capabilities. |
+| Recording method  | Microphone access    | Common use case                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Projected Context | Multiple microphones | Recording using a projected context lets your app access multiple microphones from the glasses and its specialized hardware features, such as: - XR-specific spatialization. - Advanced denoising. - Voice separation that distinguishes between wearer's and bystander's voices. - Maintain recording access in multidevice environments even when the glasses are not the active Bluetooth device.                                                                                                                                |
+| Bluetooth HFP     | Single microphone    | Relies on the Bluetooth Hands-Free Profile (HFP) for immediate, out-of-the-box compatibility. In this mode, the glasses connect to the phone using standard Headset and Advanced Audio Distribution Profile (A2DP) [profiles](https://developer.android.com/develop/connectivity/bluetooth/profiles), functioning like a typical Bluetooth peripheral. If your app is already designed for standard Bluetooth recording, you can use this method to record audio from the glasses without integrating any XR-specific capabilities. |
 
 ### Record audio using a projected context
 
@@ -99,7 +98,7 @@ Follow these steps to request the permissions:
 2. Request the projected-device-scoped permissions in one of the following
    ways, depending on where your code is executing:
 
-   - **Code executing from a projected activity** : Use the [`ActivityResultLauncher`](https://developer.android.com/reference/kotlin/androidx/activity/result/ActivityResultLauncher) with the [`ProjectedPermissionsResultContract`](https://developer.android.com/reference/kotlin/androidx/xr/projected/permissions/ProjectedPermissionsResultContract#ProjectedPermissionsResultContract()). For more information on using this method, see the [register the permissions launcher](https://developer.android.com/develop/xr/jetpack-xr-sdk/request-hardware-permissions#register) section and subsequent sections in the guide for requesting hardware permissions.
+   - **Code executing from a projected activity** : Use the [`ActivityResultLauncher`](https://developer.android.com/reference/kotlin/androidx/activity/result/ActivityResultLauncher) with the [`ProjectedPermissionsResultContract`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/permissions/ProjectedPermissionsResultContract#ProjectedPermissionsResultContract()>). For more information on using this method, see the [register the permissions launcher](https://developer.android.com/develop/xr/jetpack-xr-sdk/request-hardware-permissions#register) section and subsequent sections in the guide for requesting hardware permissions.
    - **Code executing from a host phone activity** : Use [`Activity#requestPermissions(permissions, requestCode, deviceId)`](https://developer.android.com/reference/kotlin/android/app/Activity#requestpermissions_1) and provide the device ID obtained from your `projectedDeviceContext`, as described in the [understand the permission request user flow](https://developer.android.com/develop/xr/jetpack-xr-sdk/request-hardware-permissions#permissions-user-flow) section of the guide for requesting hardware permissions.
 
 #### Initialize AudioRecord with a projected context
@@ -109,7 +108,6 @@ you must associate the `AudioRecord` object with the projected device context.
 
 The following code uses the [`AudioRecord.Builder`](https://developer.android.com/reference/kotlin/android/media/AudioRecord.Builder) and passes the
 `projectedDeviceContext` to the [`setContext`](https://developer.android.com/reference/kotlin/android/media/AudioRecord.Builder#setcontext) method:
-
 
 ```kotlin
 // Initialize AudioRecord with projected device context
@@ -137,6 +135,7 @@ audioRecord.startRecording()
   noise reduction. `VOICE_RECOGNITION` is processed with acoustic echo
   cancellation (AEC). And if you need raw, unaltered audio, select
   `UNPROCESSED` or `CAMCORDER`.
+
 - To ensure compatibility with the glasses, the `audioFormat` object must
   define a sample rate of 16kHz and a channel configuration of either mono or
   stereo (using [`CHANNEL_IN_MONO`](https://developer.android.com/reference/kotlin/android/media/AudioFormat#channel_in_mono) or [`CHANNEL_IN_STEREO`](https://developer.android.com/reference/kotlin/android/media/AudioFormat#channel_in_stereo)).
@@ -178,6 +177,7 @@ Follow these steps to request the permissions:
    - [`RECORD_AUDIO`](https://developer.android.com/reference/kotlin/android/Manifest.permission#record_audio)
    - [`BLUETOOTH_CONNECT`](https://developer.android.com/reference/kotlin/android/Manifest.permission#bluetooth_connect)
    - [`MODIFY_AUDIO_SETTINGS`](https://developer.android.com/reference/kotlin/android/Manifest.permission#modify_audio_settings)
+
 2. Request both the `RECORD_AUDIO` and `BLUETOOTH_CONNECT` permissions at
    runtime using the [standard Android permission flow](https://developer.android.com/training/permissions/requesting).
 
@@ -187,7 +187,6 @@ After the user has granted your app the necessary runtime permissions, use the
 [`AudioManager`](https://developer.android.com/reference/kotlin/android/media/AudioManager) API to set the communication device to
 [`TYPE_BLUETOOTH_SCO`](https://developer.android.com/reference/kotlin/android/media/AudioDeviceInfo#type_bluetooth_sco) to route the audio through Bluetooth HFP. This
 directs the system to retrieve audio from the Bluetooth peripheral.
-
 
 ```kotlin
 val audioManager = context.getSystemService(AudioManager::class.java) ?: return
@@ -218,7 +217,6 @@ hfpDevice?.let { device ->
 To capture an image with the glasses' camera, set up and bind the CameraX's
 [`ImageCapture`](https://developer.android.com/reference/kotlin/androidx/camera/core/ImageCapture) [use case](https://developer.android.com/media/camera/camerax#ease-of-use) to the glasses' camera using the correct
 context for your app:
-
 
 ```kotlin
 private fun startCameraOnGlasses(activity: ComponentActivity) {
@@ -296,7 +294,7 @@ private fun startCameraOnGlasses(activity: ComponentActivity) {
 
 - Obtains an instance of the [`ProcessCameraProvider`](https://developer.android.com/reference/kotlin/androidx/camera/lifecycle/ProcessCameraProvider) using the [**projected device context**](https://developer.android.com/develop/xr/jetpack-xr-sdk/access-hardware-projected-context#phone-activity-service).
 - Within the projected context's scope, the glasses' primary, outward-pointing camera maps to the `DEFAULT_BACK_CAMERA` when selecting a camera.
-- A pre-binding check uses [`cameraProvider.hasCamera(cameraSelector)`](https://developer.android.com/reference/kotlin/androidx/camera/lifecycle/ProcessCameraProvider#hasCamera(androidx.camera.core.CameraSelector)) to verify that the selected camera is available on the device before proceeding.
+- A pre-binding check uses [`cameraProvider.hasCamera(cameraSelector)`](<https://developer.android.com/reference/kotlin/androidx/camera/lifecycle/ProcessCameraProvider#hasCamera(androidx.camera.core.CameraSelector)>) to verify that the selected camera is available on the device before proceeding.
 - Uses **Camera2 Interop** with [`Camera2CameraInfo`](https://developer.android.com/reference/kotlin/androidx/camera/camera2/interop/Camera2CameraInfo) to read the underlying [`CameraCharacteristics#SCALER_STREAM_CONFIGURATION_MAP`](https://developer.android.com/reference/kotlin/android/hardware/camera2/CameraCharacteristics#scaler_stream_configuration_map), which can be useful for advanced checks on supported resolutions.
 - A custom [`ResolutionSelector`](https://developer.android.com/reference/kotlin/androidx/camera/core/resolutionselector/ResolutionSelector) is built to precisely control the output image resolution for [`ImageCapture`](https://developer.android.com/reference/kotlin/androidx/camera/core/ImageCapture).
 - Creates an `ImageCapture` use case that is configured with a custom `ResolutionSelector`.
@@ -323,18 +321,17 @@ For more information about the `VideoCapture` API and how to use it, see the
 The following table shows the recommended resolution and frame rate depending on
 your app's use case:
 
-| Use case | Resolution | Frame rate |
-|---|---|---|
-| Video Communication | 1280 x 720 | 15 FPS |
-| Computer Vision | 640 x 480 | 10 FPS |
-| AI Video Streaming | 640 x 480 | 1 FPS |
+| Use case            | Resolution | Frame rate |
+| ------------------- | ---------- | ---------- |
+| Video Communication | 1280 x 720 | 15 FPS     |
+| Computer Vision     | 640 x 480  | 10 FPS     |
+| AI Video Streaming  | 640 x 480  | 1 FPS      |
 
 ## Access a phone's hardware from a projected activity
 
 An [projected activity](https://developer.android.com/develop/xr/jetpack-xr-sdk/glasses/support-different-types#activity-lifecycle) can also access the phone's hardware (such as the
-camera or microphone) by using [`createHostDeviceContext(context)`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createHostDeviceContext(android.content.Context)) to get
+camera or microphone) by using [`createHostDeviceContext(context)`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createHostDeviceContext(android.content.Context)>) to get
 the host device's (phone) context:
-
 
 ```kotlin
 @OptIn(ExperimentalProjectedApi::class)
@@ -356,5 +353,5 @@ When accessing hardware or resources that are specific to the host device
 experiences), you must explicitly select the correct context to make sure your
 app can access the correct hardware:
 
-- Use the [`Activity`](https://developer.android.com/reference/kotlin/android/app/Activity) context from the phone `Activity` or the [`ProjectedContext.createHostDeviceContext`](https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createHostDeviceContext(android.content.Context)) to get the phone's context.
+- Use the [`Activity`](https://developer.android.com/reference/kotlin/android/app/Activity) context from the phone `Activity` or the [`ProjectedContext.createHostDeviceContext`](<https://developer.android.com/reference/kotlin/androidx/xr/projected/ProjectedContext#createHostDeviceContext(android.content.Context)>) to get the phone's context.
 - Don't use [`getApplicationContext`](https://developer.android.com/reference/kotlin/android/content/Context#getapplicationcontext) because the application context can incorrectly return the glasses' context if a projected activity was the most-recently-launched component.

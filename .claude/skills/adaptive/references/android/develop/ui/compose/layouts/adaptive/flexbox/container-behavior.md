@@ -1,7 +1,6 @@
 To configure the behavior of the `FlexBox` container, create a `FlexBoxConfig`
 block and supply it using the `config` parameter.
 
-
 ```kotlin
 FlexBox(
     config = {
@@ -42,7 +41,7 @@ Use `justifyContent` to distribute items along the main axis. The following
 table shows the behavior when the direction is `Row`.
 
 |---|---|
-|   | ![Illustration of a horizontal main axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/main-axis.png) |
+| | ![Illustration of a horizontal main axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/main-axis.png) |
 | `Start` | ![Items aligned to the start of the main axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/mainaxis-start.png) |
 | `Center` | ![Items aligned to the center of the main axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/mainaxis-center.png) |
 | `End` | ![Items aligned to the end of the main axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/mainaxis-end.png) |
@@ -60,7 +59,7 @@ The following images show the behavior when the direction is `Row`:
 
 |---|---|---|---|---|---|
 | ![Illustration of a vertical cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis.png) | ![Items aligned to the start of the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis-start.png) | ![Items aligned to the end of the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis-end.png) | ![Items aligned to the center of the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis-center.png) | ![Items stretched to fill the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis-stretch.png) | ![Items aligned to their baseline along the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis-baseline.png) |
-|   | `Start` | `End` | `Center` | `Stretch` | `Baseline` |
+| | `Start` | `End` | `Center` | `Stretch` | `Baseline` |
 
 Use `alignContent` to align lines to the cross axis and to distribute extra
 space between lines. This property only applies when there are multiple lines
@@ -69,7 +68,7 @@ is `Row`:
 
 |---|---|---|---|---|---|---|
 | ![Illustration of a vertical cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/crossaxis.png) | ![Multiple lines of items aligned to the start of the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/aligncontent-start.png) | ![Multiple lines of items aligned to the end of the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/aligncontent-end.png) | ![Multiple lines of items aligned to the center of the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/aligncontent-center.png) | ![Multiple lines of items stretched to fill the cross axis.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/aligncontent-stretch.png) | ![Multiple lines of items distributed along the cross axis with space between them.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/aligncontent-spacebetween.png) | ![Multiple lines of items distributed along the cross axis with space around them.](https://developer.android.com/static/develop/ui/compose/images/layouts/adaptive/flexbox/aligncontent-spacearound.png) |
-|   | `Start` | `End` | `Center` | `Stretch` | `SpaceBetween` | `SpaceAround` |
+| | `Start` | `End` | `Center` | `Stretch` | `SpaceBetween` | `SpaceAround` |
 
 ## Wrap items
 

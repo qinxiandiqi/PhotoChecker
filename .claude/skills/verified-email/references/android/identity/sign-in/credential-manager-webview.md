@@ -8,7 +8,7 @@ To use Credential Manager in WebView, add the following dependencies to your app
 module's build script:
 
     dependencies {
-      implementation("androidx.credentials:credentials:1.6.0-beta02")   
+      implementation("androidx.credentials:credentials:1.6.0-beta02")
       implementation("androidx.credentials:credentials-play-services-auth:1.6.0-beta02")
       implementation("androidx.webkit:webkit:1.14.0")
     }

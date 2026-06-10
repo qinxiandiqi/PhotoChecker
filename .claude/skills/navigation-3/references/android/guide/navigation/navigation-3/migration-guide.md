@@ -13,7 +13,6 @@ To migrate your app from [Navigation 2](https://developer.android.com/guide/navi
 
 <br />
 
-
 ## AI Prompt
 
 ### Migrate from Navigation 2 to Navigation 3
@@ -48,7 +47,7 @@ migration, and those that aren't.
   Compose](https://developer.android.com/develop/ui/compose/migrate/interoperability-apis/views-in-compose).
 - Routes are strongly typed. If you use string-based routes, [migrate to
   type-safe routes](https://medium.com/androiddevelopers/type-safe-navigation-for-compose-105325a97657) first ([example](https://github.com/android/nowinandroid/pull/1413)).
-- *Optional (but highly recommended)*: Test coverage that verifies existing navigation behavior. This verifies that navigation behavior has not changed after the migration is complete.
+- _Optional (but highly recommended)_: Test coverage that verifies existing navigation behavior. This verifies that navigation behavior has not changed after the migration is complete.
 
 ### Assumptions
 
@@ -328,17 +327,17 @@ your `NavController`.
 Replace `NavController` navigation event methods with `Navigator` equivalents.
 
 | **`NavController` field or method** | **`Navigator` equivalent** |
-|---|---|
-| `navigate()` | `navigate()` |
-| `popBackStack()` | `goBack()` |
+| ----------------------------------- | -------------------------- |
+| `navigate()`                        | `navigate()`               |
+| `popBackStack()`                    | `goBack()`                 |
 
 Replace `NavController` fields with `NavigationState` fields.
 
-| **`NavController` field or method** | **`NavigationState` equivalent** |
-|---|---|
-| `currentBackStack` | `backStacks[topLevelRoute]` |
+| **`NavController` field or method**                                                                       | **`NavigationState` equivalent**   |
+| --------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `currentBackStack`                                                                                        | `backStacks[topLevelRoute]`        |
 | `currentBackStackEntry` `currentBackStackEntryAsState()` `currentBackStackEntryFlow` `currentDestination` | `backStacks[topLevelRoute].last()` |
-| Get the top level route: Traverse up the hierarchy from the current back stack entry to find it. | `topLevelRoute` |
+| Get the top level route: Traverse up the hierarchy from the current back stack entry to find it.          | `topLevelRoute`                    |
 
 Use `NavigationState.topLevelRoute` to determine the item that is currently
 selected in a navigation bar.
@@ -396,7 +395,7 @@ destination type:
 - `navigation`: Delete it along with the route. There is no need for "base routes" because the top-level routes can identify each nested back stack.
 - `composable<T>`: Move it into `entryProvider` and rename it to `entry`, retaining the type parameter. For example, `composable<RouteA>` becomes `entry<RouteA>`.
 - `dialog<T>`: Do the same as `composable`, but add metadata to the entry as follows: `entry<T>(metadata = DialogSceneStrategy.dialog())`.
-- [`bottomSheet`](https://developer.android.com/reference/kotlin/androidx/compose/material/navigation/package-summary#(androidx.navigation.NavGraphBuilder).bottomSheet(kotlin.String,kotlin.collections.List,kotlin.collections.List,kotlin.Function2)): [Follow the bottom sheet recipe here](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes/bottomsheet). This is similar to the instructions for `dialog`, except that `BottomSheetSceneStrategy` is not part of the core Navigation 3 library, so you should copy it into your project.
+- [`bottomSheet`](<https://developer.android.com/reference/kotlin/androidx/compose/material/navigation/package-summary#(androidx.navigation.NavGraphBuilder).bottomSheet(kotlin.String,kotlin.collections.List,kotlin.collections.List,kotlin.Function2)>): [Follow the bottom sheet recipe here](https://github.com/android/nav3-recipes/tree/main/app/src/main/java/com/example/nav3recipes/bottomsheet). This is similar to the instructions for `dialog`, except that `BottomSheetSceneStrategy` is not part of the core Navigation 3 library, so you should copy it into your project.
 
 **AI Agent** : When deleting routes used to identify a nested graph, replace any
 references to the deleted route with the type used to identify the first child

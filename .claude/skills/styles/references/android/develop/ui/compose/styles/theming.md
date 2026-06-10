@@ -21,12 +21,12 @@ component itself.
 With the Styles API, there's a new layer of abstraction that's a bridge between
 subsystems and components: **Styles**.
 
-| Layer | Responsibility | Example |
-|---|---|---|
-| **Subsystem values** | Named values | `val Primary = Color(0xFF34A85E)` |
-| **Atomic Styles** | Style that does exactly one property change | `val largeSizeAtomic = Style { size(100.dp, 40.dp) }` |
-| **Component Styles** | Component-specific configurations | A Button with Primary background and 16dp padding. `val buttonStyle = Style { contentPadding(16.dp) shape(RoundedCornerShape(8.dp)) background(Color.Blue) }` |
-| **Components** | The functional UI element that consumes a Style. | `Button(style = buttonStyle) { ... }` |
+| Layer                | Responsibility                                   | Example                                                                                                                                                       |
+| -------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Subsystem values** | Named values                                     | `val Primary = Color(0xFF34A85E)`                                                                                                                             |
+| **Atomic Styles**    | Style that does exactly one property change      | `val largeSizeAtomic = Style { size(100.dp, 40.dp) }`                                                                                                         |
+| **Component Styles** | Component-specific configurations                | A Button with Primary background and 16dp padding. `val buttonStyle = Style { contentPadding(16.dp) shape(RoundedCornerShape(8.dp)) background(Color.Blue) }` |
+| **Components**       | The functional UI element that consumes a Style. | `Button(style = buttonStyle) { ... }`                                                                                                                         |
 
 ![Diagram showing Theming with Styles with the new layer introduction](https://developer.android.com/static/develop/ui/compose/styles/images/theming_styles_layer.png) **Figure 1.** An example of a component and how it accesses styles from a theme.
 
@@ -36,7 +36,6 @@ With the Styles API, you can break down a Style into separate atomic styles.
 Instead of defining complex, component-specific styles like `baseButtonStyle`,
 you can also create small, single-purpose utility styles. These act as your
 "atoms".
-
 
 ```kotlin
 // Define single-purpose "atomic" styles
@@ -81,7 +80,6 @@ atomic utility classes.
 
 **Traditional (non-atomic)**:
 
-
 ```kotlin
 // One large monolithic style
 val buttonStyle = Style {
@@ -94,7 +92,6 @@ val buttonStyle = Style {
 <br />
 
 **Atomic refactor**:
-
 
 ```kotlin
 // Combine atoms to create the final appearance
@@ -110,11 +107,11 @@ depending on where in the spectrum your design system lies.
 
 ### Custom design system with Styles
 
-***Consider when**: You've been handed an extensive brand guide that is not
-based on Material Design, and you are not planning to use Material Design*.
+**\*Consider when**: You've been handed an extensive brand guide that is not
+based on Material Design, and you are not planning to use Material Design\*.
 
-***Strategy**: Implement a fully custom design system, and expose styles as part
-of the theme*.
+**\*Strategy**: Implement a fully custom design system, and expose styles as part
+of the theme\*.
 
 This option is the custom path if you don't use Material as your main design
 system language. You bypass `MaterialTheme` entirely for visual definitions and
@@ -131,7 +128,6 @@ access your base styles from anywhere in your project.
 1. Create a `Styles` class that stores the various styles in your application
    and create the defaults. For example, in the Jetsnack app - the class is
    named `JetsnackStyles`:
-
 
    ```kotlin
    object JetsnackStyles{
@@ -160,7 +156,6 @@ access your base styles from anywhere in your project.
 
 2. Provide `Styles` as part of your overall theme, and expose helper extension
    functions on `StyleScope` to access the subsystems:
-
 
    ```kotlin
    @Immutable
@@ -220,7 +215,6 @@ access your base styles from anywhere in your project.
    <br />
 
 3. Access `JetsnackStyles` within your composable:
-
 
    ```kotlin
    @Composable

@@ -391,11 +391,9 @@ cases can be performed on other surfaces as well.
     GAIA is not yet associated with a 3P profile on other device
 
     1. GoogleAccount: mom. New device case /3P app installed but not logged in. On a new device(FDR the device), Verify CW displays data from the last used 3P app that was used by the GoogleAccount.
-19.
 
-    > [!NOTE]
+19. > [!NOTE]
     > **Note:** When the app is installed and logged in, the CW state would reflect the active 3P user logged into the 3P app.
-
     1. Note: Continue Watching row shouldn't show 3P contents if the GoogleAccount is not yet associated with a 3P profile
 
 #### We are not seeing Continue Watching showing up on Google TV iOS app. What happened?

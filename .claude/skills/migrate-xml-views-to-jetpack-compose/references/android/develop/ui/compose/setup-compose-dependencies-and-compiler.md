@@ -14,28 +14,28 @@ Set up the Compose Compiler Gradle plugin:
 1. In the `libs.versions.toml` file, remove any reference to the Compose Compiler.
 2. In the `versions` and `plugins` sections, add the new dependency:
 
-    [versions]
-    kotlin = "2.3.21"
+   [versions]
+   kotlin = "2.3.21"
 
-    [plugins]
-    org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+   [plugins]
+   org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
-    // Add this line
-    compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+   // Add this line
+   compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
-1. In the project's root `build.gradle.kts` file, add the following to the `plugins` section.
+3. In the project's root `build.gradle.kts` file, add the following to the `plugins` section.
 
-    plugins {
-       // Existing plugins
-       alias(libs.plugins.compose.compiler) apply false
-    }
+   plugins {
+   // Existing plugins
+   alias(libs.plugins.compose.compiler) apply false
+   }
 
-1. In each module that uses Compose, apply the plugin:
+4. In each module that uses Compose, apply the plugin:
 
-    plugins {
-       // Existing plugins
-       alias(libs.plugins.compose.compiler)
-    }
+   plugins {
+   // Existing plugins
+   alias(libs.plugins.compose.compiler)
+   }
 
 The project should now build and compile if it was using the default set up. If
 it had configured custom options on the Compose compiler, follow the next

@@ -1,5 +1,5 @@
 While the `Grid` config defines the overall structure,
-you use the [`gridItem`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridScope#(androidx.compose.ui.Modifier).gridItem(kotlin.Int,kotlin.Int,kotlin.Int,kotlin.Int,androidx.compose.ui.Alignment)) modifier to control the position, spanning,
+you use the [`gridItem`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridScope#(androidx.compose.ui.Modifier).gridItem(kotlin.Int,kotlin.Int,kotlin.Int,kotlin.Int,androidx.compose.ui.Alignment)>) modifier to control the position, spanning,
 and alignment of items within that structure.
 
 ## Set the item position
@@ -27,7 +27,6 @@ in the second row and the second column.
 Card **#3** is assigned to the last row (indexed by -1),
 where it automatically occupies
 the first available column in that track (Figure 1).
-
 
 ```kotlin
 Grid(
@@ -65,7 +64,6 @@ In the following example,
 Card **#1** is placed in the area consisting of two rows and two columns
 (Figure 2).
 
-
 ```kotlin
 Grid(
     config = {
@@ -93,10 +91,9 @@ Grid(
 ## Set the alignment in a grid area
 
 You can set the alignment of the UI element in a grid area
-by specifying it in the `alignment` parameter of the [`gridItem`](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridScope#(androidx.compose.ui.Modifier).gridItem(kotlin.Int,kotlin.Int,kotlin.Int,kotlin.Int,androidx.compose.ui.Alignment)) modifier.
+by specifying it in the `alignment` parameter of the [`gridItem`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/GridScope#(androidx.compose.ui.Modifier).gridItem(kotlin.Int,kotlin.Int,kotlin.Int,kotlin.Int,androidx.compose.ui.Alignment)>) modifier.
 In the following example, **#1** is placed in the center of the grid area
 consisting of two columns and two rows.
-
 
 ```kotlin
 Grid(
@@ -139,7 +136,6 @@ This example shows how you can mix auto-placed elements
 and the UI elements with specified grid cells.
 Card **#2** and card **#4** are specified grid cells,
 and the other items are auto-placed.
-
 
 ```kotlin
 Grid(

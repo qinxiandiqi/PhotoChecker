@@ -9,7 +9,7 @@ your full application, a single screen, or a small element. It's also a good
 practice to check that your composables are correctly encapsulated and they work
 independently, allowing for easier and more focused UI testing.
 
-This doesn't mean you should *only* create unit UI tests. UI tests scoping
+This doesn't mean you should _only_ create unit UI tests. UI tests scoping
 larger parts of your UI are also very important.
 
 ### Access the activity and resources after setting your own content
@@ -81,8 +81,7 @@ activity or process is recreated. Perform such checks without relying on
 activity recreation with the [`StateRestorationTester`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/junit4/StateRestorationTester) class.
 
 This class lets you simulate the recreation of a composable. It's especially
-useful to verify the implementation of [`rememberSaveable`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/saveable/rememberSaveable.composable#rememberSaveable(kotlin.Array,androidx.compose.runtime.saveable.Saver,kotlin.String,kotlin.Function0)).
-
+useful to verify the implementation of [`rememberSaveable`](<https://developer.android.com/reference/kotlin/androidx/compose/runtime/saveable/rememberSaveable.composable#rememberSaveable(kotlin.Array,androidx.compose.runtime.saveable.Saver,kotlin.String,kotlin.Function0)>).
 
     class MyStateRestorationTests {
 
@@ -120,18 +119,18 @@ under test.
 The companion object of `DeviceConfigurationOverride` has the following
 extension functions, which override device-level configuration properties:
 
-- [`DeviceConfigurationOverride.DarkMode()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).DarkMode(kotlin.Boolean)): Overrides the system to dark theme or light theme.
-- [`DeviceConfigurationOverride.FontScale()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).FontScale(kotlin.Float)): Overrides the [system font
+- [`DeviceConfigurationOverride.DarkMode()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).DarkMode(kotlin.Boolean)>): Overrides the system to dark theme or light theme.
+- [`DeviceConfigurationOverride.FontScale()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).FontScale(kotlin.Float)>): Overrides the [system font
   scale](https://developer.android.com/training/multiscreen/screendensities#TaskUseDP).
-- [`DeviceConfigurationOverride.FontWeightAdjustment()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).FontWeightAdjustment(kotlin.Int)): Overrides the system font weight adjustment.
-- [`DeviceConfigurationOverride.ForcedSize()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).ForcedSize(androidx.compose.ui.unit.DpSize)): Forces a specific amount of space regardless of device size.
-- [`DeviceConfigurationOverride.LayoutDirection()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).LayoutDirection(androidx.compose.ui.unit.LayoutDirection)): Overrides the [layout
+- [`DeviceConfigurationOverride.FontWeightAdjustment()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).FontWeightAdjustment(kotlin.Int)>): Overrides the system font weight adjustment.
+- [`DeviceConfigurationOverride.ForcedSize()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).ForcedSize(androidx.compose.ui.unit.DpSize)>): Forces a specific amount of space regardless of device size.
+- [`DeviceConfigurationOverride.LayoutDirection()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).LayoutDirection(androidx.compose.ui.unit.LayoutDirection)>): Overrides the [layout
   direction](https://developer.android.com/training/basics/supporting-devices/languages#SupportLayoutMirroring) (left-to-right or right-to-left).
-- [`DeviceConfigurationOverride.Locales()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).Locales(androidx.compose.ui.text.intl.LocaleList)): Overrides the [locale](https://developer.android.com/guide/topics/resources/localization).
-- [`DeviceConfigurationOverride.RoundScreen()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).RoundScreen(kotlin.Boolean)): Overrides if the screen is [round](https://developer.android.com/design/ui/wear/guides/foundations/getting-started#design-for-round).
+- [`DeviceConfigurationOverride.Locales()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).Locales(androidx.compose.ui.text.intl.LocaleList)>): Overrides the [locale](https://developer.android.com/guide/topics/resources/localization).
+- [`DeviceConfigurationOverride.RoundScreen()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.Companion#(androidx.compose.ui.test.DeviceConfigurationOverride.Companion).RoundScreen(kotlin.Boolean)>): Overrides if the screen is [round](https://developer.android.com/design/ui/wear/guides/foundations/getting-started#design-for-round).
 
 To apply a specific override, wrap the content under test in a call to the
-[`DeviceConfigurationOverride()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.composable#DeviceConfigurationOverride(androidx.compose.ui.test.DeviceConfigurationOverride,kotlin.Function0)) top-level function, passing the override
+[`DeviceConfigurationOverride()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride.composable#DeviceConfigurationOverride(androidx.compose.ui.test.DeviceConfigurationOverride,kotlin.Function0)>) top-level function, passing the override
 to apply as a parameter.
 
 For example, the following code applies the
@@ -139,7 +138,6 @@ For example, the following code applies the
 locally, forcing the `MyScreen` composable to be rendered in a large landscape
 window, even if the device the test is running on doesn't support that window
 size directly:
-
 
 ```kotlin
 composeTestRule.setContent {
@@ -154,8 +152,7 @@ composeTestRule.setContent {
 <br />
 
 To apply multiple overrides together, use
-[`DeviceConfigurationOverride.then()`](https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride#(androidx.compose.ui.test.DeviceConfigurationOverride).then(androidx.compose.ui.test.DeviceConfigurationOverride)):
-
+[`DeviceConfigurationOverride.then()`](<https://developer.android.com/reference/kotlin/androidx/compose/ui/test/DeviceConfigurationOverride#(androidx.compose.ui.test.DeviceConfigurationOverride).then(androidx.compose.ui.test.DeviceConfigurationOverride)>):
 
 ```kotlin
 composeTestRule.setContent {

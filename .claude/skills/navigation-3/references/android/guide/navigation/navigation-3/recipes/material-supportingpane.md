@@ -15,6 +15,7 @@ The `rememberSupportingPaneSceneStrategy` provides the logic for this adaptive l
   - `SupportingPaneSceneStrategy.mainPane()`: For the primary content. This pane is always visible.
   - `SupportingPaneSceneStrategy.supportingPane()`: For the supplementary content. This pane is shown alongside the main pane on larger screens.
   - `SupportingPaneSceneStrategy.extraPane()`: For tertiary content that can be displayed alongside the supporting pane on even larger screens.
+
 - **Adaptive Layout** : The `SupportingPaneSceneStrategy` automatically handles the layout. On smaller screens, only the main pane is shown. On larger screens, the supporting pane is shown next to the main pane.
 
 - **Back Navigation** : The `BackNavigationBehavior` is customized in this example to `PopUntilCurrentDestinationChange`. This means that when the user presses the back button, the supporting pane will be dismissed, revealing the main pane underneath.

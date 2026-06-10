@@ -1,21 +1,22 @@
 ---
 name: camera1-to-camerax
-description: Use this skill to migrate legacy Android camera implementations (Camera1
+description:
+  Use this skill to migrate legacy Android camera implementations (Camera1
   or raw Camera2 APIs) to CameraX. CameraX is a lifecycle-aware Jetpack library built
   on top of Camera2 that resolves camera rotation issues and handles device dependencies.
 license: Complete terms in LICENSE.txt
 metadata:
   author: Google LLC
-  last-updated: '2026-05-06'
+  last-updated: "2026-05-06"
   keywords:
-  - Android
-  - CameraX
-  - Camera1 Migration
-  - Jetpack Compose
-  - Dependencies
-  - Image Capture
-  - Lifecycle
-  - PreviewView
+    - Android
+    - CameraX
+    - Camera1 Migration
+    - Jetpack Compose
+    - Dependencies
+    - Image Capture
+    - Lifecycle
+    - PreviewView
 ---
 
 ## Step 0: Add Dependencies
@@ -24,7 +25,6 @@ Check for and add the required CameraX dependencies. Use version 1.3.0 or higher
 for interoperability, or version 1.5.0 or higher for Compose extensions.
 
 If you are using a Version Catalog (`libs.versions.toml`), add the following:
-
 
 ```kotlin
 [versions]
@@ -42,7 +42,6 @@ androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", 
 
 And in your `build.gradle.kts` (or `build.gradle`):
 
-
 ```kotlin
 implementation(libs.androidx.camera.core)
 implementation(libs.androidx.camera.camera2)
@@ -54,7 +53,6 @@ implementation(libs.androidx.camera.compose)
 <br />
 
 Without a Version Catalog, fall back to these standard Gradle dependencies:
-
 
 ```kotlin
 implementation "androidx.camera:camera-core:<minimum_version_needed>"
@@ -77,7 +75,6 @@ implementation "androidx.camera:camera-compose:<minimum_version_needed>"
 
 Request the `ProcessCameraProvider` and bind use cases to the Activity or
 Fragment lifecycle.
-
 
 ```kotlin
 val context = LocalContext.current
@@ -122,7 +119,6 @@ Use `androidx.camera.view.PreviewView`.
 
 **1. Set up preview**:
 
-
 ```kotlin
 preview.setSurfaceProvider(previewView.surfaceProvider)
 ```
@@ -130,7 +126,6 @@ preview.setSurfaceProvider(previewView.surfaceProvider)
 <br />
 
 **2. Handle tap-to-focus**:
-
 
 ```kotlin
 val factory = previewView.meteringPointFactory
@@ -147,7 +142,6 @@ Use `androidx.camera.compose.CameraXViewfinder`.
 
 **1. Set up preview and SurfaceRequest**:
 
-
 ```kotlin
 var surfaceRequest by remember { mutableStateOf<SurfaceRequest?>(null) }
 val preview = remember {
@@ -160,7 +154,6 @@ val preview = remember {
 <br />
 
 **2. Render viewfinder**:
-
 
 ```kotlin
 surfaceRequest?.let { request ->
@@ -175,7 +168,6 @@ surfaceRequest?.let { request ->
 <br />
 
 **3. Handle tap-to-focus in Compose**:
-
 
 ```kotlin
 // Inside your tap gesture handler...
@@ -193,7 +185,6 @@ cameraControl?.startFocusAndMetering(action)
 
 **4. Update target rotation for Compose**:
 
-
 ```kotlin
 LaunchedEffect(configuration) {
   if (!view.isInEditMode) {
@@ -210,7 +201,6 @@ LaunchedEffect(configuration) {
 
 Use the `ImageCapture` use case to take the picture. The `ImageProxy` handles
 rotation directly.
-
 
 ```kotlin
 imageCapture.takePicture(
@@ -250,7 +240,6 @@ imageCapture.takePicture(
 
 To flip between front and rear cameras, change the `CameraSelector` and
 re-trigger the `ProcessCameraProvider` logic.
-
 
 ```kotlin
 lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
