@@ -55,25 +55,23 @@ metadata:
 
   <br />
   1. **PREFERRED:** When available, use the automatic inset handling or padding modifiers in material components.
-
-     - Material 3 Components manages safe areas for its own components, including:
-       - `TopAppBar`
-       - `SmallTopAppBar`
-       - `CenterAlignedTopAppBar`
-       - `MediumTopAppBar`
-       - `LargeTopAppBar`
-       - `BottomAppBar`
-       - `ModalDrawerSheet`
-       - `DismissibleDrawerSheet`
-       - `PermanentDrawerSheet`
-       - `ModalBottomSheet`
-       - `NavigationBar`
-       - `NavigationRail`
-     - For Material 2 Components, use the `windowInsets`parameter to apply insets manually for `BottomAppBar`, `TopAppBar` and `BottomNavigation`. **DO NOT** apply padding to the parent container; instead, pass insets directly to the App Bar component. Applying padding to the parent container prevents the App Bar background from drawing into the system bar area. For example, for `TopAppBar`, choose only one of the following options:
-       1. **PREFERRED:** `TopAppBar(windowInsets = AppBarDefaults.topAppBarWindowInsets)`
-       2. `TopAppBar(windowInsets = WindowInsets.systemBars.exclude(WindowInsets.navigationBars))`
-       3. `TopAppBar(windowInsets = WindowInsets.systemBars.add(WindowInsets.captionBar))`
-
+  - Material 3 Components manages safe areas for its own components, including:
+    - `TopAppBar`
+    - `SmallTopAppBar`
+    - `CenterAlignedTopAppBar`
+    - `MediumTopAppBar`
+    - `LargeTopAppBar`
+    - `BottomAppBar`
+    - `ModalDrawerSheet`
+    - `DismissibleDrawerSheet`
+    - `PermanentDrawerSheet`
+    - `ModalBottomSheet`
+    - `NavigationBar`
+    - `NavigationRail`
+  - For Material 2 Components, use the `windowInsets`parameter to apply insets manually for `BottomAppBar`, `TopAppBar` and `BottomNavigation`. **DO NOT** apply padding to the parent container; instead, pass insets directly to the App Bar component. Applying padding to the parent container prevents the App Bar background from drawing into the system bar area. For example, for `TopAppBar`, choose only one of the following options:
+    1.  **PREFERRED:** `TopAppBar(windowInsets = AppBarDefaults.topAppBarWindowInsets)`
+    2.  `TopAppBar(windowInsets = WindowInsets.systemBars.exclude(WindowInsets.navigationBars))`
+    3.  `TopAppBar(windowInsets = WindowInsets.systemBars.add(WindowInsets.captionBar))`
   2. For components outside a Scaffold, use padding modifiers, such as `Modifier.safeDrawingPadding()` or `Modifier.windowInsetsPadding(WindowInsets.safeDrawing)`.
 
      ```kotlin

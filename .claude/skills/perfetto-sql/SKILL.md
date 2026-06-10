@@ -48,14 +48,15 @@ my_table; CREATE VIRTUAL TABLE my_table USING SPAN_JOIN(...);`
   > **between two different sets of intervals** . Avoid manual arithmetic if a
   > standard library feature or `SPAN_JOIN` can achieve the same result. Use
   > the following logic if no built-in alternative exists.
-  1. **Condition:** The intervals overlap if `start1 < end2` and `start2 <
+  1.  **Condition:** The intervals overlap if `start1 < end2` and `start2 <
 end1`.
-  2. **Duration:** The overlap duration is calculated as `MIN(end1, end2) -
+  2.  **Duration:** The overlap duration is calculated as `MIN(end1, end2) -
 MAX(start1, start2)`
 
-     > **Important:** Incomplete Perfetto slices have a duration of -1
-     > (`dur = -1`). Always calculate the effective end time using `ts +
-IIF(dur = -1, trace_end() - ts, dur)` before applying this logic.
+           > **Important:** Incomplete Perfetto slices have a duration of -1
+           > (`dur = -1`). Always calculate the effective end time using `ts +
+
+      IIF(dur = -1, trace_end() - ts, dur)` before applying this logic.
 
 - Query `android_thread_slices_for_all_startups` for app startup requests.
 
