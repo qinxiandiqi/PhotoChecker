@@ -5,12 +5,20 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,14 +34,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,9 +56,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -54,6 +67,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,9 +77,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -82,8 +102,29 @@ import cn.qinxiandiqi.photochecker.feature.home.model.ExifCategoryGroup
 import cn.qinxiandiqi.photochecker.feature.home.model.ExifRemovalMode
 import cn.qinxiandiqi.photochecker.feature.home.model.ExifTagEntry
 import cn.qinxiandiqi.photochecker.feature.home.model.PrivacyRisk
+import cn.qinxiandiqi.photochecker.ui.theme.LocalAppColors
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
+
+// ============================================================
+// Spacing & shape tokens (Phase D)
+// ============================================================
+
+private val SpacingXs = 4.dp
+private val SpacingSm = 8.dp
+private val SpacingMd = 12.dp
+private val SpacingLg = 16.dp
+private val SpacingXl = 24.dp
+
+private val ShapeSm = 8.dp
+private val ShapeMd = 12.dp
+
+private val DefaultExpandedImageHeight = 240.dp
+private val CollapsedImageHeight = 56.dp
+
+// ============================================================
+// HomeScreen
+// ============================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,33 +142,75 @@ fun HomeScreen(
         }
     }
     var showRemovalSheet by remember { mutableStateOf(false) }
+    var fabExpanded by remember { mutableStateOf(false) }
+    // Scroll offset for collapsible header (hoisted so TopAppBar can read it)
+    val collapseOffset = remember { mutableStateOf(0f) }
+    // Measured top bar height (statusBar + TopAppBar), set from content lambda
+    val measuredTopBarHeightPx = remember { mutableStateOf(0f) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val isCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                actions = {
-                    IconButton(onClick = onAboutClick) {
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = stringResource(id = R.string.about),
-                        )
+            val currentUiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
+            val isCompactSuccess = isCompact && currentUiState is HomeUIState.Success
+            if (isCompactSuccess) {
+                val barHeight = measuredTopBarHeightPx.value
+                val appBarAlpha = if (barHeight > 0f)
+                    1f - (collapseOffset.value / barHeight).coerceIn(0f, 1f) else 1f
+                TopAppBar(
+                    title = { Text(text = stringResource(id = R.string.app_name)) },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = appBarAlpha),
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = appBarAlpha),
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = appBarAlpha)
+                    ),
+                    actions = {
+                        IconButton(onClick = onAboutClick) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = stringResource(id = R.string.about),
+                            )
+                        }
                     }
-                }
-            )
+                )
+            } else {
+                TopAppBar(
+                    title = { Text(text = stringResource(id = R.string.app_name)) },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    actions = {
+                        IconButton(onClick = onAboutClick) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = stringResource(id = R.string.about),
+                            )
+                        }
+                    }
+                )
+            }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        // Measure and store the exact top bar height (statusBar + TopAppBar)
+        val density = LocalDensity.current
+        LaunchedEffect(innerPadding) {
+            measuredTopBarHeightPx.value = with(density) { innerPadding.calculateTopPadding().toPx() }
+        }
+
         val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
+        val isCompactSuccess = isCompact && uiState is HomeUIState.Success
+
+        // topBarHeight = innerPadding top (always includes statusBar + TopAppBar exactly)
+        val topBarHeightDp = innerPadding.calculateTopPadding()
+        val topPadding = if (isCompactSuccess) 0.dp else topBarHeightDp
+
+        Column(modifier = Modifier.padding(top = topPadding, bottom = innerPadding.calculateBottomPadding())) {
         val removalState by viewModel.removalState.collectAsStateWithLifecycle()
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -146,33 +229,16 @@ fun HomeScreen(
 
                 is HomeUIState.Success -> {
                     val result = (uiState as HomeUIState.Success).result
+
                     PhotoExifDetailSuccess(
                         windowSizeClass = windowSizeClass,
                         result = result,
+                        collapseOffset = collapseOffset,
+                        topBarHeightDp = if (isCompactSuccess) topBarHeightDp else 0.dp,
                         onShowSnackbar = { msg ->
                             scope.launch { snackbarHostState.showSnackbar(msg) }
                         }
                     )
-
-                    // Privacy clean FAB (always show when EXIF data exists)
-                    FloatingActionButton(
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(start = 16.dp, bottom = 32.dp),
-                        containerColor = when (result.overallRisk) {
-                            PrivacyRisk.HIGH -> Color(0xFFE53935)
-                            PrivacyRisk.MEDIUM -> Color(0xFFFF9800)
-                            PrivacyRisk.LOW -> MaterialTheme.colorScheme.tertiaryContainer
-                            PrivacyRisk.NONE -> MaterialTheme.colorScheme.secondaryContainer
-                        },
-                        contentColor = Color.White,
-                        onClick = { showRemovalSheet = true }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(id = R.string.action_privacy_clean)
-                        )
-                    }
                 }
 
                 is HomeUIState.Error -> {
@@ -184,42 +250,115 @@ fun HomeScreen(
                 }
             }
 
-            // Main photo picker FAB
+            // Speed Dial FAB
             if (removalState !is RemovalState.Removing) {
-                FloatingActionButton(
+                val appColors = LocalAppColors.current
+                val isSuccess = uiState is HomeUIState.Success
+                val successResult = (uiState as? HomeUIState.Success)?.result
+
+                // Scrim overlay when expanded
+                androidx.compose.animation.AnimatedVisibility(
+                    visible = fabExpanded,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(appColors.scrimOverlay)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { fabExpanded = false }
+                    )
+                }
+
+                // Speed Dial column
+                Column(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(32.dp),
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    onClick = {
-                        launcher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        .padding(end = SpacingLg, bottom = SpacingLg),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    // Sub-items (only when Success + expanded)
+                    if (isSuccess) {
+                        // Privacy clean sub-item
+                        SubFabItem(
+                            visible = fabExpanded,
+                            label = stringResource(id = R.string.action_privacy_clean),
+                            icon = Icons.Default.Delete,
+                            containerColor = when (successResult?.overallRisk) {
+                                PrivacyRisk.HIGH -> appColors.riskHigh
+                                PrivacyRisk.MEDIUM -> appColors.riskMedium
+                                else -> MaterialTheme.colorScheme.tertiaryContainer
+                            },
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            onClick = {
+                                fabExpanded = false
+                                showRemovalSheet = true
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(SpacingMd))
+
+                        // Photo picker sub-item
+                        SubFabItem(
+                            visible = fabExpanded,
+                            label = stringResource(id = R.string.select_photo),
+                            icon = Icons.Default.Search,
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            onClick = {
+                                fabExpanded = false
+                                launcher.launch(
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                )
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(SpacingMd))
+                    }
+
+                    // Main FAB
+                    FloatingActionButton(
+                        onClick = {
+                            if (isSuccess) {
+                                fabExpanded = !fabExpanded
+                            } else {
+                                launcher.launch(
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                )
+                            }
+                        },
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ) {
+                        Icon(
+                            imageVector = when {
+                                fabExpanded -> Icons.Default.Close
+                                isSuccess -> Icons.Default.Add
+                                else -> Icons.Default.Search
+                            },
+                            contentDescription = if (isSuccess) null
+                                else stringResource(id = R.string.select_photo)
                         )
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = stringResource(id = R.string.select_photo),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
                 }
             }
 
             // Loading overlay during removal
             if (removalState is RemovalState.Removing) {
+                val appColors = LocalAppColors.current
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0x66000000)),
+                        .background(appColors.scrimOverlay),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        CircularProgressIndicator(color = Color.White)
-                        Spacer(modifier = Modifier.height(8.dp))
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
+                        Spacer(modifier = Modifier.height(SpacingSm))
                         Text(
                             text = stringResource(id = R.string.msg_removing),
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }
@@ -246,7 +385,60 @@ fun HomeScreen(
                 }
             )
         }
-        } // close Scaffold content
+        } // close Scaffold content Column
+    }
+}
+
+// ============================================================
+// Speed Dial sub-item
+// ============================================================
+
+@Composable
+private fun SubFabItem(
+    visible: Boolean,
+    label: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    containerColor: androidx.compose.ui.graphics.Color,
+    contentColor: androidx.compose.ui.graphics.Color,
+    onClick: () -> Unit
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn() + slideInVertically { it / 2 },
+        exit = fadeOut() + slideOutVertically { it / 2 }
+    ) {
+        Row(
+            modifier = Modifier
+                .clip(RoundedCornerShape(24.dp))
+                .clickable(onClick = onClick),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+        ) {
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 3.dp,
+                shadowElevation = 3.dp
+            ) {
+                Text(
+                    text = label,
+                    modifier = Modifier.padding(horizontal = SpacingMd, vertical = 6.dp),
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
+            Spacer(modifier = Modifier.width(SpacingSm))
+            SmallFloatingActionButton(
+                onClick = onClick,
+                containerColor = containerColor,
+                contentColor = contentColor
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = label,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
     }
 }
 
@@ -261,14 +453,21 @@ fun EmptyExifDetail(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Icon(
+            imageVector = Icons.Default.PhotoCamera,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+        )
+        Spacer(modifier = Modifier.height(SpacingMd))
         Text(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(SpacingSm),
             style = MaterialTheme.typography.titleLarge,
             text = stringResource(id = R.string.empty),
             textAlign = TextAlign.Center
         )
         Text(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(SpacingSm),
             style = MaterialTheme.typography.bodyMedium,
             text = stringResource(id = R.string.empty_tips),
             textAlign = TextAlign.Center
@@ -356,13 +555,13 @@ fun PhotoExifDetailError(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                modifier = Modifier.padding(5.dp),
+                modifier = Modifier.padding(SpacingSm),
                 style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.error),
                 text = stringResource(id = R.string.error),
                 textAlign = TextAlign.Center
             )
             Text(
-                modifier = Modifier.padding(5.dp),
+                modifier = Modifier.padding(SpacingSm),
                 style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onError),
                 text = stringResource(id = R.string.error_tips),
                 textAlign = TextAlign.Center
@@ -380,31 +579,135 @@ fun PhotoExifDetailSuccess(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     result: ExifAnalysisResult,
+    collapseOffset: androidx.compose.runtime.MutableState<Float> = mutableStateOf(0f),
+    topBarHeightDp: Dp = 0.dp,
     onShowSnackbar: (String) -> Unit = {}
 ) {
-    PhotoExifDetail(
-        windowSizeClass = windowSizeClass,
-        modifier = modifier,
-        uri = result.uri
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            // Privacy summary card
-            if (result.overallRisk != PrivacyRisk.NONE) {
-                PrivacySummaryCard(result = result, onShowSnackbar = onShowSnackbar)
+    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+        // Compact: two-phase collapsible header (TopAppBar fade → image collapse)
+        val density = LocalDensity.current
+        val topBarHeightPx = with(density) { topBarHeightDp.toPx() }
+
+        BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+            // Aspect-ratio-aware expanded height: preserve the original width/height
+            // ratio, but cap so width:height >= 3:4 (height <= width * 4/3).
+            val expandedHeightDp: Dp = if (result.imageWidth > 0 && result.imageHeight > 0) {
+                val ratioWH = result.imageWidth.toFloat() / result.imageHeight
+                val cappedRatioWH = ratioWH.coerceAtLeast(0.75f) // 3:4
+                (maxWidth.value / cappedRatioWH).dp
+            } else {
+                DefaultExpandedImageHeight
+            }
+            val imageRangePx = with(density) { (expandedHeightDp - CollapsedImageHeight).toPx() }
+            val totalRangePx = topBarHeightPx + imageRangePx
+
+            // Reset offset when result changes
+            LaunchedEffect(result.uri) { collapseOffset.value = 0f }
+
+            // Key on totalRangePx so the connection is rebuilt when the image's
+            // expanded height changes (different aspect ratio), avoiding a stale range.
+            val nestedScrollConnection = remember(totalRangePx) {
+                object : NestedScrollConnection {
+                    override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                        val dy = available.y
+                        if (dy < 0f && collapseOffset.value < totalRangePx) {
+                            val consumed = dy.coerceAtLeast(-(totalRangePx - collapseOffset.value))
+                            collapseOffset.value -= consumed
+                            return Offset(0f, consumed)
+                        }
+                        return Offset.Zero
+                    }
+
+                    override fun onPostScroll(
+                        consumed: Offset, available: Offset, source: NestedScrollSource
+                    ): Offset {
+                        val dy = available.y
+                        if (dy > 0f && collapseOffset.value > 0f) {
+                            val consumed = dy.coerceAtMost(collapseOffset.value)
+                            collapseOffset.value -= consumed
+                            return Offset(0f, consumed)
+                        }
+                        return Offset.Zero
+                    }
+                }
             }
 
-            // Consistency warnings
-            if (result.consistencyWarnings.isNotEmpty()) {
-                ConsistencyWarningSection(warnings = result.consistencyWarnings)
-            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(nestedScrollConnection)
+            ) {
+                val offset = collapseOffset.value
+                // Top spacer: shrinks during Phase 1 as TopAppBar fades.
+                // Initially = topBarHeight (image below TopAppBar),
+                // Phase 1 end = 0 (image behind transparent TopAppBar)
+                val topSpacerDp = with(density) {
+                    (topBarHeightPx - offset).coerceAtLeast(0f).toDp()
+                }
+                Spacer(modifier = Modifier.height(topSpacerDp))
 
-            // Grouped EXIF list
-            ExifGroupedList(
-                groups = result.categoryGroups,
-                result = result,
-                onShowSnackbar = onShowSnackbar,
-                modifier = Modifier.weight(1f)
-            )
+                // Image height: stays at expandedHeightDp during Phase 1,
+                // collapses during Phase 2
+                val currentHeightDp = with(density) {
+                    val imageOffsetPx = (offset - topBarHeightPx).coerceAtLeast(0f)
+                    (expandedHeightDp - imageOffsetPx.toDp()).coerceAtLeast(CollapsedImageHeight)
+                }
+                // Collapsible image
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(currentHeightDp)
+                ) {
+                    AsyncImage(
+                        model = result.uri,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = ""
+                    )
+                }
+
+                // Content below image
+                Column(modifier = Modifier.weight(1f)) {
+                    if (result.overallRisk != PrivacyRisk.NONE) {
+                        PrivacySummaryCard(result = result)
+                    }
+
+                    if (result.consistencyWarnings.isNotEmpty()) {
+                        ConsistencyWarningSection(warnings = result.consistencyWarnings)
+                    }
+
+                    ExifGroupedList(
+                        groups = result.categoryGroups,
+                        result = result,
+                        onShowSnackbar = onShowSnackbar,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+        }
+    } else {
+        // Medium/Expanded: side-by-side layout (unchanged)
+        PhotoExifDetail(
+            windowSizeClass = windowSizeClass,
+            modifier = modifier,
+            uri = result.uri
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                if (result.overallRisk != PrivacyRisk.NONE) {
+                    PrivacySummaryCard(result = result)
+                }
+
+                if (result.consistencyWarnings.isNotEmpty()) {
+                    ConsistencyWarningSection(warnings = result.consistencyWarnings)
+                }
+
+                ExifGroupedList(
+                    groups = result.categoryGroups,
+                    result = result,
+                    onShowSnackbar = onShowSnackbar,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
@@ -416,27 +719,27 @@ fun PhotoExifDetailSuccess(
 @Composable
 fun PrivacySummaryCard(
     result: ExifAnalysisResult,
-    modifier: Modifier = Modifier,
-    onShowSnackbar: (String) -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
     val containerColor = when (result.overallRisk) {
-        PrivacyRisk.HIGH -> Color(0xFFFFEBEE) // Light red
-        PrivacyRisk.MEDIUM -> Color(0xFFFFF3E0) // Light orange
-        PrivacyRisk.LOW -> Color(0xFFE3F2FD) // Light blue
-        PrivacyRisk.NONE -> Color.Transparent
+        PrivacyRisk.HIGH -> appColors.riskHighContainer
+        PrivacyRisk.MEDIUM -> appColors.riskMediumContainer
+        PrivacyRisk.LOW -> appColors.riskLowContainer
+        PrivacyRisk.NONE -> MaterialTheme.colorScheme.surface
     }
     val contentColor = when (result.overallRisk) {
-        PrivacyRisk.HIGH -> Color(0xFFC62828)
-        PrivacyRisk.MEDIUM -> Color(0xFFE65100)
-        PrivacyRisk.LOW -> Color(0xFF1565C0)
-        PrivacyRisk.NONE -> Color.Transparent
+        PrivacyRisk.HIGH -> appColors.riskOnHighContainer
+        PrivacyRisk.MEDIUM -> appColors.riskOnMediumContainer
+        PrivacyRisk.LOW -> appColors.riskOnLowContainer
+        PrivacyRisk.NONE -> MaterialTheme.colorScheme.onSurface
     }
 
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(12.dp),
+            .padding(horizontal = SpacingLg, vertical = SpacingSm),
+        shape = RoundedCornerShape(ShapeMd),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
             contentColor = contentColor
@@ -445,16 +748,16 @@ fun PrivacySummaryCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(SpacingMd),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Default.Info,
+                imageVector = Icons.Default.Shield,
                 contentDescription = null,
                 tint = contentColor,
                 modifier = Modifier.size(20.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(SpacingSm))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(id = riskLabelResId(result.overallRisk)),
@@ -476,14 +779,6 @@ fun PrivacySummaryCard(
                     )
                 }
             }
-            // GPS map button
-            if (result.hasGpsCoordinates && result.gpsLatitude != null && result.gpsLongitude != null) {
-                GpsMapButton(
-                    latitude = result.gpsLatitude,
-                    longitude = result.gpsLongitude,
-                    onShowSnackbar = onShowSnackbar
-                )
-            }
         }
     }
 }
@@ -497,42 +792,44 @@ fun ConsistencyWarningSection(
     warnings: List<ConsistencyWarning>,
     modifier: Modifier = Modifier
 ) {
+    val appColors = LocalAppColors.current
+
     Column(
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier.padding(horizontal = SpacingLg, vertical = SpacingSm),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         warnings.forEach { warning ->
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(ShapeSm),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFFF8E1) // Light amber
+                    containerColor = appColors.warningContainer
                 )
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                        .padding(horizontal = SpacingMd, vertical = SpacingSm),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.Info,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
-                        tint = Color(0xFFF57F17)
+                        tint = appColors.warningIcon
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(SpacingSm))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = stringResource(id = warning.messageResId),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xFFE65100)
+                            color = appColors.warningTitle
                         )
                         Text(
                             text = warning.detail,
                             style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF795548)
+                            color = appColors.warningDetail
                         )
                     }
                 }
@@ -563,14 +860,14 @@ fun GpsMapButton(
                     onShowSnackbar(context.getString(R.string.msg_no_map_app))
                 }
             },
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(ShapeSm),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            modifier = Modifier.padding(horizontal = SpacingMd, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -578,7 +875,7 @@ fun GpsMapButton(
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(SpacingXs))
             Text(
                 text = stringResource(id = R.string.action_view_on_map),
                 style = MaterialTheme.typography.labelMedium
@@ -603,8 +900,9 @@ fun ExifGroupedList(
     }
 
     LazyColumn(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = modifier.padding(horizontal = SpacingLg),
+        contentPadding = PaddingValues(bottom = 88.dp),
+        verticalArrangement = Arrangement.spacedBy(SpacingXs)
     ) {
         groups.forEach { group ->
             val isExpanded = expandedStates[group.category]?.value ?: true
@@ -630,7 +928,7 @@ fun ExifGroupedList(
                             latitude = result.gpsLatitude,
                             longitude = result.gpsLongitude,
                             onShowSnackbar = onShowSnackbar,
-                            modifier = Modifier.padding(vertical = 4.dp)
+                            modifier = Modifier.padding(vertical = SpacingXs)
                         )
                     }
                 }
@@ -677,7 +975,7 @@ fun GpsMapInlineButton(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
+                .padding(horizontal = SpacingLg, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -686,7 +984,7 @@ fun GpsMapInlineButton(
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(SpacingSm))
             Text(
                 text = stringResource(id = R.string.action_view_on_map),
                 style = MaterialTheme.typography.titleSmall,
@@ -712,7 +1010,7 @@ fun ExifCategoryHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 12.dp, bottom = 4.dp),
+            .padding(top = SpacingMd, bottom = SpacingXs),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -727,7 +1025,7 @@ fun ExifCategoryHeader(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(SpacingSm))
             Text(
                 text = "(${group.entries.size})",
                 style = MaterialTheme.typography.bodySmall,
@@ -763,14 +1061,14 @@ fun ExifTagEntryItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 3.dp),
+            .padding(vertical = SpacingXs),
         shape = MaterialTheme.shapes.small,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         )
     ) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+        Column(modifier = Modifier.padding(horizontal = SpacingLg, vertical = 10.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (entry.risk != PrivacyRisk.NONE) {
                     RiskDot(risk = entry.risk, size = 6.dp)
@@ -787,7 +1085,7 @@ fun ExifTagEntryItem(
                 text = entry.formattedValue,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
-                modifier = Modifier.padding(start = 12.dp)
+                modifier = Modifier.padding(start = SpacingMd)
             )
         }
     }
@@ -803,12 +1101,13 @@ fun RiskDot(
     modifier: Modifier = Modifier,
     size: Dp = 8.dp
 ) {
+    val appColors = LocalAppColors.current
     val color by animateColorAsState(
         targetValue = when (risk) {
-            PrivacyRisk.HIGH -> Color(0xFFE53935)
-            PrivacyRisk.MEDIUM -> Color(0xFFFF9800)
-            PrivacyRisk.LOW -> Color(0xFF2196F3)
-            PrivacyRisk.NONE -> Color(0xFF9E9E9E)
+            PrivacyRisk.HIGH -> appColors.riskHigh
+            PrivacyRisk.MEDIUM -> appColors.riskMedium
+            PrivacyRisk.LOW -> appColors.riskLow
+            PrivacyRisk.NONE -> appColors.neutralRisk
         },
         label = "risk_color"
     )
@@ -841,6 +1140,7 @@ fun ExifRemovalSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val appColors = LocalAppColors.current
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -850,7 +1150,7 @@ fun ExifRemovalSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = SpacingXl)
                 .padding(bottom = 32.dp)
         ) {
             Text(
@@ -858,7 +1158,7 @@ fun ExifRemovalSheet(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(SpacingLg))
 
             when (removalState) {
                 is RemovalState.Idle -> {
@@ -868,7 +1168,7 @@ fun ExifRemovalSheet(
                             subtitle = stringResource(id = R.string.msg_privacy_summary_gps),
                             onClick = { onRemove(ExifRemovalMode.GPS_ONLY) }
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(SpacingSm))
                     }
                     if (result.overallRisk == PrivacyRisk.MEDIUM || result.overallRisk == PrivacyRisk.HIGH) {
                         RemovalOptionButton(
@@ -876,7 +1176,7 @@ fun ExifRemovalSheet(
                             subtitle = stringResource(id = R.string.msg_privacy_summary_personal),
                             onClick = { onRemove(ExifRemovalMode.PERSONAL_ONLY) }
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(SpacingSm))
                     }
                     RemovalOptionButton(
                         text = stringResource(id = R.string.action_remove_all),
@@ -891,7 +1191,7 @@ fun ExifRemovalSheet(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(SpacingMd))
                         Text(text = stringResource(id = R.string.msg_removing))
                     }
                 }
@@ -900,20 +1200,20 @@ fun ExifRemovalSheet(
                     Text(
                         text = stringResource(id = R.string.msg_remove_success),
                         style = MaterialTheme.typography.titleMedium,
-                        color = Color(0xFF4CAF50),
+                        color = appColors.success,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(SpacingLg))
                     Button(
                         onClick = { onShare(removalState.file) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Info,
+                            imageVector = Icons.Default.Share,
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(SpacingSm))
                         Text(text = stringResource(id = R.string.action_share))
                     }
                 }
@@ -924,7 +1224,7 @@ fun ExifRemovalSheet(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.error
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(SpacingSm))
                     Text(
                         text = removalState.message,
                         style = MaterialTheme.typography.bodySmall,
@@ -947,19 +1247,19 @@ fun RemovalOptionButton(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(ShapeMd),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(SpacingLg)) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium
             )
             if (subtitle != null) {
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(SpacingXs))
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
@@ -982,7 +1282,7 @@ fun ExifGroupedListPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = SpacingLg),
         ) {
             items(5) { index ->
                 ExifTagEntryItem(

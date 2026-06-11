@@ -95,6 +95,10 @@ object ExifAnalysisService {
         // Thumbnail
         val hasThumbnail = exifInterface?.hasThumbnail() == true
 
+        // Decode actual image dimensions once (orientation-corrected for display).
+        // Shared by the consistency check (raw dims) and the result (display dims).
+        val decoded = decodeImageSize(uri, contentResolver, exifInterface)
+
         // Consistency checks
         val warnings = mutableListOf<ConsistencyWarning>()
         val ei = exifInterface
@@ -104,7 +108,7 @@ object ExifAnalysisService {
             checkDateTimeMismatch(ei, uri, contentResolver, context, warnings)
 
             // 2. Dimension mismatch: EXIF PixelXDimension/PixelYDimension vs actual decoded size
-            checkDimensionMismatch(ei, uri, contentResolver, context, warnings)
+            checkDimensionMismatch(ei, decoded, context, warnings)
 
             // 3. Thumbnail exists
             if (hasThumbnail) {
@@ -126,6 +130,8 @@ object ExifAnalysisService {
             gpsLatitude = gpsLat,
             gpsLongitude = gpsLng,
             hasThumbnail = hasThumbnail,
+            imageWidth = decoded?.displayWidth ?: 0,
+            imageHeight = decoded?.displayHeight ?: 0,
             consistencyWarnings = warnings
         )
     }
@@ -201,22 +207,17 @@ object ExifAnalysisService {
 
     private fun checkDimensionMismatch(
         ei: ExifInterface,
-        uri: Uri,
-        contentResolver: ContentResolver,
+        decoded: DecodedSize?,
         context: Context,
         warnings: MutableList<ConsistencyWarning>
     ) {
+        if (decoded == null) return
         val exifWidth = ei.getAttribute(ExifInterface.TAG_PIXEL_X_DIMENSION)?.toIntOrNull()
         val exifHeight = ei.getAttribute(ExifInterface.TAG_PIXEL_Y_DIMENSION)?.toIntOrNull()
 
         if (exifWidth != null && exifHeight != null) {
-            // Decode actual image dimensions (inSampleSize trick to avoid OOM)
-            val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-            contentResolver.openInputStream(uri)?.use { inputStream ->
-                BitmapFactory.decodeStream(inputStream, null, options)
-            }
-            val actualWidth = options.outWidth
-            val actualHeight = options.outHeight
+            val actualWidth = decoded.rawWidth
+            val actualHeight = decoded.rawHeight
 
             if (actualWidth > 0 && actualHeight > 0
                 && (exifWidth != actualWidth || exifHeight != actualHeight)
@@ -236,6 +237,42 @@ object ExifAnalysisService {
                     )
                 }
             }
+        }
+    }
+
+    /**
+     * Holds decoded image dimensions. [rawWidth]/[rawHeight] are the unrotated pixel
+     * dimensions from BitmapFactory (used by the consistency check);
+     * [displayWidth]/[displayHeight] are corrected for EXIF orientation (used by the UI).
+     */
+    private data class DecodedSize(
+        val rawWidth: Int,
+        val rawHeight: Int,
+        val displayWidth: Int,
+        val displayHeight: Int
+    )
+
+    /**
+     * Decodes image dimensions cheaply via inJustDecodeBounds and corrects for EXIF
+     * orientation. Returns null if the stream can't be decoded.
+     */
+    private fun decodeImageSize(
+        uri: Uri,
+        contentResolver: ContentResolver,
+        ei: ExifInterface?
+    ): DecodedSize? {
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            BitmapFactory.decodeStream(inputStream, null, options)
+        }
+        val rawW = options.outWidth
+        val rawH = options.outHeight
+        if (rawW <= 0 || rawH <= 0) return null
+        val rotation = ei?.rotationDegrees ?: 0
+        return if (rotation == 90 || rotation == 270) {
+            DecodedSize(rawW, rawH, displayWidth = rawH, displayHeight = rawW)
+        } else {
+            DecodedSize(rawW, rawH, displayWidth = rawW, displayHeight = rawH)
         }
     }
 }

@@ -1,22 +1,14 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.aboutlibraries)
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.fromTarget("1.8")
-    }
-}
-
 android {
     namespace = "cn.qinxiandiqi.photochecker"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "cn.qinxiandiqi.photochecker"
@@ -75,10 +67,10 @@ android {
             signingConfig = signingConfigs.getByName("upload")
         }
     }
-    flavorDimensions("default")
+    flavorDimensions += listOf("default")
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
         compose = true
@@ -102,6 +94,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.material.icons)
     implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.exifinterface)
     implementation(libs.coil)
