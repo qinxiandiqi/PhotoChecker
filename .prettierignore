@@ -1,0 +1,4 @@
+# Claude Code skill 文件为 vendored 内容，且包含嵌套在列表项中的引用块，
+# 多数 Markdown 格式化器对此结构的重排是非幂等的（每格式化一次右移一档缩进），
+# 会导致每次保存后产生无意义 diff。整个目录排除格式化。
+.claude/skills/
