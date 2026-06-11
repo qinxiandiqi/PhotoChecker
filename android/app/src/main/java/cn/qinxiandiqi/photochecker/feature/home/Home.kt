@@ -1,5 +1,8 @@
 package cn.qinxiandiqi.photochecker.feature.home
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -36,6 +39,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -150,6 +154,7 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val isCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+    val context = LocalContext.current
 
     Scaffold(
         modifier = modifier,
@@ -282,6 +287,30 @@ fun HomeScreen(
                 ) {
                     // Sub-items (only when Success + expanded)
                     if (isSuccess) {
+                        // Copy EXIF sub-item
+                        SubFabItem(
+                            visible = fabExpanded,
+                            label = stringResource(id = R.string.action_copy_exif),
+                            icon = Icons.Default.ContentCopy,
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            onClick = {
+                                fabExpanded = false
+                                successResult?.let { res ->
+                                    val text = buildExifText(res, context)
+                                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                                        as ClipboardManager
+                                    clipboard.setPrimaryClip(ClipData.newPlainText("EXIF", text))
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            context.getString(R.string.msg_exif_copied)
+                                        )
+                                    }
+                                }
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(SpacingMd))
+
                         // Privacy clean sub-item
                         SubFabItem(
                             visible = fabExpanded,
@@ -392,6 +421,27 @@ fun HomeScreen(
 // ============================================================
 // Speed Dial sub-item
 // ============================================================
+
+/**
+ * Builds a plain-text, category-grouped representation of all EXIF entries,
+ * matching what is shown in the UI (translated display names + formatted values).
+ */
+private fun buildExifText(result: ExifAnalysisResult, context: Context): String {
+    val sb = StringBuilder()
+    for (group in result.categoryGroups) {
+        sb.append(context.getString(group.displayNameResId)).append('\n')
+        for (entry in group.entries) {
+            val name = if (entry.displayNameResId != 0) {
+                context.getString(entry.displayNameResId)
+            } else {
+                entry.rawTagName
+            }
+            sb.append(name).append(": ").append(entry.formattedValue).append('\n')
+        }
+        sb.append('\n')
+    }
+    return sb.toString().trimEnd()
+}
 
 @Composable
 private fun SubFabItem(

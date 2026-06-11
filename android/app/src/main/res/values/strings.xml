@@ -226,6 +226,7 @@
     <string name="action_remove_all">Remove All Metadata</string>
     <string name="action_share">Share</string>
     <string name="action_privacy_clean">Privacy Clean</string>
+    <string name="action_copy_exif">Copy EXIF</string>
     <string name="action_collapse">Collapse</string>
     <string name="action_expand">Expand</string>
 
@@ -239,6 +240,7 @@
     <string name="msg_remove_error">Failed to process</string>
     <string name="msg_unsupported_format">This format does not support metadata editing</string>
     <string name="msg_no_map_app">No map application found</string>
+    <string name="msg_exif_copied">EXIF copied to clipboard</string>
 
     <!-- Consistency warnings -->
     <string name="warning_datetime_mismatch">Date/time mismatch</string>

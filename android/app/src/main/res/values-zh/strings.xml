@@ -227,6 +227,7 @@
     <string name="action_remove_all">移除所有元数据</string>
     <string name="action_share">分享</string>
     <string name="action_privacy_clean">隐私清理</string>
+    <string name="action_copy_exif">复制 EXIF</string>
     <string name="action_collapse">收起</string>
     <string name="action_expand">展开</string>
 
@@ -240,6 +241,7 @@
     <string name="msg_remove_error">处理失败</string>
     <string name="msg_unsupported_format">此格式不支持元数据编辑</string>
     <string name="msg_no_map_app">未找到地图应用</string>
+    <string name="msg_exif_copied">EXIF 已复制到剪贴板</string>
 
     <!-- 一致性警告 -->
     <string name="warning_datetime_mismatch">时间不一致</string>
