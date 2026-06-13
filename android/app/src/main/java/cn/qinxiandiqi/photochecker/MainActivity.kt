@@ -13,7 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cn.qinxiandiqi.photochecker.feature.about.AboutScreen
-import cn.qinxiandiqi.photochecker.feature.home.HomeScreen
+import cn.qinxiandiqi.photochecker.feature.home.ui.HomeScreen
 import cn.qinxiandiqi.photochecker.feature.home.HomeViewModel
 
 class MainActivity : ComponentActivity() {
