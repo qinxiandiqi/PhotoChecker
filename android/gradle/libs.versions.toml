@@ -1,5 +1,5 @@
 [versions]
-android-plugin = "9.1.0"
+android-plugin = "9.2.1"
 kotlin-plugin = "2.4.0"
 aboutlibraries-plugin = "14.2.1"
 androidx-core = "1.19.0"
