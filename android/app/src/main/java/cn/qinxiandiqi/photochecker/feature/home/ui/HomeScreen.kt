@@ -364,7 +364,7 @@ fun HomeScreen(
                     },
                     onShare = { file ->
                         viewModel.shareCleanedFile(file)
-                        viewModel.resetRemovalState()
+                        viewModel.clearRemovalStateKeepingFile()
                         showRemovalSheet = false
                     },
                     onSave = { file, onResult ->

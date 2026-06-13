@@ -159,6 +159,20 @@ class HomeViewModel(private val application: Application) : AndroidViewModel(app
         }
         _removalState.value = RemovalState.Idle
     }
+
+    /**
+     * Resets the removal UI state back to Idle WITHOUT deleting the temp file.
+     *
+     * Sharing is asynchronous: startActivity(chooser) returns immediately and the user
+     * picks a target app afterwards, at which point that app reads the file via the
+     * FileProvider URI. Deleting the file right after launching the chooser (which the
+     * share path used to do via resetRemovalState) races the target app's read and leaves
+     * it unable to obtain the image. The temp file lives in cacheDir and is reclaimed by
+     * the system automatically, so leaving it until the next operation is safe.
+     */
+    fun clearRemovalStateKeepingFile() {
+        _removalState.value = RemovalState.Idle
+    }
 }
 
 sealed class RemovalState {
