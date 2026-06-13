@@ -225,6 +225,9 @@
     <string name="action_remove_personal">Remove Personal Info</string>
     <string name="action_remove_all">Remove All Metadata</string>
     <string name="action_share">Share</string>
+    <string name="action_save_to_gallery">Save to Gallery</string>
+    <string name="msg_saved_to_gallery">Saved to gallery</string>
+    <string name="msg_save_to_gallery_error">Failed to save to gallery</string>
     <string name="action_privacy_clean">Privacy Clean</string>
     <string name="action_copy_exif">Copy EXIF</string>
     <string name="action_collapse">Collapse</string>

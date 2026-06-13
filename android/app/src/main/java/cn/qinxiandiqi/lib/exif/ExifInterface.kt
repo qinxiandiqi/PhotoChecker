@@ -3428,35 +3428,13 @@ class ExifInterface {
                 )
         }
 
-        // Add the default value.
-        if (getAttribute(TAG_IMAGE_WIDTH) == null) {
-            mAttributes[IFD_TYPE_PRIMARY][TAG_IMAGE_WIDTH] =
-                ExifAttribute.createULong(
-                    0,
-                    mExifByteOrder
-                )
-        }
-        if (getAttribute(TAG_IMAGE_LENGTH) == null) {
-            mAttributes[IFD_TYPE_PRIMARY][TAG_IMAGE_LENGTH] =
-                ExifAttribute.createULong(
-                    0,
-                    mExifByteOrder
-                )
-        }
-        if (getAttribute(TAG_ORIENTATION) == null) {
-            mAttributes[IFD_TYPE_PRIMARY][TAG_ORIENTATION] =
-                ExifAttribute.createULong(
-                    0,
-                    mExifByteOrder
-                )
-        }
-        if (getAttribute(TAG_LIGHT_SOURCE) == null) {
-            mAttributes[IFD_TYPE_EXIF][TAG_LIGHT_SOURCE] =
-                ExifAttribute.createULong(
-                    0,
-                    mExifByteOrder
-                )
-        }
+        // NOTE: The upstream AOSP ExifInterface fills in default 0 values for
+        // IMAGE_WIDTH / IMAGE_LENGTH / ORIENTATION / LIGHT_SOURCE when they are absent.
+        // That behavior exists to make *writing* a well-formed IFD easier, but this app
+        // only uses ExifInterface for *reading*. The synthesized 0s leak into the UI as
+        // bogus entries (e.g. a metadata-free image shows "Light source: 0"), so they are
+        // intentionally omitted here. Only the DATETIME backfill above is kept because it
+        // carries real semantic value.
     }
 
     @Throws(IOException::class)

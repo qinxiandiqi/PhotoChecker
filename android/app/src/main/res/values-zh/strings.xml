@@ -226,6 +226,9 @@
     <string name="action_remove_personal">移除个人信息</string>
     <string name="action_remove_all">移除所有元数据</string>
     <string name="action_share">分享</string>
+    <string name="action_save_to_gallery">保存到相册</string>
+    <string name="msg_saved_to_gallery">已保存到相册</string>
+    <string name="msg_save_to_gallery_error">保存到相册失败</string>
     <string name="action_privacy_clean">隐私清理</string>
     <string name="action_copy_exif">复制 EXIF</string>
     <string name="action_collapse">收起</string>

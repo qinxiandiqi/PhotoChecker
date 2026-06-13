@@ -47,6 +47,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shield
@@ -59,6 +60,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
@@ -423,6 +425,9 @@ fun HomeScreen(
                     viewModel.shareCleanedFile(file)
                     viewModel.resetRemovalState()
                     showRemovalSheet = false
+                },
+                onSave = { file, onResult ->
+                    viewModel.saveToGallery(file, onResult)
                 },
                 onDismiss = {
                     viewModel.resetRemovalState()
@@ -1083,6 +1088,33 @@ private fun ExifGroupedList(
     modifier: Modifier = Modifier,
     onShowSnackbar: (String) -> Unit = {}
 ) {
+    // When there are no EXIF entries at all (e.g. a photo cleaned with "remove all
+    // metadata"), show a friendly empty-state instead of a blank panel.
+    if (groups.isEmpty()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(SpacingLg),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = null,
+                modifier = Modifier.size(48.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+            )
+            Spacer(modifier = Modifier.height(SpacingSm))
+            Text(
+                text = stringResource(id = R.string.msg_no_exif),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+        return
+    }
+
     val expandedStates = remember {
         groups.associate { it.category to mutableStateOf(true) }
     }
@@ -1326,10 +1358,14 @@ private fun ExifRemovalSheet(
     removalState: RemovalState,
     onRemove: (ExifRemovalMode) -> Unit,
     onShare: (java.io.File) -> Unit,
+    onSave: (java.io.File, (Boolean) -> Unit) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val appColors = LocalAppColors.current
+    // Save outcome shown inline (null = idle/none yet), because the SnackbarHost sits
+    // behind this modal sheet and would be hidden from the user.
+    var saveResult by remember { mutableStateOf<Boolean?>(null) }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -1404,6 +1440,32 @@ private fun ExifRemovalSheet(
                         )
                         Spacer(modifier = Modifier.width(SpacingSm))
                         Text(text = stringResource(id = R.string.action_share))
+                    }
+                    Spacer(modifier = Modifier.height(SpacingSm))
+                    OutlinedButton(
+                        onClick = { onSave(removalState.file) { ok -> saveResult = ok } },
+                        enabled = saveResult == null,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Save,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(SpacingSm))
+                        Text(text = stringResource(id = R.string.action_save_to_gallery))
+                    }
+                    saveResult?.let { ok ->
+                        Spacer(modifier = Modifier.height(SpacingXs))
+                        Text(
+                            text = stringResource(
+                                id = if (ok) R.string.msg_saved_to_gallery
+                                else R.string.msg_save_to_gallery_error
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (ok) appColors.success else MaterialTheme.colorScheme.error,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
 
