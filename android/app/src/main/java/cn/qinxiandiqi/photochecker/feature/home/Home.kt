@@ -72,7 +72,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,7 +84,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -95,12 +93,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cn.qinxiandiqi.photochecker.App
 import cn.qinxiandiqi.photochecker.R
-import cn.qinxiandiqi.photochecker.feature.home.model.ExifAnalysisResult
 import cn.qinxiandiqi.photochecker.feature.home.model.ConsistencyWarning
+import cn.qinxiandiqi.photochecker.feature.home.model.ExifAnalysisResult
 import cn.qinxiandiqi.photochecker.feature.home.model.ExifCategory
 import cn.qinxiandiqi.photochecker.feature.home.model.ExifCategoryGroup
 import cn.qinxiandiqi.photochecker.feature.home.model.ExifRemovalMode
@@ -155,6 +154,7 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val isCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
     val context = LocalContext.current
+    val msgExifCopied = stringResource(id = R.string.msg_exif_copied)
 
     Scaffold(
         modifier = modifier,
@@ -163,6 +163,13 @@ fun HomeScreen(
             val isCompactSuccess = isCompact && currentUiState is HomeUIState.Success
             if (isCompactSuccess) {
                 val barHeight = measuredTopBarHeightPx.value
+                // TopAppBar alpha fades 1 → 0 across Phase 1 (collapseOffset: 0 → barHeight).
+                // Because the image is always drawn from the screen top (y = 0), the area
+                // behind the bar is image content at every alpha — so the fade reveals the
+                // image rather than the window background (no white gap). At alpha = 1 the
+                // opaque bar fully covers the image's top portion, which is visually
+                // identical to "image sits below the bar" — so the image is never obscured
+                // by the status/title bar in the initial state.
                 val appBarAlpha = if (barHeight > 0f)
                     1f - (collapseOffset.value / barHeight).coerceIn(0f, 1f) else 1f
                 TopAppBar(
@@ -303,7 +310,7 @@ fun HomeScreen(
                                     clipboard.setPrimaryClip(ClipData.newPlainText("EXIF", text))
                                     scope.launch {
                                         snackbarHostState.showSnackbar(
-                                            context.getString(R.string.msg_exif_copied)
+                                            msgExifCopied
                                         )
                                     }
                                 }
@@ -497,7 +504,7 @@ private fun SubFabItem(
 // ============================================================
 
 @Composable
-fun EmptyExifDetail(modifier: Modifier = Modifier) {
+private fun EmptyExifDetail(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -526,7 +533,7 @@ fun EmptyExifDetail(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PhotoExifDetail(
+private fun PhotoExifDetail(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     uri: Uri,
@@ -568,7 +575,7 @@ fun PhotoExifDetail(
 }
 
 @Composable
-fun PhotoExifDetailLoading(
+private fun PhotoExifDetailLoading(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     uri: Uri,
@@ -588,7 +595,7 @@ fun PhotoExifDetailLoading(
 }
 
 @Composable
-fun PhotoExifDetailError(
+private fun PhotoExifDetailError(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     uri: Uri? = null,
@@ -625,7 +632,7 @@ fun PhotoExifDetailError(
 // ============================================================
 
 @Composable
-fun PhotoExifDetailSuccess(
+private fun PhotoExifDetailSuccess(
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     result: ExifAnalysisResult,
@@ -688,16 +695,22 @@ fun PhotoExifDetailSuccess(
                     .nestedScroll(nestedScrollConnection)
             ) {
                 val offset = collapseOffset.value
-                // Top spacer: shrinks during Phase 1 as TopAppBar fades.
-                // Initially = topBarHeight (image below TopAppBar),
-                // Phase 1 end = 0 (image behind transparent TopAppBar)
+                // Top spacer that shrinks during Phase 1 as the image slides up. It is the
+                // gap between the (fading) TopAppBar and the image; filling it with the
+                // theme primary color (same as the bar) keeps the area visually continuous
+                // during the fade instead of showing the jarring white window background.
                 val topSpacerDp = with(density) {
                     (topBarHeightPx - offset).coerceAtLeast(0f).toDp()
                 }
-                Spacer(modifier = Modifier.height(topSpacerDp))
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(topSpacerDp)
+                        .background(MaterialTheme.colorScheme.primary)
+                )
 
-                // Image height: stays at expandedHeightDp during Phase 1,
-                // collapses during Phase 2
+                // Image height: stays at expandedHeightDp during Phase 1, collapses during
+                // Phase 2.
                 val currentHeightDp = with(density) {
                     val imageOffsetPx = (offset - topBarHeightPx).coerceAtLeast(0f)
                     (expandedHeightDp - imageOffsetPx.toDp()).coerceAtLeast(CollapsedImageHeight)
@@ -767,7 +780,7 @@ fun PhotoExifDetailSuccess(
 // ============================================================
 
 @Composable
-fun PrivacySummaryCard(
+private fun PrivacySummaryCard(
     result: ExifAnalysisResult,
     modifier: Modifier = Modifier
 ) {
@@ -838,7 +851,7 @@ fun PrivacySummaryCard(
 // ============================================================
 
 @Composable
-fun ConsistencyWarningSection(
+private fun ConsistencyWarningSection(
     warnings: List<ConsistencyWarning>,
     modifier: Modifier = Modifier
 ) {
@@ -889,25 +902,26 @@ fun ConsistencyWarningSection(
 }
 
 @Composable
-fun GpsMapButton(
+private fun GpsMapButton(
     latitude: Double,
     longitude: Double,
     modifier: Modifier = Modifier,
     onShowSnackbar: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
+    val noMapAppMessage = stringResource(id = R.string.msg_no_map_app)
 
     Card(
         modifier = modifier
             .clickable {
-                val geoUri = Uri.parse("geo:$latitude,$longitude")
+                val geoUri = "geo:$latitude,$longitude".toUri()
                 val intent = Intent(Intent.ACTION_VIEW, geoUri).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 if (intent.resolveActivity(context.packageManager) != null) {
                     context.startActivity(intent)
                 } else {
-                    onShowSnackbar(context.getString(R.string.msg_no_map_app))
+                    onShowSnackbar(noMapAppMessage)
                 }
             },
         shape = RoundedCornerShape(ShapeSm),
@@ -939,7 +953,7 @@ fun GpsMapButton(
 // ============================================================
 
 @Composable
-fun ExifGroupedList(
+private fun ExifGroupedList(
     groups: List<ExifCategoryGroup>,
     result: ExifAnalysisResult,
     modifier: Modifier = Modifier,
@@ -994,26 +1008,27 @@ fun ExifGroupedList(
 }
 
 @Composable
-fun GpsMapInlineButton(
+private fun GpsMapInlineButton(
     latitude: Double,
     longitude: Double,
     modifier: Modifier = Modifier,
     onShowSnackbar: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
+    val noMapAppMessage = stringResource(id = R.string.msg_no_map_app)
 
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clickable {
-                val geoUri = Uri.parse("geo:$latitude,$longitude")
+                val geoUri = "geo:$latitude,$longitude".toUri()
                 val intent = Intent(Intent.ACTION_VIEW, geoUri).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 if (intent.resolveActivity(context.packageManager) != null) {
                     context.startActivity(intent)
                 } else {
-                    onShowSnackbar(context.getString(R.string.msg_no_map_app))
+                    onShowSnackbar(noMapAppMessage)
                 }
             },
         shape = MaterialTheme.shapes.small,
@@ -1049,7 +1064,7 @@ fun GpsMapInlineButton(
 // ============================================================
 
 @Composable
-fun ExifCategoryHeader(
+private fun ExifCategoryHeader(
     group: ExifCategoryGroup,
     expanded: Boolean,
     onToggle: () -> Unit,
@@ -1098,7 +1113,7 @@ fun ExifCategoryHeader(
 }
 
 @Composable
-fun ExifTagEntryItem(
+private fun ExifTagEntryItem(
     entry: ExifTagEntry,
     modifier: Modifier = Modifier
 ) {
@@ -1146,7 +1161,7 @@ fun ExifTagEntryItem(
 // ============================================================
 
 @Composable
-fun RiskDot(
+private fun RiskDot(
     risk: PrivacyRisk,
     modifier: Modifier = Modifier,
     size: Dp = 8.dp
@@ -1182,7 +1197,7 @@ private fun riskLabelResId(risk: PrivacyRisk): Int = when (risk) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExifRemovalSheet(
+private fun ExifRemovalSheet(
     result: ExifAnalysisResult,
     removalState: RemovalState,
     onRemove: (ExifRemovalMode) -> Unit,
@@ -1287,7 +1302,7 @@ fun ExifRemovalSheet(
 }
 
 @Composable
-fun RemovalOptionButton(
+private fun RemovalOptionButton(
     text: String,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
