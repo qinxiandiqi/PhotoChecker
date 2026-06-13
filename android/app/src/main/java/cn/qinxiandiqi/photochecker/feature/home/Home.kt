@@ -14,6 +14,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -81,6 +82,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -93,6 +97,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -107,6 +113,9 @@ import cn.qinxiandiqi.photochecker.feature.home.model.ExifTagEntry
 import cn.qinxiandiqi.photochecker.feature.home.model.PrivacyRisk
 import cn.qinxiandiqi.photochecker.ui.theme.LocalAppColors
 import coil.compose.AsyncImage
+import net.engawapg.lib.zoomable.rememberZoomState
+import net.engawapg.lib.zoomable.zoomable
+import kotlin.math.atan2
 import kotlinx.coroutines.launch
 
 // ============================================================
@@ -855,49 +864,164 @@ private fun ConsistencyWarningSection(
     warnings: List<ConsistencyWarning>,
     modifier: Modifier = Modifier
 ) {
-    val appColors = LocalAppColors.current
-
     Column(
         modifier = modifier.padding(horizontal = SpacingLg, vertical = SpacingSm),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         warnings.forEach { warning ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(ShapeSm),
-                colors = CardDefaults.cardColors(
-                    containerColor = appColors.warningContainer
+            ConsistencyWarningItem(warning = warning)
+        }
+    }
+}
+
+@Composable
+private fun ConsistencyWarningItem(warning: ConsistencyWarning) {
+    val appColors = LocalAppColors.current
+    var showFullThumbnail by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(ShapeSm),
+        colors = CardDefaults.cardColors(
+            containerColor = appColors.warningContainer
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = SpacingMd, vertical = SpacingSm),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = appColors.warningIcon
+            )
+            Spacer(modifier = Modifier.width(SpacingSm))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(id = warning.messageResId),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    color = appColors.warningTitle
                 )
-            ) {
-                Row(
+                Text(
+                    text = warning.detail,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = appColors.warningDetail
+                )
+            }
+            // Embedded thumbnail preview (tap to enlarge). Only shown when the warning
+            // carries the decoded thumbnail bitmap.
+            warning.thumbnail?.let { bitmap ->
+                Spacer(modifier = Modifier.width(SpacingSm))
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = stringResource(id = R.string.warning_thumbnail_exists),
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = SpacingMd, vertical = SpacingSm),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = appColors.warningIcon
-                    )
-                    Spacer(modifier = Modifier.width(SpacingSm))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(id = warning.messageResId),
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Medium,
-                            color = appColors.warningTitle
-                        )
-                        Text(
-                            text = warning.detail,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = appColors.warningDetail
-                        )
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(ShapeSm))
+                        .clickable { showFullThumbnail = true }
+                )
+            }
+        }
+    }
+
+    if (showFullThumbnail && warning.thumbnail != null) {
+        ThumbnailPreviewDialog(
+            bitmap = warning.thumbnail,
+            onDismiss = { showFullThumbnail = false }
+        )
+    }
+}
+
+@Composable
+private fun ThumbnailPreviewDialog(
+    bitmap: android.graphics.Bitmap,
+    onDismiss: () -> Unit
+) {
+    val appColors = LocalAppColors.current
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(appColors.scrimOverlay)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) { onDismiss() },
+            contentAlignment = Alignment.Center
+        ) {
+            // Tapping the image itself should NOT close the dialog (only the scrim does).
+            ZoomableImage(bitmap = bitmap)
+        }
+    }
+}
+
+/**
+ * Image viewer supporting pinch-to-zoom, drag-to-pan, double-tap-to-reset (via the
+ * zoomable library) AND two-finger rotation (handled here, since zoomable 1.6 has no
+ * rotation API and Compose UI 1.11+ removed detectTransformGestures).
+ *
+ * Rotation is applied as an outer graphicsLayer so it composes cleanly with zoomable's
+ * own scale/pan transform on the inner image.
+ */
+@Composable
+private fun ZoomableImage(bitmap: android.graphics.Bitmap) {
+    val zoomState = rememberZoomState()
+    var rotation by remember { mutableStateOf(0f) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            // Two-finger rotation, built on the low-level awaitPointerEventScope (the only
+            // gesture API still present in Compose UI 1.11+). Tracks the angle of the line
+            // between two pointers and accumulates the delta into `rotation`.
+            .pointerInput(Unit) {
+                awaitPointerEventScope {
+                    var prevAngle = 0.0
+                    var hasPrev = false
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        val active = event.changes.filter { it.pressed }
+                        if (active.size >= 2) {
+                            val a = active[0].position
+                            val b = active[1].position
+                            val angle = atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
+                            if (hasPrev) {
+                                var delta = angle - prevAngle
+                                // Wrap into [-π, π] so crossing the boundary doesn't cause a
+                                // 360° jump.
+                                if (delta > Math.PI) delta -= 2 * Math.PI
+                                if (delta < -Math.PI) delta += 2 * Math.PI
+                                rotation += Math.toDegrees(delta).toFloat()
+                            }
+                            prevAngle = angle
+                            hasPrev = true
+                        } else {
+                            // Drop the reference when fewer than two fingers remain, so the
+                            // next two-finger gesture starts from a fresh baseline.
+                            hasPrev = false
+                        }
                     }
                 }
             }
-        }
+            .graphicsLayer { rotationZ = rotation }
+    ) {
+        AsyncImage(
+            model = bitmap,
+            contentDescription = stringResource(id = R.string.warning_thumbnail_exists),
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxWidth()
+                .zoomable(zoomState)
+        )
     }
 }
 

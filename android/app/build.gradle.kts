@@ -101,6 +101,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)
+    implementation(libs.zoomable)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.junit)

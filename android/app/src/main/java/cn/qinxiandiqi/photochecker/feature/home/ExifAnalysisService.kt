@@ -28,6 +28,7 @@ object ExifAnalysisService {
         val entries = mutableListOf<ExifTagEntry>()
         val seenTagNames = mutableSetOf<String>()
         var exifInterface: ExifInterface? = null
+        var thumbnailBitmap: android.graphics.Bitmap? = null
 
         contentResolver.openInputStream(uri)?.use { inputStream ->
             exifInterface = ExifInterface(inputStream)
@@ -68,6 +69,11 @@ object ExifAnalysisService {
                     )
                 }
             }
+
+            // Decode the embedded thumbnail now, while the input stream is still open.
+            // getThumbnailBitmap re-reads from the stream/FD when bytes aren't cached yet;
+            // calling it after the stream closed throws "dup failed: EBADF".
+            thumbnailBitmap = runCatching { ei.thumbnailBitmap }.getOrNull()
         }
 
         // Group by category
@@ -116,7 +122,8 @@ object ExifAnalysisService {
                     ConsistencyWarning(
                         type = WarningType.THUMBNAIL_MISMATCH,
                         messageResId = R.string.warning_thumbnail_exists,
-                        detail = context.getString(R.string.warning_thumbnail_exists_detail)
+                        detail = context.getString(R.string.warning_thumbnail_exists_detail),
+                        thumbnail = thumbnailBitmap
                     )
                 )
             }
