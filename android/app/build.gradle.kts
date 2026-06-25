@@ -13,9 +13,9 @@ android {
     defaultConfig {
         applicationId = "cn.qinxiandiqi.photochecker"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 4
-        versionName = "1.0.1"
+        targetSdk = 37
+        versionCode = 5
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -53,8 +53,6 @@ android {
             signingConfig = signingConfigs.getByName("upload")
         }
         debug {
-            isMinifyEnabled = false
-            isShrinkResources = false
             signingConfig = signingConfigs.getByName("debug")
         }
     }
