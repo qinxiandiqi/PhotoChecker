@@ -4,12 +4,37 @@ A cross-platform EXIF viewer application supporting Android, HarmonyOS, Web, and
 
 ![](./doc/playstore_head.png)
 
-Your handy tool to view EXIF information of your photos! With this lightweight and simple app, you can effortlessly select any photo from your device and delve into its EXIF data. Gain insights into camera settings, date and time of capture, location, and much more. Whether you're a photography enthusiast or just curious about the technical details behind your images, PhotoChecker has got you covered.
+View the EXIF metadata hidden inside your photos — and strip the parts that put your privacy at risk.
 
-## Screenshots
+Every photo you take carries hidden data: the camera and lens used, exposure settings, the exact date and time, and often a precise GPS location pinpointing where it was taken. PhotoChecker reveals all of it, and lets you remove it before you share.
 
-| ![](./doc/Screenshot_phone_1.png) | ![](./doc/Screenshot_phone_2.png) | ![](./doc/Screenshot_phone_3.png) |
-| :-------------------------------: | :-------------------------------: | :-------------------------------: |
+🔍 **Read every detail**
+Inspect the full EXIF metadata of any JPEG, PNG, or WebP image — camera make and model, lens, aperture, shutter speed, ISO, focal length, capture timestamp, software, and more.
+
+⚠️ **Privacy risk at a glance**
+Each photo is color-coded by privacy risk. A single glance tells you whether it contains high-risk GPS data, identifying device info, or is safe to share.
+
+🗺️ **Locations, visualized**
+If a photo has GPS coordinates, tap to open it in your map app and see exactly where it was captured.
+
+🔎 **Spot tampering**
+Consistency warnings flag suspicious signs — a capture time that disagrees with the file, mismatched dimensions, or an embedded thumbnail that may reveal the pre-edit original.
+
+🧹 **Clean before you share**
+Remove exactly what you want:
+• Location data (GPS)
+• Personal and device identifiers
+• All metadata for a truly clean file
+Then share the cleaned image to any app, or save it to your gallery.
+
+**Private by design**
+• 100% on-device — your photos never leave your phone
+• No ads, no accounts, no network access
+• Large-screen and foldable friendly
+• Light and dark themes
+
+Lightweight and built for one job: showing you what your photos know about you, and helping you take control.
+
 
 ## 🚀 Quick Start
 
