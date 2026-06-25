@@ -126,7 +126,7 @@ fun AppVersionAndPolicy(modifier: Modifier = Modifier) {
         ) {
             Image(
                 modifier = Modifier.size(100.dp),
-                painter = painterResource(id = R.mipmap.ic_launcher),
+                painter = painterResource(id = R.drawable.ic_launcher_full),
                 contentDescription = ""
             )
             Column(
@@ -151,7 +151,7 @@ fun AppVersionAndPolicy(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(horizontal = 26.dp, vertical = 8.dp)
                 .clickable {
-                    uriLauncher.launch("https://photochecker.qinxiandiqi.cn".toUri())
+                    uriLauncher.launch("https://photochecker.linlaoshi.top".toUri())
                 },
             text = stringResource(id = R.string.policy),
             style = MaterialTheme.typography.bodyLarge.copy(fontStyle = FontStyle.Italic),
