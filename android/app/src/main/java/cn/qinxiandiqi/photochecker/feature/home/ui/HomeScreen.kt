@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -174,7 +175,7 @@ fun HomeScreen(
         val topBarHeightDp = innerPadding.calculateTopPadding()
         val topPadding = if (isCompactSuccess) 0.dp else topBarHeightDp
 
-        Column(modifier = Modifier.padding(top = topPadding, bottom = innerPadding.calculateBottomPadding())) {
+        Column(modifier = Modifier.padding(top = topPadding)) {
             val removalState by viewModel.removalState.collectAsStateWithLifecycle()
 
             Box(modifier = Modifier.fillMaxSize()) {
@@ -241,6 +242,7 @@ fun HomeScreen(
                     Column(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
+                            .navigationBarsPadding()
                             .padding(end = SpacingLg, bottom = SpacingLg),
                         horizontalAlignment = Alignment.End
                     ) {
