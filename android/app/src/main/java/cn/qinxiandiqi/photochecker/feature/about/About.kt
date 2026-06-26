@@ -39,10 +39,10 @@ import androidx.compose.ui.unit.dp
 import cn.qinxiandiqi.photochecker.App
 import cn.qinxiandiqi.photochecker.BuildConfig
 import cn.qinxiandiqi.photochecker.R
-import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
+import androidx.compose.runtime.getValue
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import androidx.core.net.toUri
-import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 
 /**
  *
@@ -163,12 +163,15 @@ fun AppVersionAndPolicy(modifier: Modifier = Modifier) {
 
 @Composable
 fun LibrariesUsed(modifier: Modifier = Modifier) {
+    // Load the generated metadata via the explicit resource-ID overload. This makes the
+    // raw/aboutlibraries resource statically reachable for R8/optimized resource shrinking
+    // (AGP 9), so it is not stripped from release builds — the default LibrariesContainer()
+    // overload loads it via a runtime name lookup the shrinker cannot trace.
+    val libraries by produceLibraries(R.raw.aboutlibraries)
     LibrariesContainer(
+        libraries = libraries,
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-        padding = LibraryDefaults.libraryPadding(
-            namePadding = PaddingValues(vertical = 4.dp),
-        )
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
     )
 }
 
