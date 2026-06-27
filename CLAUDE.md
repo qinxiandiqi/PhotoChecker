@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-PhotoChecker is a cross-platform EXIF viewer application that displays metadata from photos. The project supports Android (native Kotlin/Compose), HarmonyOS (ArkTS), and web platforms.
+PhotoChecker is an Android EXIF viewer application that displays metadata from photos and lets users strip privacy-sensitive data before sharing. Native Kotlin / Jetpack Compose, single Activity. A separate static privacy-policy page lives under `/web/`.
 
 ## Architecture
 
@@ -19,13 +19,10 @@ PhotoChecker is a cross-platform EXIF viewer application that displays metadata 
   - `ExifInterface`: Custom EXIF parsing library (in `lib/exif/`)
   - Feature modules: `home` and `about` screens
 
-### Multi-Platform Structure
+### Repository Layout
 
-The project supports three platforms:
-
-- **Android**: `/android/` - Native Kotlin/Compose implementation
-- **HarmonyOS**: `/harmony/` - ArkTS implementation
-- **Web**: `/web/` - Static privacy page with Docker deployment
+- **Android app**: `/android/` - Native Kotlin/Compose implementation (primary)
+- **Privacy page**: `/web/` - Static page with Docker deployment
 
 ### Data Flow
 
@@ -56,19 +53,6 @@ cd android
 ./gradlew installDebug
 ```
 
-### HarmonyOS
-
-```bash
-# Navigate to HarmonyOS directory
-cd harmony
-
-# Build HarmonyOS application
-hvigorw assembleHap
-
-# Run HarmonyOS tests
-hvigorw build
-```
-
 ### Web
 
 ```bash
@@ -92,8 +76,7 @@ docker-compose up --build
 
 ### Key Dependencies
 
-- **Android**: Jetpack Compose, Material3, EXIF Interface, Coil (image loading)
-- **HarmonyOS**: ArkTS, Hypium testing framework
+- **Android**: Jetpack Compose, Material3, androidx.exifinterface, custom EXIF lib (`lib/exif/`), Coil (image loading), AboutLibraries
 - **Web**: Nginx for static serving
 
 ### Custom EXIF Library
@@ -107,11 +90,6 @@ The project includes a custom EXIF parser in `android/app/src/main/java/cn/qinxi
 - Unit tests: `android/app/src/test/`
 - Instrumented tests: `android/app/src/androidTest/`
 - Use standard JUnit and AndroidX testing frameworks
-
-### HarmonyOS Tests
-
-- Located in `harmony/entry/src/test/` and `harmony/entry/src/ohosTest/`
-- Uses Hypium framework
 
 ## Project Configuration
 

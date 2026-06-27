@@ -1,19 +1,3 @@
-# Dependencies
-node_modules/
-pnpm-lock.yaml
-
-# Build outputs
-dist/
-build/
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -23,13 +7,6 @@ lerna-debug.log*
 ehthumbs.db
 Thumbs.db
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
 # IDE
 .vscode/
 .idea/
@@ -37,23 +14,26 @@ Thumbs.db
 *.swo
 *~
 
-# Cache
-.cache/
-.eslintcache
-.stylelintcache
+# Environment variables
+.env
+.env.local
 
-# Test coverage
-coverage/
-*.lcov
+# Android (Gradle) build outputs
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/local.properties
+android/*.iml
+android/.idea/
+android/captures/
+android/.cxx/
+
+# Logs
+*.log
 
 # Temporary files
 tmp/
 temp/
-
-# Package manager lock files (keep workspace lock, ignore individual ones)
-# pnpm-lock.yaml should be at root only
-
-# Husky
-.husky/_
 
 .claude/settings.local.json

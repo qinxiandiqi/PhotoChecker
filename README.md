@@ -1,6 +1,6 @@
-# PhotoChecker Monorepo
+# PhotoChecker
 
-A cross-platform EXIF viewer application supporting Android, HarmonyOS, Web, and Desktop (Tauri) platforms.
+An EXIF viewer for Android — view the metadata hidden inside your photos, and strip the parts that put your privacy at risk.
 
 ![](./doc/playstore_head.png)
 
@@ -36,125 +36,63 @@ Then share the cleaned image to any app, or save it to your gallery.
 Lightweight and built for one job: showing you what your photos know about you, and helping you take control.
 
 
-## 🚀 Quick Start
+## 🚀 Build & Run (Android)
 
 ### Prerequisites
 
-- Node.js >= 18.0.0
-- pnpm >= 8.0.0
+- Android Studio (Koala or newer)
+- Android SDK (compileSdk 37, minSdk 24)
+- JDK 11+
 
-### Installation
-
-```bash
-# Install dependencies
-pnpm install
-
-# Install and setup git hooks
-pnpm prepare
-```
-
-### Development
+### Build
 
 ```bash
-# Start Tauri development server
-pnpm tauri:dev
-
-# Build all projects
-pnpm build
-
-# Run all tests
-pnpm test
-
-# Lint all projects
-pnpm lint
-
-# Format all projects
-pnpm format
+cd android
+./gradlew assembleDebug          # debug APK
+./gradlew assembleRelease        # release APK (requires signing config in key/)
+./gradlew installDebug           # install on a connected device
 ```
+
+The debug signing key is bundled in `android/app/debugkey.zip` — extract it before building.
 
 ## 📁 Project Structure
 
 ```
 PhotoChecker/
-├── packages/           # Shared packages (future)
-├── apps/               # Applications (future)
-├── tauri/             # Tauri desktop application
-├── android/           # Android native application
-├── harmony/           # HarmonyOS application
-├── web/               # Web application
-├── package.json       # Root workspace configuration
-├── pnpm-workspace.yaml # pnpm workspace configuration
-└── .gitignore         # Git ignore rules
+├── android/            Android app (Kotlin + Jetpack Compose) — primary platform
+│   └── app/src/main/java/cn/qinxiandiqi/photochecker/
+│       ├── lib/exif/        custom EXIF parser (AOSP port, read-only)
+│       ├── ui/theme/        design system (color scheme, spacing tokens)
+│       └── feature/         feature modules
+│           ├── home/        EXIF viewer & privacy cleaning (ui / services / model)
+│           └── about/       about screen (open-source licenses)
+├── web/                static privacy-policy page (Docker)
+└── doc/                store assets & screenshots
 ```
 
-## 🛠 Available Scripts
+The Android app follows **MVVM + single Activity + feature modules**: each feature splits into
+`ui/` (Composables), a business layer (ViewModel + Services), and `model/` (data classes).
 
-### Root Workspace Scripts
+## 🌐 Web (privacy page)
 
-- `pnpm build` - Build all projects
-- `pnpm dev` - Start development servers for all projects
-- `pnpm test` - Run all tests
-- `pnpm lint` - Lint all projects
-- `pnpm lint:fix` - Fix linting issues
-- `pnpm format` - Format all projects
-- `pnpm format:check` - Check formatting
-- `pnpm typecheck` - Type check all projects
-- `pnpm clean` - Clean all node_modules and build outputs
+A standalone static page served via Docker:
 
-### Platform-specific Scripts
-
-- `pnpm tauri:dev` - Start Tauri development server
-- `pnpm tauri:build` - Build Tauri application
-- `pnpm android:build` - Build Android application
-- `pnpm harmony:build` - Build HarmonyOS application
-- `pnpm web:build` - Build and serve web application
-
-## 🎯 Platforms
-
-### Desktop (Tauri)
-
-- **Location**: `./tauri/`
-- **Tech Stack**: React, TypeScript, Vite, Tauri 2
-- **Commands**: `pnpm tauri:dev`, `pnpm tauri:build`
-
-### Android
-
-- **Location**: `./android/`
-- **Tech Stack**: Kotlin, Jetpack Compose
-- **Commands**: `pnpm android:build`
-
-### HarmonyOS
-
-- **Location**: `./harmony/`
-- **Tech Stack**: ArkTS
-- **Commands**: `pnpm harmony:build`
-
-### Web
-
-- **Location**: `./web/`
-- **Tech Stack**: Static files with Docker
-- **Commands**: `pnpm web:build`
+```bash
+cd web
+docker-compose up --build     # http://localhost:80
+```
 
 ## 🔧 Development Workflow
 
-1. **Make changes** to any platform-specific project
-2. **Test locally** using the development server for that platform
-3. **Run linting** with `pnpm lint`
-4. **Format code** with `pnpm format`
-5. **Commit changes** using the conventional commit format
-6. **Test across platforms** to ensure consistency
+1. **Make changes** in `android/`
+2. **Build & install** with `./gradlew installDebug`
+3. **Commit changes** using the conventional commit format
 
 ## 📝 Git Workflow
 
-This monorepo uses conventional commits and automated tools for quality control:
+This project follows the **conventional commit** format: `type(scope): description`.
 
-### Commit Guidelines
-
-- **Use conventional commit format**: `type(scope): description`
-- **Interactive commits**: Use `pnpm commit` for guided commit creation
-- **Commit validation**: Commits are automatically validated with commitlint
-
-### Available Commit Types
+### Commit Types
 
 - `feat`: 新功能 (New features)
 - `fix`: 修复 bug (Bug fixes)
@@ -167,26 +105,6 @@ This monorepo uses conventional commits and automated tools for quality control:
 - `chore`: 其他修改 (Other changes)
 - `revert`: 回滚 (Reverting changes)
 
-### Git Hooks
-
-- **pre-commit**: Runs lint-staged to format and lint staged files
-- **commit-msg**: Validates commit messages with commitlint
-
-### Release Management
-
-- `pnpm release`: Creates a new release with changelog
-- `pnpm release:patch`: Bump patch version
-- `pnpm release:minor`: Bump minor version
-- `pnpm release:major`: Bump major version
-
-## 📦 Package Management
-
-This monorepo uses **pnpm workspaces** for dependency management:
-
-- **Single lockfile**: `pnpm-lock.yaml` at root
-- **Hoisting**: Dependencies are shared between packages
-- **Efficient**: Faster installs and less disk space
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -197,4 +115,4 @@ This monorepo uses **pnpm workspaces** for dependency management:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
